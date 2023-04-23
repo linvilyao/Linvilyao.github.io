@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="二叉排序树（BST）二叉排序树（二叉查找树）或者是一棵空树，或者时具有下列特性的二叉树： 1）若左子树非空，则左子树上所有结点的值均小于根结点的值； 2）若右子树非空，则右子树上所有结点的值均大于根结点的值； 3）左、右子数也分别是一棵二叉排序树。 （1）查找1234567BSTNode *BST_Search(BiTree T,ElemType key)&amp;#123;    while(T&amp;am">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构-第十章查找">
+<meta property="og:url" content="http://linvilyao.github.io/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%8D%81%E7%AB%A0%E6%9F%A5%E6%89%BE/index.html">
+<meta property="og:site_name" content="Linvil&#39;s Blog">
+<meta property="og:description" content="二叉排序树（BST）二叉排序树（二叉查找树）或者是一棵空树，或者时具有下列特性的二叉树： 1）若左子树非空，则左子树上所有结点的值均小于根结点的值； 2）若右子树非空，则右子树上所有结点的值均大于根结点的值； 3）左、右子数也分别是一棵二叉排序树。 （1）查找1234567BSTNode *BST_Search(BiTree T,ElemType key)&amp;#123;    while(T&amp;am">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-23T14:50:37.000Z">
+<meta property="article:modified_time" content="2023-04-23T14:51:08.519Z">
+<meta property="article:author" content="Linvil Yao">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://linvilyao.github.io/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%8D%81%E7%AB%A0%E6%9F%A5%E6%89%BE/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%8D%81%E7%AB%A0%E6%9F%A5%E6%89%BE/","path":"2023/04/23/数据结构-第十章查找/","title":"数据结构-第十章查找"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数据结构-第十章查找 | Linvil's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Linvil's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">这是一个用来记录的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text"> </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%8E%92%E5%BA%8F%E6%A0%91%EF%BC%88BST%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">二叉排序树（BST）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%9F%A5%E6%89%BE"><span class="nav-number">1.1.1.</span> <span class="nav-text">（1）查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%8F%92%E5%85%A5"><span class="nav-number">1.1.2.</span> <span class="nav-text">（2）插入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E6%9E%84%E9%80%A0"><span class="nav-number">1.1.3.</span> <span class="nav-text">（3）构造</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E5%88%A0%E9%99%A4"><span class="nav-number">1.1.4.</span> <span class="nav-text">（4）删除</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E8%8A%82%E5%93%88%E5%B8%8C%E6%9F%A5%E6%89%BE%EF%BC%88%E6%95%A3%E5%88%97%E8%A1%A8%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">第四节哈希查找（散列表）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%93%88%E5%B8%8C%E6%9F%A5%E6%89%BE%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">1.哈希查找的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">2.哈希函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E7%9B%B4%E6%8E%A5%E5%AE%9A%E5%9D%80%E6%B3%95"><span class="nav-number">2.2.1.</span> <span class="nav-text">（1）直接定址法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E9%99%A4%E7%95%99%E4%BD%99%E6%95%B0%E6%B3%95"><span class="nav-number">2.2.2.</span> <span class="nav-text">（2）除留余数法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E6%95%B0%E5%AD%97%E5%88%86%E6%9E%90%E6%B3%95"><span class="nav-number">2.2.3.</span> <span class="nav-text">（3）数字分析法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E5%B9%B3%E6%96%B9%E5%8F%96%E4%B8%AD%E6%B3%95"><span class="nav-number">2.2.4.</span> <span class="nav-text">（4）平方取中法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%93%88%E5%B8%8C%E5%86%B2%E7%AA%81%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">3.哈希冲突的解决方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%BC%80%E6%94%BE%E5%9C%B0%E5%9D%80%E6%B3%95"><span class="nav-number">2.3.1.</span> <span class="nav-text">（1）开放地址法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%94a-%E7%BA%BF%E6%80%A7%E6%8E%A2%E6%B5%8B%E6%B3%95"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">—a.线性探测法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%94b-%E5%B9%B3%E6%96%B9%E6%8E%A2%E6%B5%8B%E6%B3%95"><span class="nav-number">2.3.1.2.</span> <span class="nav-text">—b.平方探测法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%94c-%E5%8F%8C%E6%95%A3%E5%88%97%E6%B3%95"><span class="nav-number">2.3.1.3.</span> <span class="nav-text">—c.双散列法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%94d-%E4%BC%AA%E9%9A%8F%E6%9C%BA%E5%BA%8F%E5%88%97%E6%B3%95"><span class="nav-number">2.3.1.4.</span> <span class="nav-text">—d.伪随机序列法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%8B%89%E9%93%BE%E6%B3%95%EF%BC%88%E9%93%BE%E6%8E%A5%E6%B3%95%EF%BC%89"><span class="nav-number">2.3.2.</span> <span class="nav-text">（2）拉链法（链接法）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%95%A3%E5%88%97%E6%9F%A5%E6%89%BE%E5%8F%8A%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90"><span class="nav-number">2.4.</span> <span class="nav-text">4.散列查找及性能分析</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Linvil Yao"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Linvil Yao</p>
+  <div class="site-description" itemprop="description">Welcome to Linvil's Blog!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/linvilyao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;linvilyao" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%8D%81%E7%AB%A0%E6%9F%A5%E6%89%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Linvil Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linvil's Blog">
+      <meta itemprop="description" content="Welcome to Linvil's Blog!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="数据结构-第十章查找 | Linvil's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据结构-第十章查找
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-04-23 22:50:37 / 修改时间：22:51:08" itemprop="dateCreated datePublished" datetime="2023-04-23T22:50:37+08:00">2023-04-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%80%83%E7%A0%94/" itemprop="url" rel="index"><span itemprop="name">考研</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%8D%81%E7%AB%A0%E6%9F%A5%E6%89%BE/" class="post-meta-item leancloud_visitors" data-flag-title="数据结构-第十章查找" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Valine：</span>
+  
+    <a title="valine" href="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%8D%81%E7%AB%A0%E6%9F%A5%E6%89%BE/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%8D%81%E7%AB%A0%E6%9F%A5%E6%89%BE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id=""><a href="#" class="headerlink" title=" "></a> </h2><h3 id="二叉排序树（BST）"><a href="#二叉排序树（BST）" class="headerlink" title="二叉排序树（BST）"></a>二叉排序树（BST）</h3><p>二叉排序树（二叉查找树）或者是一棵空树，或者时具有下列特性的二叉树：</p>
+<p>1）若左子树非空，则左子树上所有结点的值均小于根结点的值；</p>
+<p>2）若右子树非空，则右子树上所有结点的值均大于根结点的值；</p>
+<p>3）左、右子数也分别是一棵二叉排序树。</p>
+<h4 id="（1）查找"><a href="#（1）查找" class="headerlink" title="（1）查找"></a>（1）查找</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BSTNode *<span class="title">BST_Search</span><span class="params">(BiTree T,ElemType key)</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(T&amp;&amp;key!=T-&gt;data)&#123;				<span class="comment">//若树空或等于根结点值，则结束循环</span></span><br><span class="line">        <span class="keyword">if</span>(key&lt;T-&gt;data)	T = T-&gt;lchild;	<span class="comment">//小于，则在左子树上查找</span></span><br><span class="line">        <span class="keyword">else</span>	T = T-&gt;rchild;			<span class="comment">//大于，则在右子树上查找</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> T;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="（2）插入"><a href="#（2）插入" class="headerlink" title="（2）插入"></a>（2）插入</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">BST_Insert</span><span class="params">(BiTree &amp;T,KetType k)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(T)&#123;									<span class="comment">//原树为空，新插入的记录为新结点</span></span><br><span class="line">        T = (BiTree)<span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(BSTNode));</span><br><span class="line">        T-&gt;data = k;</span><br><span class="line">        T-&gt;lchild = T-&gt;rchild = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;							<span class="comment">//返回1，表示插入成功</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(k == T-&gt;data)	<span class="keyword">return</span> <span class="number">0</span>;		<span class="comment">//树中存在相同关键字的结点，插入失败</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(k &lt; T-data)		<span class="keyword">return</span> <span class="built_in">BST_Insert</span>(T-&gt;lchild,k);		<span class="comment">//插入到T的左子树</span></span><br><span class="line">    <span class="keyword">else</span>	<span class="keyword">return</span> <span class="built_in">BST_Insert</span>(T-&gt;rchild,k);		<span class="comment">//插入到T的右子树</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="（3）构造"><a href="#（3）构造" class="headerlink" title="（3）构造"></a>（3）构造</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Creat_BST</span><span class="params">(BiTree &amp;T,KetType str[],<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    T = <span class="literal">NULL</span>;					<span class="comment">//初始时T为空树</span></span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(i &lt; n)&#123;				<span class="comment">//依次将每个关键字插入到二叉排序树中</span></span><br><span class="line">        <span class="built_in">BST_Insert</span>(T,str[i]);	</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="（4）删除"><a href="#（4）删除" class="headerlink" title="（4）删除"></a>（4）删除</h4><p>①若被删除结点z时叶结点，则直接删除，不会破坏二叉排序树的性质；</p>
+<p>②若结点z只有一棵左子树或右子树，则让z的子数称为z父节点的子数，代替z的位置；</p>
+<p>③若结点z有左、右两棵子数，则令z的直接后继（或直接前驱）替代z，然后二叉排序树中删去这个直接后继（或直接前驱），这样就转换成了第一种或第二种情况。</p>
+<pre class="mermaid">graph TB;
+A((53))
+B((17))
+C((78))
+D((09))
+E((45))
+F((65))
+G((94))
+H((81))
+I((88))
+J((23))
+A-->B
+A-->C
+B-->D
+B-->E
+C-->F
+C-->G
+E-->J
+G-->H
+H-->I</pre>
+
+<p>删除78结点后</p>
+<pre class="mermaid">graph TB;
+A((53))
+B((17))
+D((09))
+E((45))
+F((65))
+G((94))
+H((81))
+I((88))
+J((23))
+A-->B
+A-->H
+B-->D
+B-->E
+E-->J
+H-->F
+H-->G
+G-->I</pre>
+
+<script type="math/tex; mode=display">
+平衡二叉树的递推公式：n_0=0,n_1=1,n_2=2,n_h=1+n_{h-1}+n_{h-2}</script><h2 id="第四节哈希查找（散列表）"><a href="#第四节哈希查找（散列表）" class="headerlink" title="第四节哈希查找（散列表）"></a>第四节哈希查找（散列表）</h2><h3 id="1-哈希查找的概念"><a href="#1-哈希查找的概念" class="headerlink" title="1.哈希查找的概念"></a>1.哈希查找的概念</h3><p>散列函数：一个把查找表中的关键字映射成该关键字对应的地址的函数，记为Hash(key)=Addr（这里的地址可以实数组下标、索引或内存地址等）</p>
+<p>散列表：根据关键字而直接进行访问的数据结构。即<em>散列表建立了关键字和存储地址之间的一种直接映射关系</em>。</p>
+<h3 id="2-哈希函数"><a href="#2-哈希函数" class="headerlink" title="2.哈希函数"></a>2.哈希函数</h3><h4 id="（1）直接定址法"><a href="#（1）直接定址法" class="headerlink" title="（1）直接定址法"></a>（1）直接定址法</h4><script type="math/tex; mode=display">
+H(key)=key或H(key)=a×key+b</script><h4 id="（2）除留余数法"><a href="#（2）除留余数法" class="headerlink" title="（2）除留余数法"></a>（2）除留余数法</h4><p>假定散列表表长为m，取一个不大于m但最接近或等于m的质数p，则散列函数如下：</p>
+<script type="math/tex; mode=display">
+H(key)=key\%p</script><h4 id="（3）数字分析法"><a href="#（3）数字分析法" class="headerlink" title="（3）数字分析法"></a>（3）数字分析法</h4><h4 id="（4）平方取中法"><a href="#（4）平方取中法" class="headerlink" title="（4）平方取中法"></a>（4）平方取中法</h4><p>取关键字的平方值的中间几位作为散列地址。适用于关键字的每位取值都不够均匀或均小于散列地址所需的位数。</p>
+<h3 id="3-哈希冲突的解决方法"><a href="#3-哈希冲突的解决方法" class="headerlink" title="3.哈希冲突的解决方法"></a>3.哈希冲突的解决方法</h3><h4 id="（1）开放地址法"><a href="#（1）开放地址法" class="headerlink" title="（1）开放地址法"></a>（1）开放地址法</h4><script type="math/tex; mode=display">
+H_i = (H(key)+d_i)\%m\\
+H(key)为散列函数：i = 0,1,2,..,k(k ≤ m-1)；m表示散列表表长；d_i为增量序列</script><h5 id="—a-线性探测法"><a href="#—a-线性探测法" class="headerlink" title="—a.线性探测法"></a>—a.线性探测法</h5><p>特点：冲突发生时，顺序查看表中下一个单元（探测到表尾地址m-1时，下一个探测地址时表首地址0），知道招初一个空闲单元（当表为填满时一定要找到一个空闲单元）或查遍全表。</p>
+<p>缺点：容易造成大量元素在相邻的散列地址上“聚集”（或堆积）起来，大大降低查找效率。</p>
+<h5 id="—b-平方探测法"><a href="#—b-平方探测法" class="headerlink" title="—b.平方探测法"></a>—b.平方探测法</h5><p>特点：当d~i~ = 0²，1²，-1²，2²，-2²，…，k²，-k²时，称为平方探测法，其中k ≤ m/2，散列表长度m必须是一个可以表示成4k+3的素数，又称二次探测法。</p>
+<p>优点：可以避免出现“堆积”问题。</p>
+<p>缺点：不能探测散列表上的所有单元，但至少可以探测到一半单元。</p>
+<h5 id="—c-双散列法"><a href="#—c-双散列法" class="headerlink" title="—c.双散列法"></a>—c.双散列法</h5><p>​        当d~i~=Hash~2~(key)时，称为双散列法。当通过第一个散列函数H(key)得到的地址发生冲突时，利用第二个散列函数Hash~2~(key)计算该关键字的地址增量。具体散列函数形式如下：</p>
+<script type="math/tex; mode=display">
+H_i=(H(key)+i×Hash_2(key))\%m</script><p>初始探测位置H~0~=H(key)%m。i是冲突的次数，初始为0。最多经过m-1次探测就会遍历表中所有位置，回到H~0~位置。</p>
+<h5 id="—d-伪随机序列法"><a href="#—d-伪随机序列法" class="headerlink" title="—d.伪随机序列法"></a>—d.伪随机序列法</h5><p>d~i~ = 伪随机序列时，称为伪随机序列法。</p>
+<h4 id="（2）拉链法（链接法）"><a href="#（2）拉链法（链接法）" class="headerlink" title="（2）拉链法（链接法）"></a>（2）拉链法（链接法）</h4><p>同线性探测法，但改为链表形式。</p>
+<h3 id="4-散列查找及性能分析"><a href="#4-散列查找及性能分析" class="headerlink" title="4.散列查找及性能分析"></a>4.散列查找及性能分析</h3><p>散列表的查找效率取决三个因素：散列函数、处理冲突的方法和装填因子。</p>
+<script type="math/tex; mode=display">
+\alpha = 表中记录数n/散列表长度m</script><p>散列表的平均查找长度依赖于散列表的装填因子α，而不直接依赖于n或m。直观地看，α越大，表示装填的记录越“满”，发生冲突的可能性越大，反之发生冲突的可能性越小。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"><i class="fa fa-tag"></i> 数据结构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%B9%9D%E7%AB%A0%E6%8E%92%E5%BA%8F/" rel="prev" title="数据结构-第九章排序">
+                  <i class="fa fa-chevron-left"></i> 数据结构-第九章排序
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Linvil Yao</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","app_key":"iNfyeaWVmA11Duj7fzr0B1r1","server_url":"https://16p3s6fl.lc-cn-n1-shared.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%8D%81%E7%AB%A0%E6%9F%A5%E6%89%BE/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
+</script>
+
+</body>
+</html>
