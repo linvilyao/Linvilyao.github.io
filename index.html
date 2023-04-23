@@ -224,7 +224,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-04-23 22:50:37 / 修改时间：22:51:08" itemprop="dateCreated datePublished" datetime="2023-04-23T22:50:37+08:00">2023-04-23</time>
+      <time title="创建时间：2023-04-23 22:50:37 / 修改时间：23:00:40" itemprop="dateCreated datePublished" datetime="2023-04-23T22:50:37+08:00">2023-04-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -252,14 +252,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.4k</span>
+      <span>4.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -270,7 +270,27 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id=""><a href="#" class="headerlink" title=" "></a> </h2><h3 id="二叉排序树（BST）"><a href="#二叉排序树（BST）" class="headerlink" title="二叉排序树（BST）"></a>二叉排序树（BST）</h3><p>二叉排序树（二叉查找树）或者是一棵空树，或者时具有下列特性的二叉树：</p>
+          <h1 id="第十章查找"><a href="#第十章查找" class="headerlink" title="第十章查找"></a>第十章查找</h1><h2 id="第一节查找的概念"><a href="#第一节查找的概念" class="headerlink" title="第一节查找的概念"></a>第一节查找的概念</h2><p>在数据集合中寻找满足某种条件的数据元素的过程</p>
+<h2 id="第二节静态查找"><a href="#第二节静态查找" class="headerlink" title="第二节静态查找"></a>第二节静态查找</h2><h3 id="1-顺序（线性）查找"><a href="#1-顺序（线性）查找" class="headerlink" title="1.顺序（线性）查找"></a>1.顺序（线性）查找</h3><h4 id="（1）一般线性表的查找"><a href="#（1）一般线性表的查找" class="headerlink" title="（1）一般线性表的查找"></a>（1）一般线性表的查找</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>&#123;					<span class="comment">//查找表的数据结构</span></span><br><span class="line">    ElemType *elem;				<span class="comment">//元素存储空间基址，建表时按实际长度分配，0号单元留空</span></span><br><span class="line">    <span class="type">int</span> TableLen;				<span class="comment">//表的长度</span></span><br><span class="line">&#125;SSTable;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">Search_Seq</span><span class="params">(SSTable ST,ElemType key)</span></span>&#123;</span><br><span class="line">    ST.elem[<span class="number">0</span>] = key;			<span class="comment">//哨兵</span></span><br><span class="line">    <span class="keyword">for</span>(i = ST.TableLen;ST.elem[i]!=key,--i);	<span class="comment">//从后往前找</span></span><br><span class="line">    <span class="keyword">return</span> i;					<span class="comment">//若表中不存在关键字为key的元素，将查找到i=0时退出for循环</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于有n个元素的表，给定值key与表中第i个元素相等，即定位第i个元素时，需进行n-i+1次关键词的比较。</p>
+<p>\begin{flalign}<br>&amp;1.查找成功时:\\<br>&amp;顺序查找的平均长度为：ASL_{成功} = \sum_{i=1}^nP_i(n-i+1)\\<br>&amp;当每个元素的查找概率相等，即P_i=1/n时，有：ASL_{成功} = \sum_{i=1}^nP_i(n-i+1)=(n+1)/2\\<br>&amp;2.查找失败时：\\<br>&amp;与表中各关键词的比较次数时n+1次，从而顺序查找不成功的平均查找长度为：ASL_{不成功} = n+1<br>\end{flalign}</p>
+<h4 id="（2）有序表的查找"><a href="#（2）有序表的查找" class="headerlink" title="（2）有序表的查找"></a>（2）有序表的查找</h4><p>\begin{flalign}<br>&amp;1.查找成功时:\\<br>&amp;顺序查找的平均长度为：ASL_{成功} = \sum_{i=1}^nP_i(n-i+1)\\<br>&amp;当每个元素的查找概率相等，即P_i=1/n时，有：ASL_{成功} = \sum_{i=1}^nP_i(n-i+1)=(n+1)/2\\<br>&amp;2.查找失败时：\\<br>&amp;查找不成功的平均查找长度为：ASL_{不成功} = \sum_{j=1}^nq_i(l_j-1)=(1+2…+n+n)/(n+1)=n/2+n/(n+1)<br>\end{flalign}</p>
+<h3 id="2-二分（折半）查找"><a href="#2-二分（折半）查找" class="headerlink" title="2.二分（折半）查找"></a>2.二分（折半）查找</h3><p>时间复杂度：O(logn)</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">Binary_Search</span><span class="params">(SeqList L,ElemType key)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> low = <span class="number">0</span>,high = L.TableLen<span class="number">-1</span>,mid;</span><br><span class="line">    <span class="keyword">while</span>(low&lt;=high)&#123;</span><br><span class="line">        min = (low+high)/<span class="number">2</span>;							<span class="comment">//取中间位置</span></span><br><span class="line">        <span class="keyword">if</span>(L.elem[mid] = key)	<span class="keyword">return</span> min;			<span class="comment">//查找成功则返回所在位置</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(L.elem[mid]&gt;key)	high = mid<span class="number">-1</span>;	<span class="comment">//从前半部分继续查找</span></span><br><span class="line">        <span class="keyword">else</span>	low = mid+<span class="number">1</span>;						<span class="comment">//从后半部分继续查找</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;										<span class="comment">//查找失败，返回-1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<script type="math/tex; mode=display">
+\begin{flalign}
+&ASL_{成功} = 1/n\sum_{i=1}^nl_i=1/n(1*1+2*2+...+h*2^{h-1})=(n+1)/n*log_2(n+1)≈log_2(n+1)-1\\
+\end{flalign}</script><h3 id="3-索引（分块）查找"><a href="#3-索引（分块）查找" class="headerlink" title="3.索引（分块）查找"></a>3.索引（分块）查找</h3><p>基本思想：将查找表氛围若干子块。块内元素可以无序，但块之间时有序的，即第一个块中的最大关键字小于第二块中的所有记录的关键字，以此类推。再建立一个索引表，索引表中每个元素含有各块的最大关键字和各块中的第一个元素的地址，索引表按关键字有序排列。</p>
+<script type="math/tex; mode=display">
+\begin{flalign}
+&1.分块查找的平均查找长度为索引查找和块内查找的平均长度之和，设索引查找和块内查找的平均查找长度分别为L_l和L_s\\
+&~~~则分块查找的平均查找长度为：ASL = L_l+L_s\\
+&2.将长度为n的查找表均匀的分成b块，每块有s各记录，在等概率情况下，若块内和索引表中均采用顺序查找\\
+&~~~则平均查找长度为：ASL = L_l+L_s = (b+1)/2+(s+1)/2 = (s^2+2s+n)/(2s)\\
+&3.若s = \sqrt n，则平均查找长度取最小值\sqrt n+1；\\
+&4.若对索引表采用折半查找时，\\
+&~~~则平均查找长度为ASL= L_l+L_s = \lceil log_2(b+1)\rceil+(s+1)/2
+\end{flalign}</script><h2 id="第三节动态查找"><a href="#第三节动态查找" class="headerlink" title="第三节动态查找"></a>第三节动态查找</h2><h3 id="二叉排序树（BST）"><a href="#二叉排序树（BST）" class="headerlink" title="二叉排序树（BST）"></a>二叉排序树（BST）</h3><p>二叉排序树（二叉查找树）或者是一棵空树，或者时具有下列特性的二叉树：</p>
 <p>1）若左子树非空，则左子树上所有结点的值均小于根结点的值；</p>
 <p>2）若右子树非空，则右子树上所有结点的值均大于根结点的值；</p>
 <p>3）左、右子数也分别是一棵二叉排序树。</p>
@@ -399,7 +419,7 @@ H_i=(H(key)+i×Hash_2(key))\%m</script><p>初始探测位置H~0~=H(key)%m。i是
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-04-23 22:49:09 / 修改时间：22:49:35" itemprop="dateCreated datePublished" datetime="2023-04-23T22:49:09+08:00">2023-04-23</time>
+      <time title="创建时间：2023-04-23 22:49:09 / 修改时间：22:59:03" itemprop="dateCreated datePublished" datetime="2023-04-23T22:49:09+08:00">2023-04-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -591,7 +611,7 @@ H_i=(H(key)+i×Hash_2(key))\%m</script><p>初始探测位置H~0~=H(key)%m。i是
 </tbody>
 </table>
 </div>
-<h1 id=""><a href="#" class="headerlink" title=" "></a> </h1>
+
       
     </div>
 
@@ -647,7 +667,7 @@ H_i=(H(key)+i×Hash_2(key))\%m</script><p>初始探测位置H~0~=H(key)%m。i是
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-04-23 22:48:23 / 修改时间：22:48:54" itemprop="dateCreated datePublished" datetime="2023-04-23T22:48:23+08:00">2023-04-23</time>
+      <time title="创建时间：2023-04-23 22:48:23 / 修改时间：23:09:03" itemprop="dateCreated datePublished" datetime="2023-04-23T22:48:23+08:00">2023-04-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -877,7 +897,7 @@ A_2=\left[
 </tbody>
 </table>
 </div>
-<p><img src="C:/Users/86147/images/数据结构/十字链表法.png" alt="十字链表法"></p>
+<p><img src="../../2023/04/22/images/数据结构/十字链表法.png" alt="十字链表法"></p>
 <h4 id="（4）邻接多重表（无向图）"><a href="#（4）邻接多重表（无向图）" class="headerlink" title="（4）邻接多重表（无向图）"></a>（4）邻接多重表（无向图）</h4><p>顶点结点</p>
 <div class="table-container">
 <table>
@@ -1082,7 +1102,7 @@ D-->E</pre>
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-04-23 22:47:43 / 修改时间：22:48:08" itemprop="dateCreated datePublished" datetime="2023-04-23T22:47:43+08:00">2023-04-23</time>
+      <time title="创建时间：2023-04-23 22:47:43 / 修改时间：22:58:31" itemprop="dateCreated datePublished" datetime="2023-04-23T22:47:43+08:00">2023-04-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1383,7 +1403,7 @@ C--1-->F</pre>
 </tbody>
 </table>
 </div>
-<h1 id=""><a href="#" class="headerlink" title=" "></a> </h1>
+
       
     </div>
 
@@ -1439,7 +1459,7 @@ C--1-->F</pre>
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-04-23 22:46:58 / 修改时间：22:47:20" itemprop="dateCreated datePublished" datetime="2023-04-23T22:46:58+08:00">2023-04-23</time>
+      <time title="创建时间：2023-04-23 22:46:58 / 修改时间：22:58:15" itemprop="dateCreated datePublished" datetime="2023-04-23T22:46:58+08:00">2023-04-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1502,7 +1522,7 @@ C--1-->F</pre>
 <h4 id="（3）求长度、深度"><a href="#（3）求长度、深度" class="headerlink" title="（3）求长度、深度"></a>（3）求长度、深度</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*求广义表长度*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">Length</span><span class="params">(GList L)</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> k = <span class="number">0</span>;</span><br><span class="line">	GLNode* s;</span><br><span class="line">	<span class="keyword">if</span> (L == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;					<span class="comment">//空表长度为0</span></span><br><span class="line">	<span class="keyword">if</span> (L-&gt;tag == ATOM)				<span class="comment">//原子不是表</span></span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">	s = L;</span><br><span class="line">	<span class="keyword">while</span> (s != <span class="literal">NULL</span>) &#123;				<span class="comment">//统计最上层表的长度</span></span><br><span class="line">		k++;</span><br><span class="line">		s = s-&gt;atom_htp.htp.tp;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> k;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*求广义表的深度*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">Depth</span><span class="params">(GList L)</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> d, max;</span><br><span class="line">	GLNode* s;</span><br><span class="line">	<span class="keyword">if</span> (L == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;					<span class="comment">//空表深度为1</span></span><br><span class="line">	<span class="keyword">if</span> (L-&gt;tag == ATOM)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;					<span class="comment">//原子深度为0</span></span><br><span class="line">	s = L;</span><br><span class="line">	<span class="keyword">while</span> (s != <span class="literal">NULL</span>) &#123;				<span class="comment">//求每个子表的深度的最大值</span></span><br><span class="line">		d = <span class="built_in">Depth</span>(s-&gt;atom_htp.htp.hp);</span><br><span class="line">		<span class="keyword">if</span> (d &gt; max)</span><br><span class="line">			max = d;</span><br><span class="line">		s = s-&gt;atom_htp.htp.tp;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> (max + <span class="number">1</span>);				<span class="comment">//表的深度等于最深子表的深度+1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">PrintGList</span><span class="params">(GListPtr gl)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(gl != <span class="literal">NULL</span>)&#123;</span><br><span class="line">		<span class="keyword">if</span>(gl-&gt;tag == list)&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;(&quot;</span>);</span><br><span class="line">			<span class="keyword">if</span>(gl-&gt;slink == <span class="literal">NULL</span>)&#123;</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				<span class="built_in">PrintGList</span>(gl-&gt;slink); <span class="comment">//递归调用输出子表</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, gl-&gt;data); <span class="comment">//输出结点数据域值</span></span><br><span class="line">		&#125;</span><br><span class="line"> </span><br><span class="line">		<span class="keyword">if</span>(gl-&gt;tag == list)&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;)&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line"> </span><br><span class="line">		<span class="keyword">if</span>(gl-&gt;next != <span class="literal">NULL</span>)&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">			<span class="built_in">PrintGList</span>(gl-&gt;next); <span class="comment">//递归调用输出下一个节点</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="（4）统计原子个数"><a href="#（4）统计原子个数" class="headerlink" title="（4）统计原子个数"></a>（4）统计原子个数</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*统计广义表中原子结点数目*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">CountAtom</span><span class="params">(GList L)</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> n1, n2;</span><br><span class="line">	<span class="keyword">if</span> (L == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;							<span class="comment">//空表中没有原子</span></span><br><span class="line">	<span class="keyword">if</span> (L-&gt;tag == ATOM)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;							<span class="comment">//L指向单个原子</span></span><br><span class="line">	n1 = <span class="built_in">CountAtom</span>(L-&gt;atom_htp.htp.hp);		<span class="comment">//统计表头中的原子数目</span></span><br><span class="line">	n2 = <span class="built_in">CountAtom</span>(L-&gt;atom_htp.htp.tp);		<span class="comment">//统计表尾中的原子数目</span></span><br><span class="line">	<span class="keyword">return</span> (n1 + n2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="（5）广义表的复制"><a href="#（5）广义表的复制" class="headerlink" title="（5）广义表的复制"></a>（5）广义表的复制</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*复制广义表*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">CopyGList</span><span class="params">(GList S, GList* T)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (S == <span class="literal">NULL</span>) &#123;				<span class="comment">//复制空表</span></span><br><span class="line">		*T = <span class="literal">NULL</span>;</span><br><span class="line">		<span class="keyword">return</span> OK;</span><br><span class="line">	&#125;</span><br><span class="line">	*T = (GLNode*)<span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(GLNode));</span><br><span class="line">	<span class="keyword">if</span> (*T == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> ERROR;</span><br><span class="line">	(*T)-&gt;tag = S-&gt;tag;</span><br><span class="line">	<span class="keyword">if</span> (S-&gt;tag == ATOM)</span><br><span class="line">		(*T)-&gt;atom_htp.atom = S-&gt;atom_htp.atom;		<span class="comment">//复制单个原子</span></span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">/*复制表头*/</span></span><br><span class="line">		<span class="built_in">CopyGList</span>(S-&gt;atom_htp.htp.hp, &amp;((*T)-&gt;atom_htp.htp.hp));</span><br><span class="line">		<span class="comment">/*复制表尾*/</span></span><br><span class="line">		<span class="built_in">CopyGList</span>(S-&gt;atom_htp.htp.tp, &amp;((*T)-&gt;atom_htp.htp.tp));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id=""><a href="#" class="headerlink" title=" "></a> </h1>
+
       
     </div>
 
@@ -1558,7 +1578,7 @@ C--1-->F</pre>
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-04-23 22:43:47 / 修改时间：22:45:23" itemprop="dateCreated datePublished" datetime="2023-04-23T22:43:47+08:00">2023-04-23</time>
+      <time title="创建时间：2023-04-23 22:43:47 / 修改时间：22:58:00" itemprop="dateCreated datePublished" datetime="2023-04-23T22:43:47+08:00">2023-04-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1669,7 +1689,7 @@ M=\left[
 </tbody>
 </table>
 </div>
-<h1 id=""><a href="#" class="headerlink" title=" "></a> </h1>
+
       
     </div>
 
@@ -1725,7 +1745,7 @@ M=\left[
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-04-23 22:43:04 / 修改时间：22:46:10" itemprop="dateCreated datePublished" datetime="2023-04-23T22:43:04+08:00">2023-04-23</time>
+      <time title="创建时间：2023-04-23 22:43:04 / 修改时间：22:57:45" itemprop="dateCreated datePublished" datetime="2023-04-23T22:43:04+08:00">2023-04-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1844,7 +1864,7 @@ S='a_1a_2a_3...a_n'~~~（n≥0）</script><h3 id="2-串的存储结构和基本�
 </tbody>
 </table>
 </div>
-<h1 id=""><a href="#" class="headerlink" title=" "></a> </h1>
+
       
     </div>
 
