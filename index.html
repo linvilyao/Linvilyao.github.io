@@ -152,18 +152,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -185,6 +185,385 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Linvil Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linvil's Blog">
+      <meta itemprop="description" content="Welcome to Linvil's Blog!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Linvil's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/" class="post-title-link" itemprop="url">深度学习模型之CNN卷积神经网络（一）CNN原理概述</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-04-25 22:36:25 / 修改时间：23:44:44" itemprop="dateCreated datePublished" datetime="2023-04-25T22:36:25+08:00">2023-04-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/" class="post-meta-item leancloud_visitors" data-flag-title="深度学习模型之CNN卷积神经网络（一）CNN原理概述" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="卷积神经网络的架构"><a href="#卷积神经网络的架构" class="headerlink" title="卷积神经网络的架构"></a><strong>卷积神经网络的架构</strong></h1><p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/卷积神经网络的架构.png" alt="卷积神经网络的架构" style="zoom:80%;"></p>
+<h1 id="卷积神经网络（CNN）解决了什么问题？"><a href="#卷积神经网络（CNN）解决了什么问题？" class="headerlink" title="卷积神经网络（CNN）解决了什么问题？"></a><strong>卷积神经网络（CNN）解决了什么问题？</strong></h1><p>CNN，是近年发展起来的并引起广泛重视的一种高效识别方法，可以说是深度学习算法应用最成功的领域之一，其价值在于能够将大数据量的图片有效地降维城小数据量且不影响结果，同时与人类视觉原理类似，CNN能够较完整地保留图片的特征。</p>
+<p>卷积神经网络包括一维卷积神经网络，二维卷积神经网络以及三维卷积神经网络。一维卷积神经网络主要用于序列类的数据处理，二维卷积神经网络常应用于图像类文本的识别，三维卷积神经网络主要应用于医学图像以及视频类数据识别。</p>
+<p>在 CNN 出现之前，图像对于人工智能来说一直是一个难题，问题的主要原因有2个：</p>
+<ul>
+<li><strong>需要处理的数据量太大</strong></li>
+<li><strong>保留图像特征</strong></li>
+</ul>
+<p><strong>需要处理的数据量太大</strong></p>
+<p>图像是由每个带有颜色的像素构成的，且每个像素都有RGB（可简单理解为光学三原色：红、绿、蓝）3个参数来表示颜色信息。</p>
+<p>假如现在需要处理一张1000<em>1000像素的图片，就需要处理1000</em>1000*3=3，000，000个参数！如此大量的数据处理起来是非常消耗资源的，而且这还只是一张不算太大的图片。</p>
+<p><strong>保留图像特征</strong></p>
+<p>假如将一张图片划分为四个区域，其中一个区域中有圆形表示为数字1，没有圆形则表示为0，那么圆形的位置不同就会产生完全不同的数据表达，上述的这个过程就相当于是传统的图片数字化过程简化版。</p>
+<p>对于上述两个问题，CNN通过将复杂问题简化和保留图像特征就较为完美地解决了，那么，CNN是如何进行实现的呢？</p>
+<h1 id="卷积神经网络（CNN）的基本原理"><a href="#卷积神经网络（CNN）的基本原理" class="headerlink" title="卷积神经网络（CNN）的基本原理"></a><strong>卷积神经网络（CNN）的基本原理</strong></h1><h2 id="卷积神经网络的层级结构"><a href="#卷积神经网络的层级结构" class="headerlink" title="卷积神经网络的层级结构"></a><strong>卷积神经网络的层级结构</strong></h2><p>一个卷积神经网络主要由以下 5 层组成：</p>
+<ul>
+<li>数据输入层/ Input layer</li>
+<li>卷积计算层/ CONV layer</li>
+<li>ReLU 激励层 / ReLU layer</li>
+<li>池化层 / Pooling layer</li>
+<li>全连接层 / FC layer</li>
+</ul>
+<h3 id="数据输入层"><a href="#数据输入层" class="headerlink" title="数据输入层"></a>数据输入层</h3><p>该层要做的处理主要是对原始图像数据进行预处理，其中包括：</p>
+<ul>
+<li><strong>去均值</strong>：把输入数据各个维度都中心化为 0，如下图所示，其目的就是把样本的中心拉回到坐标系原点上。</li>
+<li><strong>归一化</strong>：幅度归一化到同样的范围，如下所示，即减少各维度数据取值范围的差异而带来的干扰，比如，我们有两个维度的特征 A 和 B，A 范围是 0 到 10，而 B 范围是 0 到 10000，如果直接使用这两个特征是有问题的，好的做法就是归一化，即 A 和 B 的数据都变为 0 到 1 的范围。</li>
+<li><strong>PCA/白化</strong>：用 PCA 降维；白化是对数据各个特征轴上的幅度归一化</li>
+</ul>
+<p>去均值与归一化效果图：</p>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/去均值与归一化效果图.png" style="zoom:80%;"></p>
+<p>去相关与白化效果图：</p>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/去相关与白化效果图.png" style="zoom:80%;"></p>
+<h3 id="卷积计算层"><a href="#卷积计算层" class="headerlink" title="卷积计算层"></a>卷积计算层</h3><p>这一层就是卷积神经网络最重要的一个层次，也是“卷积神经网络”的名字来源。</p>
+<p>在这个卷积层，有两个关键操作：</p>
+<ul>
+<li><strong>局部关联</strong>。每个神经元看做一个滤波器(filter)</li>
+<li><strong>窗口(receptive field)滑动</strong>， filter 对局部数据计算</li>
+</ul>
+<p>先介绍卷积层遇到的几个名词：</p>
+<ul>
+<li><strong>深度/depth</strong>（解释见下图）</li>
+<li><strong>步幅/stride</strong> （窗口一次滑动的长度）</li>
+<li><strong>填充值/zero-padding</strong></li>
+</ul>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/卷积计算层.png" style="zoom:80%;"></p>
+<p>现在，要改变每一层的行为，有两个主要参数是我们可以调整的。选择了过滤器的尺寸以后，我们还需要选择步幅（stride）和填充（padding）。</p>
+<p>步幅控制着过滤器围绕输入内容进行卷积计算的方式。在第一部分我们举的例子中，过滤器通过每次移动一个单元的方式对输入内容进行卷积。过滤器移动的距离就是步幅。在那个例子中，步幅被默认设置为 1。步幅的设置通常要确保输出内容是一个整数而非分数。让我们看一个例子。想象一个 7 x 7 的输入图像，一个 3 x 3 过滤器（简单起见不考虑第三个维度），步幅为 1。这是一种惯常的情况。</p>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/卷积-步长1.png" alt="img"></p>
+<p>如果步幅增加到 2，输出内容会怎么样。</p>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/卷积-步长2.png" alt="img"></p>
+<p>所以，正如你能想到的，感受野移动了两个单元，输出内容同样也会减小。注意，如果试图把我们的步幅设置成 3，那我们就会难以调节间距并确保感受野与输入图像匹配。正常情况下，程序员如果想让接受域重叠得更少并且想要更小的空间维度（spatial dimensions）时，他们会增加步幅。</p>
+<p><strong>填充值是什么呢？</strong></p>
+<p>在此之前，想象一个场景：当你把 5 x 5 x 3 的过滤器用在 32 x 32 x 3 的输入上时，会发生什么？输出的大小会是 28 x 28 x 3。注意，这里空间维度减小了。如果我们继续用卷积层，尺寸减小的速度就会超过我们的期望。在网络的早期层中，我们想要尽可能多地保留原始输入内容的信息，这样我们就能提取出那些低层的特征。比如说我们想要应用同样的卷积层，但又想让输出量维持为 32 x 32 x 3 。为做到这点，我们可以对这个层应用大小为 2 的零填充（zero padding）。零填充在输入内容的边界周围补充零。如果我们用两个零填充，就会得到一个 36 x 36 x 3 的输入卷。</p>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/填充值.png" style="zoom:80%;"></p>
+<p>如果我们在输入内容的周围应用两次零填充，那么输入量就为 32×32×3。然后，当我们应用带有 3 个 5×5×3 的过滤器，以 1 的步幅进行处理时，我们也可以得到一个 32×32×3 的输出</p>
+<p>如果你的步幅为 1，而且把零填充设置为</p>
+<p>\begin{flalign}<br>        Zero~Padding = (K-1)/2<br>        \end{flalign}</p>
+<p>K 是过滤器尺寸，那么输入和输出内容就总能保持一致的空间维度。</p>
+<p>计算任意给定卷积层的输出的大小的公式是</p>
+<p>\begin{flalign}<br>        O = (W-K+2P)/S + 1<br>        \end{flalign}</p>
+<p>其中 O 是输出尺寸，K 是过滤器尺寸，P 是填充，S 是步幅。</p>
+<h4 id="卷积的计算"><a href="#卷积的计算" class="headerlink" title="卷积的计算"></a>卷积的计算</h4><p>下面蓝色矩阵周围有一圈灰色的框，那些就是上面所说到的填充值</p>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/卷积的计算.png" style="zoom:80%;"></p>
+<p>这里的蓝色矩阵就是输入的图像，粉色矩阵就是卷积层的神经元，这里表示了有两个神经元（w0,w1）。绿色矩阵就是经过卷积运算后的输出矩阵，这里的步长设置为 2。</p>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/卷积的计算-2.png" style="zoom:80%;"></p>
+<p>蓝色的矩阵(输入图像)对粉色的矩阵（filter）进行矩阵内积计算并将三个内积运算的结果与偏置值 b 相加（比如上面图的计算：2+（-2+1-2）+（1-2-2） + 1= 2 - 3 - 3 + 1 = -3），计算后的值就是绿框矩阵的一个元素。</p>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/卷积层-降维.png" style="zoom:80%;"></p>
+<p>下面的动态图形象地展示了卷积层的计算过程：</p>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/卷积层计算过程.gif" style="zoom: 80%"></p>
+<h4 id="参数共享机制"><a href="#参数共享机制" class="headerlink" title="参数共享机制"></a>参数共享机制</h4><p>在卷积层中每个神经元连接数据窗的权重是固定的，每个神经元只关注一个特性。神经元就是图像处理中的滤波器，比如边缘检测专用的 Sobel 滤波器，即卷积层的每个滤波器都会有自己所关注一个图像特征，比如垂直边缘，水平边缘，颜色，纹理等等，这些所有神经元加起来就好比就是整张图像的特征提取器集合。</p>
+<p>需要估算的权重个数减少: AlexNet 1 亿 =&gt; 3.5w</p>
+<p>一组固定的权重和不同窗口内数据做内积: 卷积</p>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/卷积效果图.png" style="zoom:80%;"></p>
+<h3 id="非线性层（或激活层）"><a href="#非线性层（或激活层）" class="headerlink" title="非线性层（或激活层）"></a>非线性层（或激活层）</h3><p>把卷积层输出结果做非线性映射。</p>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/激活层.png" style="zoom:80%;"></p>
+<p>CNN 采用的激活函数一般为 ReLU(The Rectified Linear Unit/修正线性单元)，它的特点是收敛快，求梯度简单，但较脆弱，图像如下。</p>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/激活函数图像.png" style="zoom:80%;"></p>
+<p><strong>激励层的实践经验：</strong></p>
+<p>①不要用 sigmoid！不要用 sigmoid！不要用 sigmoid！</p>
+<p>② 首先试 RELU，因为快，但要小心点</p>
+<p>③ 如果 2 失效，请用 Leaky ReLU 或者 Maxout</p>
+<p>④ 某些情况下 tanh 倒是有不错的结果，但是很少</p>
+<p>参见 Geoffrey Hinton（即深度学习之父）的论文：Rectified Linear Units Improve Restricted Boltzmann Machines <strong>墙裂推荐此论文！</strong></p>
+<h3 id="池化层"><a href="#池化层" class="headerlink" title="池化层"></a>池化层</h3><p>池化层夹在连续的卷积层中间， 用于压缩数据和参数的量，减小过拟合。</p>
+<p>简而言之，如<strong>果输入是图像的话，那么池化层的最主要作用就是压缩图像。</strong></p>
+<p>池化层的具体作用：</p>
+<ul>
+<li><strong>特征不变性</strong>，也就是我们在图像处理中经常提到的特征的尺度不变性，池化操作就是图像的 resize，平时一张狗的图像被缩小了一倍我们还能认出这是一张狗的照片，这说明这张图像中仍保留着狗最重要的特征，我们一看就能判断图像中画的是一只狗，图像压缩时去掉的信息只是一些无关紧要的信息，而留下的信息则是具有尺度不变性的特征，是最能表达图像的特征。</li>
+<li><strong>特征降维</strong>，我们知道一幅图像含有的信息是很大的，特征也很多，但是有些信息对于我们做图像任务时没有太多用途或者有重复，我们可以把这类冗余信息去除，把最重要的特征抽取出来，这也是池化操作的一大作用。</li>
+<li>在一定程度上<strong>防止过拟合</strong>，更方便优化。</li>
+</ul>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/池化层.png" style="zoom:80%;"></p>
+<p>池化层用的方法有 Max pooling 和 average pooling，而实际用的较多的是 Max pooling。这里就说一下 Max pooling，其实思想非常简单。</p>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/池化层方法.png" style="zoom:80%;"></p>
+<p>对于每个 2 <em> 2 的窗口选出最大的数作为输出矩阵的相应元素的值，比如输入矩阵第一个 2 </em> 2 窗口中最大的数是 6，那么输出矩阵的第一个元素就是 6，如此类推。</p>
+<h3 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a>全连接层</h3><p>两层之间所有神经元都有权重连接，通常全连接层在卷积神经网络尾部。也就是跟传统的神经网络神经元的连接方式是一样的：</p>
+<p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/全连接层.PNG" style="zoom:80%;"></p>
+<p>一般 CNN 结构依次为</p>
+<ul>
+<li>INPUT</li>
+<li>[[CONV -&gt; RELU]N -&gt; POOL?]M</li>
+<li>[FC -&gt; RELU]*K</li>
+<li>FC</li>
+</ul>
+<h1 id="卷积神经网络的几点说明"><a href="#卷积神经网络的几点说明" class="headerlink" title="卷积神经网络的几点说明"></a><strong>卷积神经网络的几点说明</strong></h1><h2 id="训练算法"><a href="#训练算法" class="headerlink" title="训练算法"></a>训练算法</h2><ul>
+<li>同一般机器学习算法，先定义 Loss function，衡量和实际结果之间差距。</li>
+<li>找到最小化损失函数的 W 和 b， CNN 中用的算法是 SGD（随机梯度下降）。</li>
+</ul>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p><strong>优点</strong></p>
+<ul>
+<li>共享卷积核，对高维数据处理无压力</li>
+<li>无需手动选取特征，训练好权重，即得特征分类效果好</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>需要调参，需要大样本量，训练最好要 GPU</li>
+<li>物理含义不明确（也就说，我们并不知道没个卷积层到底提取到的是什么特征，而且神经网络本身就是一种难以解释的“黑箱模型”）</li>
+</ul>
+<h2 id="典型-CNN"><a href="#典型-CNN" class="headerlink" title="典型 CNN"></a>典型 CNN</h2><ul>
+<li>LeNet，这是最早用于数字识别的 CNN</li>
+<li>AlexNet， 2012 ILSVRC 比赛远超第 2 名的 CNN，比</li>
+<li>LeNet 更深，用多层小卷积层叠加替换单大卷积层。</li>
+<li>ZF Net， 2013 ILSVRC 比赛冠军</li>
+<li>GoogLeNet， 2014 ILSVRC 比赛冠军</li>
+<li>VGGNet， 2014 ILSVRC 比赛中的模型，图像识别略差于 GoogLeNet，但是在很多图像转化学习问题(比如 object detection)上效果奇好</li>
+</ul>
+<h2 id="fine-tuning"><a href="#fine-tuning" class="headerlink" title="fine-tuning"></a>fine-tuning</h2><p><strong>何谓 fine-tuning？</strong></p>
+<p>fine-tuning 就是使用已用于其他目标、预训练好模型的权重或者部分权重，作为初始值开始训练。</p>
+<p>那为什么我们不用随机选取选几个数作为权重初始值？原因很简单，第一，自己从头训练卷积神经网络容易出现问题；第二，fine-tuning 能很快收敛到一个较理想的状态，省时又省心。</p>
+<p><strong>那 fine-tuning 的具体做法是？</strong></p>
+<ul>
+<li>复用相同层的权重，新定义层取随机权重初始值</li>
+<li>调大新定义层的的学习率，调小复用层学习率</li>
+</ul>
+<h2 id="常用框架"><a href="#常用框架" class="headerlink" title="常用框架"></a>常用框架</h2><p><strong>Caffe</strong></p>
+<ul>
+<li>源于 Berkeley 的主流 CV 工具包，支持 C++,python,matlab</li>
+<li>Model Zoo 中有大量预训练好的模型供使用</li>
+</ul>
+<p><strong>PyTorch</strong></p>
+<ul>
+<li>Facebook 用的卷积神经网络工具包</li>
+<li>通过时域卷积的本地接口，使用非常直观</li>
+<li>定义新网络层简单</li>
+</ul>
+<p><strong>TensorFlow</strong></p>
+<ul>
+<li>Google 的深度学习框架</li>
+<li>TensorBoard 可视化很方便</li>
+<li>数据和模型并行化好，速度快</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h1><p>卷积网络在本质上是一种输入到输出的映射，它能够学习大量的输入与输出之间的映射关系，而不需要任何输入和输出之间的精确的数学表达式，只要用已知的模式对卷积网络加以训练，网络就具有输入输出对之间的映射能力。</p>
+<p>CNN 一个非常重要的特点就是头重脚轻（越往输入权值越小，越往输出权值越多），呈现出一个倒三角的形态，这就很好地避免了 BP 神经网络中反向传播的时候梯度损失得太快。</p>
+<p>卷积神经网络 CNN 主要用来识别位移、缩放及其他形式扭曲不变性的二维图形。由于 CNN 的特征检测层通过训练数据进行学习，所以在使用 CNN 时，避免了显式的特征抽取，而隐式地从训练数据中进行学习；再者由于同一特征映射面上的神经元权值相同，所以网络可以并行学习，这也是卷积网络相对于神经元彼此相连网络的一大优势。卷积神经网络以其局部权值共享的特殊结构在语音识别和图像处理方面有着独特的优越性，其布局更接近于实际的生物神经网络，权值共享降低了网络的复杂性，特别是多维输入向量的图像可以直接输入网络这一特点避免了特征提取和分类过程中数据重建的复杂度。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E4%B8%89%E5%A4%A7%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Linvil Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linvil's Blog">
+      <meta itemprop="description" content="Welcome to Linvil's Blog!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Linvil's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E4%B8%89%E5%A4%A7%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">深度学习之三大算法：CNN、RNN和GAN</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-04-25 22:06:58 / 修改时间：22:14:24" itemprop="dateCreated datePublished" datetime="2023-04-25T22:06:58+08:00">2023-04-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E4%B8%89%E5%A4%A7%E7%AE%97%E6%B3%95/" class="post-meta-item leancloud_visitors" data-flag-title="深度学习之三大算法：CNN、RNN和GAN" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>以算法区分深度学习应用，算法类别可分成三大类：</p>
+<ul>
+<li>常用于影像数据进行分析处理的<strong>卷积神经网络(简称CNN)</strong></li>
+<li>文本分析或自然语言处理的<strong>递归神经网络(简称RNN)</strong></li>
+<li>常用于数据生成或非监督式学习应用的<strong>生成对抗网络(简称GAN)</strong></li>
+</ul>
+<h1 id="卷积神经网络CNN"><a href="#卷积神经网络CNN" class="headerlink" title="卷积神经网络CNN"></a><strong>卷积神经网络CNN</strong></h1><p>因为应用种类多样，本篇会以算法类别细分，CNN主要应用可分为图像分类(image classification)、目标检测(object detection)及语义分割(semantic segmentation)。</p>
+<h2 id="1、图像分类-Classification"><a href="#1、图像分类-Classification" class="headerlink" title="1、图像分类(Classification)"></a><strong>1、图像分类(Classification)</strong></h2><p>将图像进行类别筛选，通过深度学习方法识别图片属于哪种分类类别，其主要重点在于一张图像只包含一种分类类别，即使该影像内容可能有多个目标，所以单纯图像分类的应用并不普遍。不过由于单一目标识别对深度学习算法来说是正确率最高的，所以实际上很多应用会先通过目标检测方法找到该目标，再缩小撷取影像范围进行图像分类。所以只要是目标检测可应用的范围，通常也会使用图像分类方法。</p>
+<p>图像分类也是众多用来测试算法基准的方法之一，常使用由ImageNet举办的大规模视觉识别挑战赛(ILSVRC)中提供的公开图像数据进行算法测试。图像分类属于CNN的基础，其相关算法也是最易于理解，故初学者应该都先以图像分类做为跨入深度学习分析的起步。使用图像分类进行识别，通常输入为一张图像，而输出为一个文字类别。</p>
+<h2 id="2、目标检测-Object-Detection"><a href="#2、目标检测-Object-Detection" class="headerlink" title="2、目标检测 (Object Detection)"></a><strong>2、目标检测 (Object Detection)</strong></h2><p>一张图像内可有一或多个目标物，目标物也可以是属于不同类别。算法主要能达到两种目的：找到目标坐标及识别目标类别。简单来说，就是除了需要知道目标是什么，还需要知道它在哪个位置。</p>
+<p>目标检测应用非常普遍，包含文章开头提到的人脸识别相关技术结合应用，或是制造业方面的瑕疵检测，甚至医院用于X光、超音波进行特定身体部位的病况检测等。目标识别的基础可想象为在图像分类上增加标示位置的功能，故学习上也不离图像分类的基础。不过目标检测所标示的坐标通常为矩形或方形，仅知道目标所在位置，并无法针对目标的边缘进行描绘，所以常用见的应用通常会以「知道目标位置即可」作为目标。</p>
+<p>最常见的算法为YOLO及R-CNN。其中YOLO因算法特性具有较快的识别速度，目前已来到v3版本。R-CNN针对目标位置搜寻及辨识算法和YOLO稍有不同，虽然速度稍较YOLO慢，但正确率稍高于YOLO。使用目标检测进行识别，通常输入为一张图像，而输出为一个或数个文字类别和一组或多组坐标。</p>
+<h2 id="3、语义分割-Semantic-Segmentation"><a href="#3、语义分割-Semantic-Segmentation" class="headerlink" title="3、语义分割 (Semantic Segmentation)"></a><strong>3、语义分割 (Semantic Segmentation)</strong></h2><p>算法会针对一张图像中的每个像素进行识别，也就是说不同于目标检测，语义分割可以正确区别各目标的边界像素，简单来说，语义分割就是像素级别的图像分类，针对每个像素进行分类。当然这类应用的模型就会需要较强大的GPU和花较多时间进行训练。</p>
+<p>常见应用类似目标检测，但会使用在对于图像识别有较高精细度，如需要描绘出目标边界的应用。例如制造业上的瑕疵检测，针对不规则形状的大小瑕疵，都可以正确描绘。医学上常用于分辨病理切片上的病变细胞，或是透过MRI、X光或超音波描绘出病变的区块及类别。算法如U-Net或是Mask R-CNN都是常见的实作方法。使用语义分割进行识别，通常输入为一张图像，而输出也为一张等大小的图像，但图像中会以不同色调描绘不同类别的像素。</p>
+<h1 id="递归神经网络RNN"><a href="#递归神经网络RNN" class="headerlink" title="递归神经网络RNN"></a><strong>递归神经网络RNN</strong></h1><p>有别于CNN，RNN的特色在于可处理图像或数值数据，并且由于网络本身具有记忆能力，可学习具有前后相关的数据类型。例如进行语言翻译或文本翻译，一个句子中的前后词汇通常会有一定的关系，但CNN网络无法学习到这层关系，而RNN因具有内存，所以性能会比较好。因为可以通过RNN进行文字理解，其他应用如输入一张图像，但是输出为一段关于图像叙述的句子。</p>
+<p>RNN虽然解决了CNN无法处理的问题，但其本身仍然有些缺点，所以现在很多RNN的变形网络，其中最常被使用的网络之一为长短记忆网络(Long Short-Term Network，简称LSTM)。这类网络的输入数据不限于是图像或文字，解决的问题也不限于翻译或文字理解。数值相关数据也同样可以使用LSTM进行分析，例如工厂机器预测性维修应用，可透过LSTM分析机台震动讯号，预测机器是否故障。在医学方面，LSTM可协助解读数以千计的文献，并找出特定癌症的相关信息，例如肿瘤部位、肿瘤大小、期数，甚至治疗方针或存活率等等，透过文字理解进行解析。也可结合图像识别提供病灶关键词，以协助医生撰写病理报告。</p>
+<h1 id="生成对抗网络GAN"><a href="#生成对抗网络GAN" class="headerlink" title="生成对抗网络GAN"></a><strong>生成对抗网络GAN</strong></h1><p>除了深度学习外，有一种新兴的网络称为强化学习(Reinforcement Learning)，其中一种很具有特色的网络为生成式对抗网络(GAN)。</p>
+<p>GAN的应用相关论文成长幅度相当大</p>
+<p>深度学习领域最需要的是数据，但往往不是所有应用都可以收集到大量数据，并且数据也需要人工进行标注，这是非常消耗时间及人力成本。图像数据可以通过旋转、裁切或改变明暗等方式增加数据量，但如果数据还是不够呢？目前有相当多领域透过GAN方法生成非常近似原始数据的数据，例如3D-GAN就是可以生成高质量3D对象。当然，比较有趣的应用例如人脸置换或表情置换。</p>
+<p>另外，SRGAN (Super Resolution GAN)可用于提高原始图像的分辨率，将作为低分辨率影像输入进GAN模型，并生成较高画质的影像(如下图)。这样的技术可整合至专业绘图软件中，协助设计师更有效率完成设计工作。</p>
+<p>NVIDIA也有提供一些基于GAN的平台的应用，包含透过GauGAN网络，仅需绘制简单的线条，即可完成漂亮的画作，并且还能随意修改场景的风格。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -222,9 +601,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2023-04-23 22:50:37 / 修改时间：23:00:40" itemprop="dateCreated datePublished" datetime="2023-04-23T22:50:37+08:00">2023-04-23</time>
+      <time title="创建时间：2023-04-23 22:50:37" itemprop="dateCreated datePublished" datetime="2023-04-23T22:50:37+08:00">2023-04-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-25 23:10:21" itemprop="dateModified" datetime="2023-04-25T23:10:21+08:00">2023-04-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -252,7 +637,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.1k</span>
+      <span>4.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -344,25 +729,24 @@ G-->I</pre>
 <script type="math/tex; mode=display">
 平衡二叉树的递推公式：n_0=0,n_1=1,n_2=2,n_h=1+n_{h-1}+n_{h-2}</script><h2 id="第四节哈希查找（散列表）"><a href="#第四节哈希查找（散列表）" class="headerlink" title="第四节哈希查找（散列表）"></a>第四节哈希查找（散列表）</h2><h3 id="1-哈希查找的概念"><a href="#1-哈希查找的概念" class="headerlink" title="1.哈希查找的概念"></a>1.哈希查找的概念</h3><p>散列函数：一个把查找表中的关键字映射成该关键字对应的地址的函数，记为Hash(key)=Addr（这里的地址可以实数组下标、索引或内存地址等）</p>
 <p>散列表：根据关键字而直接进行访问的数据结构。即<em>散列表建立了关键字和存储地址之间的一种直接映射关系</em>。</p>
-<h3 id="2-哈希函数"><a href="#2-哈希函数" class="headerlink" title="2.哈希函数"></a>2.哈希函数</h3><h4 id="（1）直接定址法"><a href="#（1）直接定址法" class="headerlink" title="（1）直接定址法"></a>（1）直接定址法</h4><script type="math/tex; mode=display">
-H(key)=key或H(key)=a×key+b</script><h4 id="（2）除留余数法"><a href="#（2）除留余数法" class="headerlink" title="（2）除留余数法"></a>（2）除留余数法</h4><p>假定散列表表长为m，取一个不大于m但最接近或等于m的质数p，则散列函数如下：</p>
-<script type="math/tex; mode=display">
-H(key)=key\%p</script><h4 id="（3）数字分析法"><a href="#（3）数字分析法" class="headerlink" title="（3）数字分析法"></a>（3）数字分析法</h4><h4 id="（4）平方取中法"><a href="#（4）平方取中法" class="headerlink" title="（4）平方取中法"></a>（4）平方取中法</h4><p>取关键字的平方值的中间几位作为散列地址。适用于关键字的每位取值都不够均匀或均小于散列地址所需的位数。</p>
-<h3 id="3-哈希冲突的解决方法"><a href="#3-哈希冲突的解决方法" class="headerlink" title="3.哈希冲突的解决方法"></a>3.哈希冲突的解决方法</h3><h4 id="（1）开放地址法"><a href="#（1）开放地址法" class="headerlink" title="（1）开放地址法"></a>（1）开放地址法</h4><script type="math/tex; mode=display">
-H_i = (H(key)+d_i)\%m\\
-H(key)为散列函数：i = 0,1,2,..,k(k ≤ m-1)；m表示散列表表长；d_i为增量序列</script><h5 id="—a-线性探测法"><a href="#—a-线性探测法" class="headerlink" title="—a.线性探测法"></a>—a.线性探测法</h5><p>特点：冲突发生时，顺序查看表中下一个单元（探测到表尾地址m-1时，下一个探测地址时表首地址0），知道招初一个空闲单元（当表为填满时一定要找到一个空闲单元）或查遍全表。</p>
+<h3 id="2-哈希函数"><a href="#2-哈希函数" class="headerlink" title="2.哈希函数"></a>2.哈希函数</h3><h4 id="（1）直接定址法"><a href="#（1）直接定址法" class="headerlink" title="（1）直接定址法"></a>（1）直接定址法</h4><p>\begin{flalign}<br>H(key)=key或H(key)=a×key+b<br>\end{flalign}</p>
+<h4 id="（2）除留余数法"><a href="#（2）除留余数法" class="headerlink" title="（2）除留余数法"></a>（2）除留余数法</h4><p>假定散列表表长为m，取一个不大于m但最接近或等于m的质数p，则散列函数如下：</p>
+<p>\begin{flalign}<br>H(key)=key\%p<br>\end{flalign}</p>
+<h4 id="（3）数字分析法"><a href="#（3）数字分析法" class="headerlink" title="（3）数字分析法"></a>（3）数字分析法</h4><h4 id="（4）平方取中法"><a href="#（4）平方取中法" class="headerlink" title="（4）平方取中法"></a>（4）平方取中法</h4><p>取关键字的平方值的中间几位作为散列地址。适用于关键字的每位取值都不够均匀或均小于散列地址所需的位数。</p>
+<h3 id="3-哈希冲突的解决方法"><a href="#3-哈希冲突的解决方法" class="headerlink" title="3.哈希冲突的解决方法"></a>3.哈希冲突的解决方法</h3><h4 id="（1）开放地址法"><a href="#（1）开放地址法" class="headerlink" title="（1）开放地址法"></a>（1）开放地址法</h4><p>\begin{flalign}<br>H_i = (H(key)+d_i)\%m\\<br>H(key)为散列函数：i = 0,1,2,..,k(k ≤ m-1)；m表示散列表表长；d_i为增量序列<br>\end{flalign}</p>
+<h5 id="—a-线性探测法"><a href="#—a-线性探测法" class="headerlink" title="—a.线性探测法"></a>—a.线性探测法</h5><p>特点：冲突发生时，顺序查看表中下一个单元（探测到表尾地址m-1时，下一个探测地址时表首地址0），知道招初一个空闲单元（当表为填满时一定要找到一个空闲单元）或查遍全表。</p>
 <p>缺点：容易造成大量元素在相邻的散列地址上“聚集”（或堆积）起来，大大降低查找效率。</p>
 <h5 id="—b-平方探测法"><a href="#—b-平方探测法" class="headerlink" title="—b.平方探测法"></a>—b.平方探测法</h5><p>特点：当d~i~ = 0²，1²，-1²，2²，-2²，…，k²，-k²时，称为平方探测法，其中k ≤ m/2，散列表长度m必须是一个可以表示成4k+3的素数，又称二次探测法。</p>
 <p>优点：可以避免出现“堆积”问题。</p>
 <p>缺点：不能探测散列表上的所有单元，但至少可以探测到一半单元。</p>
 <h5 id="—c-双散列法"><a href="#—c-双散列法" class="headerlink" title="—c.双散列法"></a>—c.双散列法</h5><p>​        当d~i~=Hash~2~(key)时，称为双散列法。当通过第一个散列函数H(key)得到的地址发生冲突时，利用第二个散列函数Hash~2~(key)计算该关键字的地址增量。具体散列函数形式如下：</p>
-<script type="math/tex; mode=display">
-H_i=(H(key)+i×Hash_2(key))\%m</script><p>初始探测位置H~0~=H(key)%m。i是冲突的次数，初始为0。最多经过m-1次探测就会遍历表中所有位置，回到H~0~位置。</p>
+<p>\begin{flalign}<br>H_i=(H(key)+i×Hash_2(key))\%m<br>\end{flalign}</p>
+<p>初始探测位置H~0~=H(key)%m。i是冲突的次数，初始为0。最多经过m-1次探测就会遍历表中所有位置，回到H~0~位置。</p>
 <h5 id="—d-伪随机序列法"><a href="#—d-伪随机序列法" class="headerlink" title="—d.伪随机序列法"></a>—d.伪随机序列法</h5><p>d~i~ = 伪随机序列时，称为伪随机序列法。</p>
 <h4 id="（2）拉链法（链接法）"><a href="#（2）拉链法（链接法）" class="headerlink" title="（2）拉链法（链接法）"></a>（2）拉链法（链接法）</h4><p>同线性探测法，但改为链表形式。</p>
 <h3 id="4-散列查找及性能分析"><a href="#4-散列查找及性能分析" class="headerlink" title="4.散列查找及性能分析"></a>4.散列查找及性能分析</h3><p>散列表的查找效率取决三个因素：散列函数、处理冲突的方法和装填因子。</p>
-<script type="math/tex; mode=display">
-\alpha = 表中记录数n/散列表长度m</script><p>散列表的平均查找长度依赖于散列表的装填因子α，而不直接依赖于n或m。直观地看，α越大，表示装填的记录越“满”，发生冲突的可能性越大，反之发生冲突的可能性越小。</p>
+<p>\begin{flalign}<br>\alpha = 表中记录数n/散列表长度m<br>\end{flalign}</p>
+<p>散列表的平均查找长度依赖于散列表的装填因子α，而不直接依赖于n或m。直观地看，α越大，表示装填的记录越“满”，发生冲突的可能性越大，反之发生冲突的可能性越小。</p>
 
       
     </div>
@@ -417,9 +801,15 @@ H_i=(H(key)+i×Hash_2(key))\%m</script><p>初始探测位置H~0~=H(key)%m。i是
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2023-04-23 22:49:09 / 修改时间：22:59:03" itemprop="dateCreated datePublished" datetime="2023-04-23T22:49:09+08:00">2023-04-23</time>
+      <time title="创建时间：2023-04-23 22:49:09" itemprop="dateCreated datePublished" datetime="2023-04-23T22:49:09+08:00">2023-04-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-25 22:30:36" itemprop="dateModified" datetime="2023-04-25T22:30:36+08:00">2023-04-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -507,7 +897,7 @@ H_i=(H(key)+i×Hash_2(key))\%m</script><p>初始探测位置H~0~=H(key)%m。i是
 <p><em>②</em>  时间复杂度：归并排序的形式就是一棵二叉树，它需要遍历的次数就是二叉树的深度，而根据完全二叉树的可以得出它的时间复杂度是<strong>O(nlogn)</strong>。</p>
 <p><em>③</em>  空间复杂度：<em>S(n) = O(n)</em>。</p>
 <p><em>④</em>  稳定性：稳定排序。</p>
-<p><img src="C:/Users/86147/images/数据结构/归并排序.png" alt="归并排序" style="zoom:75%;" /></p>
+<p><img src="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%B9%9D%E7%AB%A0%E6%8E%92%E5%BA%8F/数据结构/归并排序.png" alt="归并排序" style="zoom:75%;"></p>
 <h2 id="6-基数排序"><a href="#6-基数排序" class="headerlink" title="6.基数排序"></a>6.基数排序</h2><p><strong>基数排序的效率和初始序列是否有序没有关联。</strong></p>
 <p><em>①</em>  思想：<strong>不需要比较关键字的大小</strong>。根据关键字中各位的值，通过对排序的N个元素进行若干趟“分配”与“收集”来实现排序的。</p>
 <p><em>②</em>  时间复杂度：假设在基数排序中，r为基数，d为位数。则基数排序的时间复杂度为<strong>O(d(n+r))</strong>。</p>
@@ -665,9 +1055,15 @@ H_i=(H(key)+i×Hash_2(key))\%m</script><p>初始探测位置H~0~=H(key)%m。i是
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2023-04-23 22:48:23 / 修改时间：23:19:20" itemprop="dateCreated datePublished" datetime="2023-04-23T22:48:23+08:00">2023-04-23</time>
+      <time title="创建时间：2023-04-23 22:48:23" itemprop="dateCreated datePublished" datetime="2023-04-23T22:48:23+08:00">2023-04-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-25 22:32:00" itemprop="dateModified" datetime="2023-04-25T22:32:00+08:00">2023-04-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -897,7 +1293,7 @@ A_2=\left[
 </tbody>
 </table>
 </div>
-<p><img src="https://github.com/linvilyao/Linvilyao.github.io/images/数据结构/十字链表法.png" alt="十字链表法"></p>
+<p><img src="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%85%AB%E7%AB%A0%E5%9B%BE/数据结构/十字链表法.png" alt="十字链表法"></p>
 <h4 id="（4）邻接多重表（无向图）"><a href="#（4）邻接多重表（无向图）" class="headerlink" title="（4）邻接多重表（无向图）"></a>（4）邻接多重表（无向图）</h4><p>顶点结点</p>
 <div class="table-container">
 <table>
@@ -934,7 +1330,7 @@ A_2=\left[
 </tbody>
 </table>
 </div>
-<p><img src="C:/Users/86147/images/数据结构/邻接多重表.png" alt="邻接多重表"></p>
+<p><img src="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%85%AB%E7%AB%A0%E5%9B%BE/数据结构/邻接多重表.png" alt="邻接多重表"></p>
 <h3 id="3-基本算法实现"><a href="#3-基本算法实现" class="headerlink" title="3.基本算法实现"></a>3.基本算法实现</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Adjacent</span>(G,x,y)：判断图G是否存在边&lt;x,y&gt;或(x,y)。</span><br><span class="line"><span class="built_in">Neighbors</span>(G,x)：列出图G中与结点x邻接的边。</span><br><span class="line"><span class="built_in">InsertVertex</span>(G,x)：在图G中插入顶点x。</span><br><span class="line"><span class="built_in">DeleteVertex</span>(G,x)：在图G中删除顶点x。</span><br><span class="line"><span class="built_in">AddEdge</span>(G,x,y)：若无边边(x,y)或有向边&lt;x,y&gt;不存在，则向图G中添加该边。</span><br><span class="line"><span class="built_in">RemoveEdge</span>(G,x,y)：若无边边(x,y)或有向边&lt;x,y&gt;存在，则向图G中删除该边。 </span><br><span class="line"><span class="built_in">FirstNeighbor</span>(G,x)：求图G中顶点x的第一个邻接点，若有则返回顶点号。若x没有邻接点或图中不存在x，则返回<span class="number">-1</span>。</span><br><span class="line"><span class="built_in">NextNeighbor</span>(G,x,y)：假设图G中顶点y是顶点x的一个邻接点，返回除y外顶点x的下一个邻接点的顶点号，若y是x的最后一个邻接点，则返回<span class="number">-1</span>。</span><br><span class="line"><span class="built_in">Get_edge_value</span>(G,x,y)：获取图中G中边(x,y)或&lt;x,y&gt;对应的权值。</span><br><span class="line"><span class="built_in">Set_edge_value</span>(G,x,y,v)：设置图中G中边(x,y)或&lt;x,y&gt;对应的权值为v。</span><br></pre></td></tr></table></figure>
 <h2 id="第二节图的遍历算法"><a href="#第二节图的遍历算法" class="headerlink" title="第二节图的遍历算法"></a>第二节图的遍历算法</h2><h3 id="1-广度优先搜索（BFS）"><a href="#1-广度优先搜索（BFS）" class="headerlink" title="1.广度优先搜索（BFS）"></a>1.广度优先搜索（BFS）</h3><ul>
 <li>邻接表：空间复杂度O(|V|)    时间复杂度O(|V|+|E|)</li>
@@ -952,13 +1348,13 @@ A_2=\left[
 <li>最小生成树的边数为顶点数-1</li>
 </ul>
 <h3 id="2-普利姆算法（稠密图）"><a href="#2-普利姆算法（稠密图）" class="headerlink" title="2.普利姆算法（稠密图）"></a>2.普利姆算法（稠密图）</h3><script type="math/tex; mode=display">
-时间复杂度：O(|V|^2)</script><p><img src="C:/Users/86147/images/数据结构/普利姆.png" alt="普利姆"></p>
+时间复杂度：O(|V|^2)</script><p><img src="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%85%AB%E7%AB%A0%E5%9B%BE/数据结构/普利姆.png" alt="普利姆"></p>
 <h3 id="3-克鲁斯卡尔算法（稀疏图）"><a href="#3-克鲁斯卡尔算法（稀疏图）" class="headerlink" title="3.克鲁斯卡尔算法（稀疏图）"></a>3.克鲁斯卡尔算法（稀疏图）</h3><script type="math/tex; mode=display">
-时间复杂度：O(|E|log|E|)</script><p><img src="C:/Users/86147/images/数据结构/克鲁斯卡尔.png" alt="克鲁斯卡尔"></p>
+时间复杂度：O(|E|log|E|)</script><p><img src="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%85%AB%E7%AB%A0%E5%9B%BE/数据结构/克鲁斯卡尔.png" alt="克鲁斯卡尔"></p>
 <h2 id="第四节最短路径、拓扑排序和关键路径"><a href="#第四节最短路径、拓扑排序和关键路径" class="headerlink" title="第四节最短路径、拓扑排序和关键路径"></a>第四节最短路径、拓扑排序和关键路径</h2><h3 id="1-最短路径"><a href="#1-最短路径" class="headerlink" title="1.最短路径"></a>1.最短路径</h3><h4 id="（1）Dijkstra算法-只适合正数"><a href="#（1）Dijkstra算法-只适合正数" class="headerlink" title="（1）Dijkstra算法(只适合正数)"></a>（1）Dijkstra算法(只适合正数)</h4><script type="math/tex; mode=display">
 时间复杂度：O(|V|^2)</script><p>dist[]：记录从源点v0到其他个顶点当前的最短路径长度。</p>
 <p>path[]：path[i]表示从源点到顶点i之间的最短路径的前驱结点。</p>
-<p><img src="C:/Users/86147/images/数据结构/Dijkstra.png" alt="Dijkstra"></p>
+<p><img src="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%85%AB%E7%AB%A0%E5%9B%BE/数据结构/Dijkstra.png" alt="Dijkstra"></p>
 <h4 id="（2）Floyd算法"><a href="#（2）Floyd算法" class="headerlink" title="（2）Floyd算法"></a>（2）Floyd算法</h4><script type="math/tex; mode=display">
 时间复杂度：O(|V|^3)~~~~~~~~
 空间复杂度：O(|V|^2)</script><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Floyd</span><span class="params">(n)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> k=<span class="number">1</span>;k&lt;=n;k++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">				dist[i][j]=<span class="built_in">min</span>(dist[i][j],dist[i][k]+dist[k][j]);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>

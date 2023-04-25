@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="以算法区分深度学习应用，算法类别可分成三大类：  常用于影像数据进行分析处理的卷积神经网络(简称CNN) 文本分析或自然语言处理的递归神经网络(简称RNN) 常用于数据生成或非监督式学习应用的生成对抗网络(简称GAN)  卷积神经网络CNN因为应用种类多样，本篇会以算法类别细分，CNN主要应用可分为图像分类(image classification)、目标检测(object detection)及">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习之三大算法：CNN、RNN和GAN">
+<meta property="og:url" content="http://linvilyao.github.io/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E4%B8%89%E5%A4%A7%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="Linvil&#39;s Blog">
+<meta property="og:description" content="以算法区分深度学习应用，算法类别可分成三大类：  常用于影像数据进行分析处理的卷积神经网络(简称CNN) 文本分析或自然语言处理的递归神经网络(简称RNN) 常用于数据生成或非监督式学习应用的生成对抗网络(简称GAN)  卷积神经网络CNN因为应用种类多样，本篇会以算法类别细分，CNN主要应用可分为图像分类(image classification)、目标检测(object detection)及">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-25T14:06:58.000Z">
+<meta property="article:modified_time" content="2023-04-25T14:14:24.105Z">
+<meta property="article:author" content="Linvil Yao">
+<meta property="article:tag" content="神经网络">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://linvilyao.github.io/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E4%B8%89%E5%A4%A7%E7%AE%97%E6%B3%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E4%B8%89%E5%A4%A7%E7%AE%97%E6%B3%95/","path":"2023/04/25/深度学习之三大算法/","title":"深度学习之三大算法：CNN、RNN和GAN"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>深度学习之三大算法：CNN、RNN和GAN | Linvil's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Linvil's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">这是一个用来记录的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CCNN"><span class="nav-number">1.</span> <span class="nav-text">卷积神经网络CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB-Classification"><span class="nav-number">1.1.</span> <span class="nav-text">1、图像分类(Classification)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B-Object-Detection"><span class="nav-number">1.2.</span> <span class="nav-text">2、目标检测 (Object Detection)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E8%AF%AD%E4%B9%89%E5%88%86%E5%89%B2-Semantic-Segmentation"><span class="nav-number">1.3.</span> <span class="nav-text">3、语义分割 (Semantic Segmentation)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%92%E5%BD%92%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CRNN"><span class="nav-number">2.</span> <span class="nav-text">递归神经网络RNN</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9CGAN"><span class="nav-number">3.</span> <span class="nav-text">生成对抗网络GAN</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Linvil Yao"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Linvil Yao</p>
+  <div class="site-description" itemprop="description">Welcome to Linvil's Blog!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/linvilyao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;linvilyao" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E4%B8%89%E5%A4%A7%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Linvil Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linvil's Blog">
+      <meta itemprop="description" content="Welcome to Linvil's Blog!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="深度学习之三大算法：CNN、RNN和GAN | Linvil's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深度学习之三大算法：CNN、RNN和GAN
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-04-25 22:06:58 / 修改时间：22:14:24" itemprop="dateCreated datePublished" datetime="2023-04-25T22:06:58+08:00">2023-04-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E4%B8%89%E5%A4%A7%E7%AE%97%E6%B3%95/" class="post-meta-item leancloud_visitors" data-flag-title="深度学习之三大算法：CNN、RNN和GAN" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Valine：</span>
+  
+    <a title="valine" href="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E4%B8%89%E5%A4%A7%E7%AE%97%E6%B3%95/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E4%B8%89%E5%A4%A7%E7%AE%97%E6%B3%95/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>以算法区分深度学习应用，算法类别可分成三大类：</p>
+<ul>
+<li>常用于影像数据进行分析处理的<strong>卷积神经网络(简称CNN)</strong></li>
+<li>文本分析或自然语言处理的<strong>递归神经网络(简称RNN)</strong></li>
+<li>常用于数据生成或非监督式学习应用的<strong>生成对抗网络(简称GAN)</strong></li>
+</ul>
+<h1 id="卷积神经网络CNN"><a href="#卷积神经网络CNN" class="headerlink" title="卷积神经网络CNN"></a><strong>卷积神经网络CNN</strong></h1><p>因为应用种类多样，本篇会以算法类别细分，CNN主要应用可分为图像分类(image classification)、目标检测(object detection)及语义分割(semantic segmentation)。</p>
+<h2 id="1、图像分类-Classification"><a href="#1、图像分类-Classification" class="headerlink" title="1、图像分类(Classification)"></a><strong>1、图像分类(Classification)</strong></h2><p>将图像进行类别筛选，通过深度学习方法识别图片属于哪种分类类别，其主要重点在于一张图像只包含一种分类类别，即使该影像内容可能有多个目标，所以单纯图像分类的应用并不普遍。不过由于单一目标识别对深度学习算法来说是正确率最高的，所以实际上很多应用会先通过目标检测方法找到该目标，再缩小撷取影像范围进行图像分类。所以只要是目标检测可应用的范围，通常也会使用图像分类方法。</p>
+<p>图像分类也是众多用来测试算法基准的方法之一，常使用由ImageNet举办的大规模视觉识别挑战赛(ILSVRC)中提供的公开图像数据进行算法测试。图像分类属于CNN的基础，其相关算法也是最易于理解，故初学者应该都先以图像分类做为跨入深度学习分析的起步。使用图像分类进行识别，通常输入为一张图像，而输出为一个文字类别。</p>
+<h2 id="2、目标检测-Object-Detection"><a href="#2、目标检测-Object-Detection" class="headerlink" title="2、目标检测 (Object Detection)"></a><strong>2、目标检测 (Object Detection)</strong></h2><p>一张图像内可有一或多个目标物，目标物也可以是属于不同类别。算法主要能达到两种目的：找到目标坐标及识别目标类别。简单来说，就是除了需要知道目标是什么，还需要知道它在哪个位置。</p>
+<p>目标检测应用非常普遍，包含文章开头提到的人脸识别相关技术结合应用，或是制造业方面的瑕疵检测，甚至医院用于X光、超音波进行特定身体部位的病况检测等。目标识别的基础可想象为在图像分类上增加标示位置的功能，故学习上也不离图像分类的基础。不过目标检测所标示的坐标通常为矩形或方形，仅知道目标所在位置，并无法针对目标的边缘进行描绘，所以常用见的应用通常会以「知道目标位置即可」作为目标。</p>
+<p>最常见的算法为YOLO及R-CNN。其中YOLO因算法特性具有较快的识别速度，目前已来到v3版本。R-CNN针对目标位置搜寻及辨识算法和YOLO稍有不同，虽然速度稍较YOLO慢，但正确率稍高于YOLO。使用目标检测进行识别，通常输入为一张图像，而输出为一个或数个文字类别和一组或多组坐标。</p>
+<h2 id="3、语义分割-Semantic-Segmentation"><a href="#3、语义分割-Semantic-Segmentation" class="headerlink" title="3、语义分割 (Semantic Segmentation)"></a><strong>3、语义分割 (Semantic Segmentation)</strong></h2><p>算法会针对一张图像中的每个像素进行识别，也就是说不同于目标检测，语义分割可以正确区别各目标的边界像素，简单来说，语义分割就是像素级别的图像分类，针对每个像素进行分类。当然这类应用的模型就会需要较强大的GPU和花较多时间进行训练。</p>
+<p>常见应用类似目标检测，但会使用在对于图像识别有较高精细度，如需要描绘出目标边界的应用。例如制造业上的瑕疵检测，针对不规则形状的大小瑕疵，都可以正确描绘。医学上常用于分辨病理切片上的病变细胞，或是透过MRI、X光或超音波描绘出病变的区块及类别。算法如U-Net或是Mask R-CNN都是常见的实作方法。使用语义分割进行识别，通常输入为一张图像，而输出也为一张等大小的图像，但图像中会以不同色调描绘不同类别的像素。</p>
+<h1 id="递归神经网络RNN"><a href="#递归神经网络RNN" class="headerlink" title="递归神经网络RNN"></a><strong>递归神经网络RNN</strong></h1><p>有别于CNN，RNN的特色在于可处理图像或数值数据，并且由于网络本身具有记忆能力，可学习具有前后相关的数据类型。例如进行语言翻译或文本翻译，一个句子中的前后词汇通常会有一定的关系，但CNN网络无法学习到这层关系，而RNN因具有内存，所以性能会比较好。因为可以通过RNN进行文字理解，其他应用如输入一张图像，但是输出为一段关于图像叙述的句子。</p>
+<p>RNN虽然解决了CNN无法处理的问题，但其本身仍然有些缺点，所以现在很多RNN的变形网络，其中最常被使用的网络之一为长短记忆网络(Long Short-Term Network，简称LSTM)。这类网络的输入数据不限于是图像或文字，解决的问题也不限于翻译或文字理解。数值相关数据也同样可以使用LSTM进行分析，例如工厂机器预测性维修应用，可透过LSTM分析机台震动讯号，预测机器是否故障。在医学方面，LSTM可协助解读数以千计的文献，并找出特定癌症的相关信息，例如肿瘤部位、肿瘤大小、期数，甚至治疗方针或存活率等等，透过文字理解进行解析。也可结合图像识别提供病灶关键词，以协助医生撰写病理报告。</p>
+<h1 id="生成对抗网络GAN"><a href="#生成对抗网络GAN" class="headerlink" title="生成对抗网络GAN"></a><strong>生成对抗网络GAN</strong></h1><p>除了深度学习外，有一种新兴的网络称为强化学习(Reinforcement Learning)，其中一种很具有特色的网络为生成式对抗网络(GAN)。</p>
+<p>GAN的应用相关论文成长幅度相当大</p>
+<p>深度学习领域最需要的是数据，但往往不是所有应用都可以收集到大量数据，并且数据也需要人工进行标注，这是非常消耗时间及人力成本。图像数据可以通过旋转、裁切或改变明暗等方式增加数据量，但如果数据还是不够呢？目前有相当多领域透过GAN方法生成非常近似原始数据的数据，例如3D-GAN就是可以生成高质量3D对象。当然，比较有趣的应用例如人脸置换或表情置换。</p>
+<p>另外，SRGAN (Super Resolution GAN)可用于提高原始图像的分辨率，将作为低分辨率影像输入进GAN模型，并生成较高画质的影像(如下图)。这样的技术可整合至专业绘图软件中，协助设计师更有效率完成设计工作。</p>
+<p>NVIDIA也有提供一些基于GAN的平台的应用，包含透过GauGAN网络，仅需绘制简单的线条，即可完成漂亮的画作，并且还能随意修改场景的风格。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag"><i class="fa fa-tag"></i> 神经网络</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%8D%81%E7%AB%A0%E6%9F%A5%E6%89%BE/" rel="prev" title="数据结构-第十章查找">
+                  <i class="fa fa-chevron-left"></i> 数据结构-第十章查找
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/" rel="next" title="深度学习模型之CNN卷积神经网络（一）CNN原理概述">
+                  深度学习模型之CNN卷积神经网络（一）CNN原理概述 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Linvil Yao</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","app_key":"iNfyeaWVmA11Duj7fzr0B1r1","server_url":"https://16p3s6fl.lc-cn-n1-shared.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E4%B8%89%E5%A4%A7%E7%AE%97%E6%B3%95/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
+</script>
+
+</body>
+</html>
