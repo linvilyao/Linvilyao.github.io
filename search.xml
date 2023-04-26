@@ -4,13 +4,13 @@
     <title>数据结构-第一章绪论</title>
     <url>/2023/04/22/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%B8%80%E7%AB%A0%E7%BB%AA%E8%AE%BA/</url>
     <content><![CDATA[<h1 id="第一章绪论"><a href="#第一章绪论" class="headerlink" title="第一章绪论"></a>第一章绪论</h1><h2 id="第一节基本概念"><a href="#第一节基本概念" class="headerlink" title="第一节基本概念"></a>第一节基本概念</h2><p>数据：是信息的载体</p>
+<span id="more"></span>
 <p>数据对象：具有<strong>相同性质</strong>的数据元素的集合，是数据的一个子集</p>
 <p>数据元素：是数据的<strong>基本单位</strong>，通常作为一个整体进行考虑和处理</p>
 <p>数据项：是构成数据元素的不可分割的<strong>最小单位</strong></p>
 <p>数据结构：是指相互之间存在<strong>一种或者多种特定关系</strong>的数据元素的集合</p>
 <p>数据类型：原子类型（bool，int…）、结构类型（struct Coordinate{    int x; int y;}; ）</p>
 <p>抽象数据类型（ADT）：抽象数据组织及与之相关的操作</p>
-<span id="more"></span>
 <h2 id="第二节三要素"><a href="#第二节三要素" class="headerlink" title="第二节三要素"></a>第二节三要素</h2><h3 id="1-逻辑结构"><a href="#1-逻辑结构" class="headerlink" title="1.逻辑结构"></a>1.逻辑结构</h3><p>集合结构：各个元素同属于一个集合，并无其他关系</p>
 <p>线性结构：一对一关系，除第一个元素，所有元素都有唯一前驱；除最后一个元素，所有元素都有唯一后继</p>
 <p>树形结构：一对多关系，例：思维导图、文件夹</p>
