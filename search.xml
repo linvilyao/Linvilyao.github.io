@@ -343,112 +343,6 @@ C--1-->F</pre>
       </tags>
   </entry>
   <entry>
-    <title>数据结构-第五章数组</title>
-    <url>/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%BA%94%E7%AB%A0%E6%95%B0%E7%BB%84/</url>
-    <content><![CDATA[<h1 id="第五章数组"><a href="#第五章数组" class="headerlink" title="第五章数组"></a>第五章数组</h1><h2 id="第一节数组的概念"><a href="#第一节数组的概念" class="headerlink" title="第一节数组的概念"></a>第一节数组的概念</h2><h3 id="1-数据概念"><a href="#1-数据概念" class="headerlink" title="1.数据概念"></a>1.数据概念</h3><p>​    数组是由n（n≥1）个相同类型的数据元素构成的有限序列</p>
-<span id="more"></span>
-<h3 id="2-数组的实现"><a href="#2-数组的实现" class="headerlink" title="2.数组的实现"></a>2.数组的实现</h3><p>​    以一维数组A[0…n-1]为例，其存储结构关系式为</p>
-<script type="math/tex; mode=display">
-LOC(a_i) = LOC(a_0)+i*L\quad\quad (0≤i<n)</script><p>​    其中，L时每个数组元素所占的存储单元</p>
-<h2 id="第二节特殊矩阵和稀疏矩阵的压缩存储"><a href="#第二节特殊矩阵和稀疏矩阵的压缩存储" class="headerlink" title="第二节特殊矩阵和稀疏矩阵的压缩存储"></a>第二节特殊矩阵和稀疏矩阵的压缩存储</h2><h3 id="1-特殊矩阵的压缩存储"><a href="#1-特殊矩阵的压缩存储" class="headerlink" title="1.特殊矩阵的压缩存储"></a>1.特殊矩阵的压缩存储</h3><h4 id="（1）对称矩阵（1，0）"><a href="#（1）对称矩阵（1，0）" class="headerlink" title="（1）对称矩阵（1，0）"></a>（1）对称矩阵（1，0）</h4><script type="math/tex; mode=display">
-k=
-\begin{cases}
-i(i-1)/2+j-1,\quad\quad i≥j（下三角区和主对角线元素）\\\\
-j(j-1)/2+i-1,\quad\quad i<j（上三角区元素a_{ij} = a_{ji}）
-\end{cases}</script><h4 id="（2）三角矩阵（1，0）"><a href="#（2）三角矩阵（1，0）" class="headerlink" title="（2）三角矩阵（1，0）"></a>（2）三角矩阵（1，0）</h4><p>下三角矩阵</p>
-<script type="math/tex; mode=display">
-k=
-\begin{cases}
-i(i-1)/2+j-1,\quad\quad i≥j（下三角区和主对角线元素）\\\\
-n(n+1)/2,\quad\quad~~~~~~~~~~~ i<j（上三角区元素）
-\end{cases}</script><p>上三角矩阵</p>
-<script type="math/tex; mode=display">
-k=
-\begin{cases}
-(i-1)(2n-i+2)/2+(j-i),\quad\quad i≤j（上三角区和主对角线元素）\\\\
-n(n+1)/2,\quad\quad~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ i>j（下三角区元素）
-\end{cases}</script><h4 id="（3）三对角矩阵（1，0）"><a href="#（3）三对角矩阵（1，0）" class="headerlink" title="（3）三对角矩阵（1，0）"></a>（3）三对角矩阵（1，0）</h4><script type="math/tex; mode=display">
-k = 2i+j-3</script><h3 id="2-稀疏矩阵的压缩存储"><a href="#2-稀疏矩阵的压缩存储" class="headerlink" title="2.稀疏矩阵的压缩存储"></a>2.稀疏矩阵的压缩存储</h3><p>稀疏矩阵压缩存储后便失去了随机存取特性</p>
-<script type="math/tex; mode=display">
-M=\left[
-\matrix{
- 4 & 0 & 0 & 0\\
- 0 & 0 & 6 & 0\\
- 0 & 9 & 0 & 0\\
- 0 & 23 & 0 & 0\\
-}
-\right]</script><p>对应三元组</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">i</th>
-<th style="text-align:center">j</th>
-<th style="text-align:center">v</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">4</td>
-</tr>
-<tr>
-<td style="text-align:center">1</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">6</td>
-</tr>
-<tr>
-<td style="text-align:center">2</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">9</td>
-</tr>
-<tr>
-<td style="text-align:center">3</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">23</td>
-</tr>
-</tbody>
-</table>
-</div>
-]]></content>
-      <categories>
-        <category>考研</category>
-      </categories>
-      <tags>
-        <tag>数据结构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数据结构-第六章递归算法和广义表</title>
-    <url>/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%85%AD%E7%AB%A0%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E5%92%8C%E5%B9%BF%E4%B9%89%E8%A1%A8/</url>
-    <content><![CDATA[<h1 id="第六章递归算法和广义表"><a href="#第六章递归算法和广义表" class="headerlink" title="第六章递归算法和广义表"></a>第六章递归算法和广义表</h1><h2 id="第一节递归算法"><a href="#第一节递归算法" class="headerlink" title="第一节递归算法"></a>第一节递归算法</h2><h3 id="1-递归算法概念"><a href="#1-递归算法概念" class="headerlink" title="1.递归算法概念"></a>1.递归算法概念</h3><p>​    是一种直接或者间接调用自身函数或者方法的算法。说简单点就是程序自身的调用。</p>
-<span id="more"></span>
-<h3 id="2-递归算法设计"><a href="#2-递归算法设计" class="headerlink" title="2.递归算法设计"></a>2.递归算法设计</h3><h4 id="（1）阶乘"><a href="#（1）阶乘" class="headerlink" title="（1）阶乘"></a>（1）阶乘</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">fac</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n == <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> n*<span class="built_in">f</span>(n<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="built_in">f</span>(<span class="number">5</span>)&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//120</span></span><br></pre></td></tr></table></figure>
-<h4 id="（2）斐波那契数列"><a href="#（2）斐波那契数列" class="headerlink" title="（2）斐波那契数列"></a>（2）斐波那契数列</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">fib</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n == <span class="number">1</span> || n == <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">fib</span>(n<span class="number">-1</span>)+<span class="built_in">fib</span>(n<span class="number">-2</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="built_in">fib</span>(<span class="number">10</span>)&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//55</span></span><br></pre></td></tr></table></figure>
-<h4 id="（3）杨辉三角的取值"><a href="#（3）杨辉三角的取值" class="headerlink" title="（3）杨辉三角的取值"></a>（3）杨辉三角的取值</h4><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="comment">//递归函数</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">func</span><span class="params">(<span class="type">int</span> m,<span class="type">int</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(n == <span class="number">0</span>||n == m )<span class="comment">//递归终止条件</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> func(m<span class="number">-1</span>,n)+func(m<span class="number">-1</span>,n<span class="number">-1</span>);<span class="comment">//核心代码</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">int</span> m,i,j;</span><br><span class="line">    m=<span class="number">6</span>;<span class="comment">//打印前6行杨辉三角</span></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;=m;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;m-i;j++)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;   &quot;</span>);</span><br><span class="line">        <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;=i;j++)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%6d&quot;</span>,func(i,j));</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="（4）汉诺塔"><a href="#（4）汉诺塔" class="headerlink" title="（4）汉诺塔"></a>（4）汉诺塔</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Move</span><span class="params">(<span class="type">int</span> n, <span class="type">char</span> A, <span class="type">char</span> B, <span class="type">char</span> C)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="comment">//圆盘只有一个时，只需将其从A塔移到C塔</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;move &quot;</span> &lt;&lt; n &lt;&lt; <span class="string">&quot; from &quot;</span> &lt;&lt; A &lt;&lt; <span class="string">&quot; to &quot;</span> &lt;&lt; C &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">Move</span>(n - <span class="number">1</span>, A, C, B);<span class="comment">//递归，把A塔上编号1~n-1的圆盘移到B上，以C为辅助塔</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;move &quot;</span> &lt;&lt; n &lt;&lt; <span class="string">&quot; from &quot;</span> &lt;&lt; A &lt;&lt; <span class="string">&quot; to &quot;</span> &lt;&lt; C &lt;&lt; endl;<span class="comment">//把A塔上编号为n的圆盘移到C上</span></span><br><span class="line">        <span class="built_in">Move</span>(n - <span class="number">1</span>, B, A, C);<span class="comment">//递归，把B塔上编号1~n-1的圆盘移到C上，以A为辅助塔</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">Move</span>(<span class="number">3</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="第二节广义表"><a href="#第二节广义表" class="headerlink" title="第二节广义表"></a>第二节广义表</h2><h3 id="1-广义表概念"><a href="#1-广义表概念" class="headerlink" title="1.广义表概念"></a>1.广义表概念</h3><p>​    是一种非线性的数据结构，它的表元素可以是原子或者广义表的一种线性表的扩展结构。</p>
-<ul>
-<li>​    广义表的长度：表中最上层元素的个数</li>
-<li>​    广义表的深度：表中括号的最大层数</li>
-<li>​    表头和表尾：当广义表非空时，第一个元素为广义表的表头，其余元素组成的表是广义表的表尾</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">E=()	<span class="comment">//E是一个空表，其长度为0，其深度为1</span></span><br><span class="line">L=(a，b)	<span class="comment">//L是长度为2的广义表，它的两个元素都是原子，因此它是一个线性表，其深度为1</span></span><br><span class="line">A=(x，L)=(x，(a，b))	<span class="comment">//A是长度为2的广义表，第一个元素是原子x，第二个元素是子表L，其深度为2</span></span><br><span class="line">B=(A，y)=((x，(a，b))，y)	<span class="comment">//B是长度为2的广义表，第一个元素是子表A，第二个元素是原子y，其深度为3</span></span><br><span class="line">C=(A，B)=((x，(a，b))，((x，(a，b))，y))	<span class="comment">//C的长度为2，两个元素都是子表，其深度为4</span></span><br><span class="line">D=(a，D)=(a，(a，(a，(…))))	<span class="comment">//D的长度为2，第一个元素是原子，第二个元素是D自身，展开后它是一个无限的广义表，其深度为∞</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-广义表存储结构和操作实现"><a href="#2-广义表存储结构和操作实现" class="headerlink" title="2.广义表存储结构和操作实现"></a>2.广义表存储结构和操作实现</h3><h4 id="（1）广义表结点的代码结构"><a href="#（1）广义表结点的代码结构" class="headerlink" title="（1）广义表结点的代码结构"></a>（1）广义表结点的代码结构</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//定义广义表的数据结构</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">GList</span>&#123;</span><br><span class="line">	NodeTag tag; <span class="comment">//用以区分是原子结点还是子表结点</span></span><br><span class="line">	<span class="keyword">union</span>&#123;</span><br><span class="line">		DataType data; <span class="comment">//用以存放原子结点值，其类型由用户自定义</span></span><br><span class="line">		GList *slink; <span class="comment">//指向子表的指针</span></span><br><span class="line">	&#125;;</span><br><span class="line">	GList *next; <span class="comment">//指向下一个表结点</span></span><br><span class="line">&#125; *GListPtr;</span><br></pre></td></tr></table></figure>
-<h4 id="（2）求表头、表尾"><a href="#（2）求表头、表尾" class="headerlink" title="（2）求表头、表尾"></a>（2）求表头、表尾</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*求广义表L的表头，并返回表头指针*/</span></span><br><span class="line"><span class="function">GList <span class="title">Head</span><span class="params">(GList L)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (L == <span class="literal">NULL</span>)					<span class="comment">//空表无表头</span></span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">if</span> (L-&gt;tag == ATOM)				<span class="comment">//原子不是表</span></span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> L-&gt;atom_htp.htp.hp;	<span class="comment">//返回表头指针</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*求广义表L的表尾，并返回表尾指针*/</span></span><br><span class="line"><span class="function">GList <span class="title">Tail</span><span class="params">(GList L)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (L == <span class="literal">NULL</span>)					<span class="comment">//空表无表尾</span></span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">if</span> (L-&gt;tag == ATOM)				<span class="comment">//原子不是表</span></span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> L-&gt;atom_htp.htp.tp;	<span class="comment">//返回表尾指针</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="（3）求长度、深度"><a href="#（3）求长度、深度" class="headerlink" title="（3）求长度、深度"></a>（3）求长度、深度</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*求广义表长度*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">Length</span><span class="params">(GList L)</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> k = <span class="number">0</span>;</span><br><span class="line">	GLNode* s;</span><br><span class="line">	<span class="keyword">if</span> (L == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;					<span class="comment">//空表长度为0</span></span><br><span class="line">	<span class="keyword">if</span> (L-&gt;tag == ATOM)				<span class="comment">//原子不是表</span></span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">	s = L;</span><br><span class="line">	<span class="keyword">while</span> (s != <span class="literal">NULL</span>) &#123;				<span class="comment">//统计最上层表的长度</span></span><br><span class="line">		k++;</span><br><span class="line">		s = s-&gt;atom_htp.htp.tp;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> k;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*求广义表的深度*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">Depth</span><span class="params">(GList L)</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> d, max;</span><br><span class="line">	GLNode* s;</span><br><span class="line">	<span class="keyword">if</span> (L == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;					<span class="comment">//空表深度为1</span></span><br><span class="line">	<span class="keyword">if</span> (L-&gt;tag == ATOM)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;					<span class="comment">//原子深度为0</span></span><br><span class="line">	s = L;</span><br><span class="line">	<span class="keyword">while</span> (s != <span class="literal">NULL</span>) &#123;				<span class="comment">//求每个子表的深度的最大值</span></span><br><span class="line">		d = <span class="built_in">Depth</span>(s-&gt;atom_htp.htp.hp);</span><br><span class="line">		<span class="keyword">if</span> (d &gt; max)</span><br><span class="line">			max = d;</span><br><span class="line">		s = s-&gt;atom_htp.htp.tp;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> (max + <span class="number">1</span>);				<span class="comment">//表的深度等于最深子表的深度+1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">PrintGList</span><span class="params">(GListPtr gl)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(gl != <span class="literal">NULL</span>)&#123;</span><br><span class="line">		<span class="keyword">if</span>(gl-&gt;tag == list)&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;(&quot;</span>);</span><br><span class="line">			<span class="keyword">if</span>(gl-&gt;slink == <span class="literal">NULL</span>)&#123;</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				<span class="built_in">PrintGList</span>(gl-&gt;slink); <span class="comment">//递归调用输出子表</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, gl-&gt;data); <span class="comment">//输出结点数据域值</span></span><br><span class="line">		&#125;</span><br><span class="line"> </span><br><span class="line">		<span class="keyword">if</span>(gl-&gt;tag == list)&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;)&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line"> </span><br><span class="line">		<span class="keyword">if</span>(gl-&gt;next != <span class="literal">NULL</span>)&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">			<span class="built_in">PrintGList</span>(gl-&gt;next); <span class="comment">//递归调用输出下一个节点</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="（4）统计原子个数"><a href="#（4）统计原子个数" class="headerlink" title="（4）统计原子个数"></a>（4）统计原子个数</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*统计广义表中原子结点数目*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">CountAtom</span><span class="params">(GList L)</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> n1, n2;</span><br><span class="line">	<span class="keyword">if</span> (L == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;							<span class="comment">//空表中没有原子</span></span><br><span class="line">	<span class="keyword">if</span> (L-&gt;tag == ATOM)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;							<span class="comment">//L指向单个原子</span></span><br><span class="line">	n1 = <span class="built_in">CountAtom</span>(L-&gt;atom_htp.htp.hp);		<span class="comment">//统计表头中的原子数目</span></span><br><span class="line">	n2 = <span class="built_in">CountAtom</span>(L-&gt;atom_htp.htp.tp);		<span class="comment">//统计表尾中的原子数目</span></span><br><span class="line">	<span class="keyword">return</span> (n1 + n2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="（5）广义表的复制"><a href="#（5）广义表的复制" class="headerlink" title="（5）广义表的复制"></a>（5）广义表的复制</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*复制广义表*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">CopyGList</span><span class="params">(GList S, GList* T)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (S == <span class="literal">NULL</span>) &#123;				<span class="comment">//复制空表</span></span><br><span class="line">		*T = <span class="literal">NULL</span>;</span><br><span class="line">		<span class="keyword">return</span> OK;</span><br><span class="line">	&#125;</span><br><span class="line">	*T = (GLNode*)<span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(GLNode));</span><br><span class="line">	<span class="keyword">if</span> (*T == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> ERROR;</span><br><span class="line">	(*T)-&gt;tag = S-&gt;tag;</span><br><span class="line">	<span class="keyword">if</span> (S-&gt;tag == ATOM)</span><br><span class="line">		(*T)-&gt;atom_htp.atom = S-&gt;atom_htp.atom;		<span class="comment">//复制单个原子</span></span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">/*复制表头*/</span></span><br><span class="line">		<span class="built_in">CopyGList</span>(S-&gt;atom_htp.htp.hp, &amp;((*T)-&gt;atom_htp.htp.hp));</span><br><span class="line">		<span class="comment">/*复制表尾*/</span></span><br><span class="line">		<span class="built_in">CopyGList</span>(S-&gt;atom_htp.htp.tp, &amp;((*T)-&gt;atom_htp.htp.tp));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>考研</category>
-      </categories>
-      <tags>
-        <tag>数据结构</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>数据结构-第九章排序</title>
     <url>/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%B9%9D%E7%AB%A0%E6%8E%92%E5%BA%8F/</url>
     <content><![CDATA[<h1 id="第九章排序"><a href="#第九章排序" class="headerlink" title="第九章排序"></a>第九章排序</h1><h2 id="1-排序的概念"><a href="#1-排序的概念" class="headerlink" title="1.排序的概念"></a>1.排序的概念</h2><span id="more"></span>
@@ -594,6 +488,83 @@ M=\left[
 <td style="text-align:center">O(d(n+r))</td>
 <td style="text-align:center">O(n+r)</td>
 <td style="text-align:center">稳定</td>
+</tr>
+</tbody>
+</table>
+</div>
+]]></content>
+      <categories>
+        <category>考研</category>
+      </categories>
+      <tags>
+        <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据结构-第五章数组</title>
+    <url>/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%BA%94%E7%AB%A0%E6%95%B0%E7%BB%84/</url>
+    <content><![CDATA[<h1 id="第五章数组"><a href="#第五章数组" class="headerlink" title="第五章数组"></a>第五章数组</h1><h2 id="第一节数组的概念"><a href="#第一节数组的概念" class="headerlink" title="第一节数组的概念"></a>第一节数组的概念</h2><h3 id="1-数据概念"><a href="#1-数据概念" class="headerlink" title="1.数据概念"></a>1.数据概念</h3><p>​    数组是由n（n≥1）个相同类型的数据元素构成的有限序列</p>
+<span id="more"></span>
+<h3 id="2-数组的实现"><a href="#2-数组的实现" class="headerlink" title="2.数组的实现"></a>2.数组的实现</h3><p>​    以一维数组A[0…n-1]为例，其存储结构关系式为</p>
+<script type="math/tex; mode=display">
+LOC(a_i) = LOC(a_0)+i*L\quad\quad (0≤i<n)</script><p>​    其中，L时每个数组元素所占的存储单元</p>
+<h2 id="第二节特殊矩阵和稀疏矩阵的压缩存储"><a href="#第二节特殊矩阵和稀疏矩阵的压缩存储" class="headerlink" title="第二节特殊矩阵和稀疏矩阵的压缩存储"></a>第二节特殊矩阵和稀疏矩阵的压缩存储</h2><h3 id="1-特殊矩阵的压缩存储"><a href="#1-特殊矩阵的压缩存储" class="headerlink" title="1.特殊矩阵的压缩存储"></a>1.特殊矩阵的压缩存储</h3><h4 id="（1）对称矩阵（1，0）"><a href="#（1）对称矩阵（1，0）" class="headerlink" title="（1）对称矩阵（1，0）"></a>（1）对称矩阵（1，0）</h4><script type="math/tex; mode=display">
+k=
+\begin{cases}
+i(i-1)/2+j-1,\quad\quad i≥j（下三角区和主对角线元素）\\\\
+j(j-1)/2+i-1,\quad\quad i<j（上三角区元素a_{ij} = a_{ji}）
+\end{cases}</script><h4 id="（2）三角矩阵（1，0）"><a href="#（2）三角矩阵（1，0）" class="headerlink" title="（2）三角矩阵（1，0）"></a>（2）三角矩阵（1，0）</h4><p>下三角矩阵</p>
+<script type="math/tex; mode=display">
+k=
+\begin{cases}
+i(i-1)/2+j-1,\quad\quad i≥j（下三角区和主对角线元素）\\\\
+n(n+1)/2,\quad\quad~~~~~~~~~~~ i<j（上三角区元素）
+\end{cases}</script><p>上三角矩阵</p>
+<script type="math/tex; mode=display">
+k=
+\begin{cases}
+(i-1)(2n-i+2)/2+(j-i),\quad\quad i≤j（上三角区和主对角线元素）\\\\
+n(n+1)/2,\quad\quad~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ i>j（下三角区元素）
+\end{cases}</script><h4 id="（3）三对角矩阵（1，0）"><a href="#（3）三对角矩阵（1，0）" class="headerlink" title="（3）三对角矩阵（1，0）"></a>（3）三对角矩阵（1，0）</h4><script type="math/tex; mode=display">
+k = 2i+j-3</script><h3 id="2-稀疏矩阵的压缩存储"><a href="#2-稀疏矩阵的压缩存储" class="headerlink" title="2.稀疏矩阵的压缩存储"></a>2.稀疏矩阵的压缩存储</h3><p>稀疏矩阵压缩存储后便失去了随机存取特性</p>
+<script type="math/tex; mode=display">
+M=\left[
+\matrix{
+ 4 & 0 & 0 & 0\\
+ 0 & 0 & 6 & 0\\
+ 0 & 9 & 0 & 0\\
+ 0 & 23 & 0 & 0\\
+}
+\right]</script><p>对应三元组</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">i</th>
+<th style="text-align:center">j</th>
+<th style="text-align:center">v</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">9</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">23</td>
 </tr>
 </tbody>
 </table>
@@ -952,91 +923,6 @@ D-->E</pre>
       </tags>
   </entry>
   <entry>
-    <title>数据结构-第四章串</title>
-    <url>/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%B8%B2/</url>
-    <content><![CDATA[<h1 id="第四章串"><a href="#第四章串" class="headerlink" title="第四章串"></a>第四章串</h1><h2 id="第一节串的概念和存储结构"><a href="#第一节串的概念和存储结构" class="headerlink" title="第一节串的概念和存储结构"></a>第一节串的概念和存储结构</h2><h3 id="1-串的概念"><a href="#1-串的概念" class="headerlink" title="1.串的概念"></a>1.串的概念</h3><p>​    由0个或多个字符组成的有效序列，一般记作</p>
-<script type="math/tex; mode=display">
-S='a_1a_2a_3...a_n'~~~（n≥0）</script><span id="more"></span>
-<h3 id="2-串的存储结构和基本算法的实现"><a href="#2-串的存储结构和基本算法的实现" class="headerlink" title="2.串的存储结构和基本算法的实现"></a>2.串的存储结构和基本算法的实现</h3><h4 id="（1）定长顺序存储表示"><a href="#（1）定长顺序存储表示" class="headerlink" title="（1）定长顺序存储表示"></a>（1）定长顺序存储表示</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAXLEN 255		<span class="comment">//预定义最大串长255</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>&#123;</span><br><span class="line">	<span class="type">char</span> ch[MAXLEN];		<span class="comment">//每个分量存储一个字符</span></span><br><span class="line">	<span class="type">int</span> length;				<span class="comment">//串的实际长度</span></span><br><span class="line">&#125;SString;</span><br></pre></td></tr></table></figure>
-<h4 id="（2）堆分配存储表示"><a href="#（2）堆分配存储表示" class="headerlink" title="（2）堆分配存储表示"></a>（2）堆分配存储表示</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>&#123;</span><br><span class="line">    <span class="type">char</span> *ch;		<span class="comment">//按串长分配存储区，ch指向串的基地址</span></span><br><span class="line">    <span class="type">int</span> length;		<span class="comment">//串的长度</span></span><br><span class="line">&#125;HString;</span><br></pre></td></tr></table></figure>
-<h4 id="（3）基本操作"><a href="#（3）基本操作" class="headerlink" title="（3）基本操作"></a>（3）基本操作</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">StrAssign</span>(&amp;T,chars)：赋值操作。把串T赋值为chars。</span><br><span class="line"><span class="built_in">StrCopy</span>(&amp;T,S)：复制操作。由串S复制得到串T。</span><br><span class="line"><span class="built_in">StrEmpty</span>(S)：判空操作。若S为空串，则返回TRUE，否则返回FALSE。</span><br><span class="line"><span class="built_in">StrLength</span>(S)：求串长。返回串S的元素个数。</span><br><span class="line"><span class="built_in">ClearString</span>(&amp;S)：清空操作。将S清为空串。</span><br><span class="line"><span class="built_in">Concat</span>(&amp;T,S1,S2)：串联接。用T返回由S1和S2联接而成的新串</span><br><span class="line"><span class="built_in">SubString</span>(&amp;Sub,S,pos,len)：求子串。用Sub返回串S的第pos个字符起长度为len的子串。</span><br><span class="line"><span class="built_in">Index</span>(S,T)：定位操作。若主串S中存在与串T值相同的子串，则返回它在主串S中第一次出现的位置；否则函数值为<span class="number">0</span>。</span><br><span class="line"><span class="built_in">StrCompare</span>(S,T)：比较操作。若S&gt;T，则返回值&gt;<span class="number">0</span>；若S=T，则返回值=<span class="number">0</span>；若S&lt;T，则返回值&lt;<span class="number">0</span>。</span><br><span class="line"><span class="built_in">DestroyString</span>(&amp;S)：销毁中。将串S销毁。</span><br></pre></td></tr></table></figure>
-<h2 id="第二节串的匹配算法"><a href="#第二节串的匹配算法" class="headerlink" title="第二节串的匹配算法"></a>第二节串的匹配算法</h2><h3 id="1-BF算法（简单模式匹配算法）"><a href="#1-BF算法（简单模式匹配算法）" class="headerlink" title="1.BF算法（简单模式匹配算法）"></a>1.BF算法（简单模式匹配算法）</h3><p>时间复杂度：最好O（n），最坏O（nm）</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">BF</span><span class="params">(string S,string T,<span class="type">int</span> pos)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> i = pos;</span><br><span class="line">    <span class="type">int</span> j = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>( i &lt;= S.<span class="built_in">size</span>() &amp;&amp; j &lt;= T.<span class="built_in">size</span>() )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>( S[i<span class="number">-1</span>] == T[j<span class="number">-1</span>] )</span><br><span class="line">        &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            i = i-j+<span class="number">2</span>;<span class="comment">//i为母串S的匹配失败的位置，j为模式串S的匹配失败的位置，i-j为S第一次匹配位置之前的长度，</span></span><br><span class="line">            <span class="comment">//+2的原因是一个1是本次匹配的开始位置 ，另一个1是下一次匹配的开始位置。</span></span><br><span class="line">            j = <span class="number">1</span>;<span class="comment">//模式串的下一次匹配开始位置依旧是第一个字符</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>( j &gt; T.<span class="built_in">size</span>() )</span><br><span class="line">        <span class="keyword">return</span> i - T.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> pos;</span><br><span class="line">    string S,T;</span><br><span class="line">    <span class="keyword">while</span>( <span class="literal">true</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;请输入母串：&quot;</span>;</span><br><span class="line">        cin&gt;&gt;S;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;请输入模式串：&quot;</span>;</span><br><span class="line">        cin&gt;&gt;T;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;请输入在母串中开始寻找的位置（小于等于&quot;</span>&lt;&lt;S.<span class="built_in">size</span>()&lt;&lt;<span class="string">&quot;）：&quot;</span>;</span><br><span class="line">        cin&gt;&gt;pos;</span><br><span class="line">        <span class="keyword">while</span> ( pos &gt; S.<span class="built_in">size</span>() )</span><br><span class="line">        &#123;</span><br><span class="line">            cout&lt;&lt;<span class="string">&quot;请重新输入在母串中开始寻找的位置（小于等于&quot;</span>&lt;&lt;S.<span class="built_in">size</span>()&lt;&lt;<span class="string">&quot;）：&quot;</span>;</span><br><span class="line">            cin&gt;&gt;pos;</span><br><span class="line">        &#125;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;模式串在自母串第 &quot;</span>&lt;&lt;pos&lt;&lt;<span class="string">&quot; 位开始出现的位置为 &quot;</span>&lt;&lt;<span class="built_in">BF</span>(S,T,pos)&lt;&lt;endl&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="2-KMP算法"><a href="#2-KMP算法" class="headerlink" title="2.KMP算法"></a>2.KMP算法</h3><h4 id="（1）next数组"><a href="#（1）next数组" class="headerlink" title="（1）next数组"></a>（1）next数组</h4><p>以‘ababa’举例说明：</p>
-<ul>
-<li>‘a’的前缀和后缀都是空集，最长相等前后缀长度为0；</li>
-<li>‘ab’的前缀为{a}，后缀为{b}，{a}且{b}=空集，最长相等前后缀长度为0；</li>
-<li>‘aba’的前缀是{a,ab}，后缀是{a,ba}，{a,ab}且{a,ba}={a}，最长相等前后缀长度为1；</li>
-<li>‘abab’的前缀是{a,ab,aba}，后缀是{a,ba,bab}，{a,ab,aba}且{a,ba,bab}={a}，最长相等前后缀长度为1；</li>
-<li>‘ababa’的前缀是{a,ab,aba,abab}，后缀是{a,ba,aba,baba}，{a,ab,aba,abab}且{a,ba,aba,baba}={a,aba}，最长相等前后缀长度为3；</li>
-</ul>
-<p>时间复杂度：O（n+m）；优点：主串不回溯</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">Next</span><span class="params">(<span class="type">char</span>*T,<span class="type">int</span> *next)</span>&#123;</span><br><span class="line">    <span class="type">int</span> i=<span class="number">1</span>;</span><br><span class="line">    next[<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i&lt;<span class="built_in">strlen</span>(T)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (j==<span class="number">0</span>||T[i<span class="number">-1</span>]==T[j<span class="number">-1</span>]) &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">            next[i]=j;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            j=next[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">KMP</span><span class="params">(<span class="type">char</span> * S,<span class="type">char</span> * T)</span>&#123;</span><br><span class="line">    <span class="type">int</span> next[<span class="number">10</span>];</span><br><span class="line">    Next(T,next);<span class="comment">//根据模式串T,初始化next数组</span></span><br><span class="line">    <span class="type">int</span> i=<span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> j=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i&lt;=<span class="built_in">strlen</span>(S)&amp;&amp;j&lt;=<span class="built_in">strlen</span>(T)) &#123;</span><br><span class="line">        <span class="comment">//j==0:代表模式串的第一个字符就和当前测试的字符不相等；S[i-1]==T[j-1],如果对应位置字符相等，两种情况下，指向当前测试的两个指针下标i和j都向后移</span></span><br><span class="line">        <span class="keyword">if</span> (j==<span class="number">0</span> || S[i<span class="number">-1</span>]==T[j<span class="number">-1</span>]) &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            j=next[j];<span class="comment">//如果测试的两个字符不相等，i不动，j变为当前测试字符串的next值</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (j&gt;<span class="built_in">strlen</span>(T)) &#123;<span class="comment">//如果条件为真，说明匹配成功</span></span><br><span class="line">        <span class="keyword">return</span> i-(<span class="type">int</span>)<span class="built_in">strlen</span>(T);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> i=KMP(<span class="string">&quot;ababcabcacbab&quot;</span>,<span class="string">&quot;abcac&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,i);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="（2）nextval数组"><a href="#（2）nextval数组" class="headerlink" title="（2）nextval数组"></a>（2）nextval数组</h4><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">j</th>
-<th style="text-align:center">1</th>
-<th style="text-align:center">2</th>
-<th style="text-align:center">3</th>
-<th style="text-align:center">4</th>
-<th style="text-align:center">5</th>
-<th style="text-align:center">6</th>
-<th style="text-align:center">7</th>
-<th style="text-align:center">8</th>
-<th style="text-align:center">9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">模式串T</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">a</td>
-<td style="text-align:center">b</td>
-<td style="text-align:center">a</td>
-</tr>
-<tr>
-<td style="text-align:center">next</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">3</td>
-<td style="text-align:center">4</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">3</td>
-</tr>
-<tr>
-<td style="text-align:center">nextval</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">4</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-</tr>
-</tbody>
-</table>
-</div>
-]]></content>
-      <categories>
-        <category>考研</category>
-      </categories>
-      <tags>
-        <tag>数据结构</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>数据结构-第十章查找</title>
     <url>/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%8D%81%E7%AB%A0%E6%9F%A5%E6%89%BE/</url>
     <content><![CDATA[<h1 id="第十章查找"><a href="#第十章查找" class="headerlink" title="第十章查找"></a>第十章查找</h1><h2 id="第一节查找的概念"><a href="#第一节查找的概念" class="headerlink" title="第一节查找的概念"></a>第一节查找的概念</h2><p>在数据集合中寻找满足某种条件的数据元素的过程</p>
@@ -1139,6 +1025,153 @@ G-->I</pre>
       </tags>
   </entry>
   <entry>
+    <title>数据结构-第六章递归算法和广义表</title>
+    <url>/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%85%AD%E7%AB%A0%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E5%92%8C%E5%B9%BF%E4%B9%89%E8%A1%A8/</url>
+    <content><![CDATA[<h1 id="第六章递归算法和广义表"><a href="#第六章递归算法和广义表" class="headerlink" title="第六章递归算法和广义表"></a>第六章递归算法和广义表</h1><h2 id="第一节递归算法"><a href="#第一节递归算法" class="headerlink" title="第一节递归算法"></a>第一节递归算法</h2><h3 id="1-递归算法概念"><a href="#1-递归算法概念" class="headerlink" title="1.递归算法概念"></a>1.递归算法概念</h3><p>​    是一种直接或者间接调用自身函数或者方法的算法。说简单点就是程序自身的调用。</p>
+<span id="more"></span>
+<h3 id="2-递归算法设计"><a href="#2-递归算法设计" class="headerlink" title="2.递归算法设计"></a>2.递归算法设计</h3><h4 id="（1）阶乘"><a href="#（1）阶乘" class="headerlink" title="（1）阶乘"></a>（1）阶乘</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">fac</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n == <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> n*<span class="built_in">f</span>(n<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="built_in">f</span>(<span class="number">5</span>)&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//120</span></span><br></pre></td></tr></table></figure>
+<h4 id="（2）斐波那契数列"><a href="#（2）斐波那契数列" class="headerlink" title="（2）斐波那契数列"></a>（2）斐波那契数列</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">fib</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n == <span class="number">1</span> || n == <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">fib</span>(n<span class="number">-1</span>)+<span class="built_in">fib</span>(n<span class="number">-2</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="built_in">fib</span>(<span class="number">10</span>)&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//55</span></span><br></pre></td></tr></table></figure>
+<h4 id="（3）杨辉三角的取值"><a href="#（3）杨辉三角的取值" class="headerlink" title="（3）杨辉三角的取值"></a>（3）杨辉三角的取值</h4><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="comment">//递归函数</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">func</span><span class="params">(<span class="type">int</span> m,<span class="type">int</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(n == <span class="number">0</span>||n == m )<span class="comment">//递归终止条件</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> func(m<span class="number">-1</span>,n)+func(m<span class="number">-1</span>,n<span class="number">-1</span>);<span class="comment">//核心代码</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">int</span> m,i,j;</span><br><span class="line">    m=<span class="number">6</span>;<span class="comment">//打印前6行杨辉三角</span></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;=m;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;m-i;j++)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;   &quot;</span>);</span><br><span class="line">        <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;=i;j++)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%6d&quot;</span>,func(i,j));</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="（4）汉诺塔"><a href="#（4）汉诺塔" class="headerlink" title="（4）汉诺塔"></a>（4）汉诺塔</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Move</span><span class="params">(<span class="type">int</span> n, <span class="type">char</span> A, <span class="type">char</span> B, <span class="type">char</span> C)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="comment">//圆盘只有一个时，只需将其从A塔移到C塔</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;move &quot;</span> &lt;&lt; n &lt;&lt; <span class="string">&quot; from &quot;</span> &lt;&lt; A &lt;&lt; <span class="string">&quot; to &quot;</span> &lt;&lt; C &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">Move</span>(n - <span class="number">1</span>, A, C, B);<span class="comment">//递归，把A塔上编号1~n-1的圆盘移到B上，以C为辅助塔</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;move &quot;</span> &lt;&lt; n &lt;&lt; <span class="string">&quot; from &quot;</span> &lt;&lt; A &lt;&lt; <span class="string">&quot; to &quot;</span> &lt;&lt; C &lt;&lt; endl;<span class="comment">//把A塔上编号为n的圆盘移到C上</span></span><br><span class="line">        <span class="built_in">Move</span>(n - <span class="number">1</span>, B, A, C);<span class="comment">//递归，把B塔上编号1~n-1的圆盘移到C上，以A为辅助塔</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">Move</span>(<span class="number">3</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="第二节广义表"><a href="#第二节广义表" class="headerlink" title="第二节广义表"></a>第二节广义表</h2><h3 id="1-广义表概念"><a href="#1-广义表概念" class="headerlink" title="1.广义表概念"></a>1.广义表概念</h3><p>​    是一种非线性的数据结构，它的表元素可以是原子或者广义表的一种线性表的扩展结构。</p>
+<ul>
+<li>​    广义表的长度：表中最上层元素的个数</li>
+<li>​    广义表的深度：表中括号的最大层数</li>
+<li>​    表头和表尾：当广义表非空时，第一个元素为广义表的表头，其余元素组成的表是广义表的表尾</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">E=()	<span class="comment">//E是一个空表，其长度为0，其深度为1</span></span><br><span class="line">L=(a，b)	<span class="comment">//L是长度为2的广义表，它的两个元素都是原子，因此它是一个线性表，其深度为1</span></span><br><span class="line">A=(x，L)=(x，(a，b))	<span class="comment">//A是长度为2的广义表，第一个元素是原子x，第二个元素是子表L，其深度为2</span></span><br><span class="line">B=(A，y)=((x，(a，b))，y)	<span class="comment">//B是长度为2的广义表，第一个元素是子表A，第二个元素是原子y，其深度为3</span></span><br><span class="line">C=(A，B)=((x，(a，b))，((x，(a，b))，y))	<span class="comment">//C的长度为2，两个元素都是子表，其深度为4</span></span><br><span class="line">D=(a，D)=(a，(a，(a，(…))))	<span class="comment">//D的长度为2，第一个元素是原子，第二个元素是D自身，展开后它是一个无限的广义表，其深度为∞</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-广义表存储结构和操作实现"><a href="#2-广义表存储结构和操作实现" class="headerlink" title="2.广义表存储结构和操作实现"></a>2.广义表存储结构和操作实现</h3><h4 id="（1）广义表结点的代码结构"><a href="#（1）广义表结点的代码结构" class="headerlink" title="（1）广义表结点的代码结构"></a>（1）广义表结点的代码结构</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//定义广义表的数据结构</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">GList</span>&#123;</span><br><span class="line">	NodeTag tag; <span class="comment">//用以区分是原子结点还是子表结点</span></span><br><span class="line">	<span class="keyword">union</span>&#123;</span><br><span class="line">		DataType data; <span class="comment">//用以存放原子结点值，其类型由用户自定义</span></span><br><span class="line">		GList *slink; <span class="comment">//指向子表的指针</span></span><br><span class="line">	&#125;;</span><br><span class="line">	GList *next; <span class="comment">//指向下一个表结点</span></span><br><span class="line">&#125; *GListPtr;</span><br></pre></td></tr></table></figure>
+<h4 id="（2）求表头、表尾"><a href="#（2）求表头、表尾" class="headerlink" title="（2）求表头、表尾"></a>（2）求表头、表尾</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*求广义表L的表头，并返回表头指针*/</span></span><br><span class="line"><span class="function">GList <span class="title">Head</span><span class="params">(GList L)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (L == <span class="literal">NULL</span>)					<span class="comment">//空表无表头</span></span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">if</span> (L-&gt;tag == ATOM)				<span class="comment">//原子不是表</span></span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> L-&gt;atom_htp.htp.hp;	<span class="comment">//返回表头指针</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*求广义表L的表尾，并返回表尾指针*/</span></span><br><span class="line"><span class="function">GList <span class="title">Tail</span><span class="params">(GList L)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (L == <span class="literal">NULL</span>)					<span class="comment">//空表无表尾</span></span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">if</span> (L-&gt;tag == ATOM)				<span class="comment">//原子不是表</span></span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> L-&gt;atom_htp.htp.tp;	<span class="comment">//返回表尾指针</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="（3）求长度、深度"><a href="#（3）求长度、深度" class="headerlink" title="（3）求长度、深度"></a>（3）求长度、深度</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*求广义表长度*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">Length</span><span class="params">(GList L)</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> k = <span class="number">0</span>;</span><br><span class="line">	GLNode* s;</span><br><span class="line">	<span class="keyword">if</span> (L == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;					<span class="comment">//空表长度为0</span></span><br><span class="line">	<span class="keyword">if</span> (L-&gt;tag == ATOM)				<span class="comment">//原子不是表</span></span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">	s = L;</span><br><span class="line">	<span class="keyword">while</span> (s != <span class="literal">NULL</span>) &#123;				<span class="comment">//统计最上层表的长度</span></span><br><span class="line">		k++;</span><br><span class="line">		s = s-&gt;atom_htp.htp.tp;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> k;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*求广义表的深度*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">Depth</span><span class="params">(GList L)</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> d, max;</span><br><span class="line">	GLNode* s;</span><br><span class="line">	<span class="keyword">if</span> (L == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;					<span class="comment">//空表深度为1</span></span><br><span class="line">	<span class="keyword">if</span> (L-&gt;tag == ATOM)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;					<span class="comment">//原子深度为0</span></span><br><span class="line">	s = L;</span><br><span class="line">	<span class="keyword">while</span> (s != <span class="literal">NULL</span>) &#123;				<span class="comment">//求每个子表的深度的最大值</span></span><br><span class="line">		d = <span class="built_in">Depth</span>(s-&gt;atom_htp.htp.hp);</span><br><span class="line">		<span class="keyword">if</span> (d &gt; max)</span><br><span class="line">			max = d;</span><br><span class="line">		s = s-&gt;atom_htp.htp.tp;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> (max + <span class="number">1</span>);				<span class="comment">//表的深度等于最深子表的深度+1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">PrintGList</span><span class="params">(GListPtr gl)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(gl != <span class="literal">NULL</span>)&#123;</span><br><span class="line">		<span class="keyword">if</span>(gl-&gt;tag == list)&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;(&quot;</span>);</span><br><span class="line">			<span class="keyword">if</span>(gl-&gt;slink == <span class="literal">NULL</span>)&#123;</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				<span class="built_in">PrintGList</span>(gl-&gt;slink); <span class="comment">//递归调用输出子表</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, gl-&gt;data); <span class="comment">//输出结点数据域值</span></span><br><span class="line">		&#125;</span><br><span class="line"> </span><br><span class="line">		<span class="keyword">if</span>(gl-&gt;tag == list)&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;)&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line"> </span><br><span class="line">		<span class="keyword">if</span>(gl-&gt;next != <span class="literal">NULL</span>)&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">			<span class="built_in">PrintGList</span>(gl-&gt;next); <span class="comment">//递归调用输出下一个节点</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="（4）统计原子个数"><a href="#（4）统计原子个数" class="headerlink" title="（4）统计原子个数"></a>（4）统计原子个数</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*统计广义表中原子结点数目*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">CountAtom</span><span class="params">(GList L)</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> n1, n2;</span><br><span class="line">	<span class="keyword">if</span> (L == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;							<span class="comment">//空表中没有原子</span></span><br><span class="line">	<span class="keyword">if</span> (L-&gt;tag == ATOM)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;							<span class="comment">//L指向单个原子</span></span><br><span class="line">	n1 = <span class="built_in">CountAtom</span>(L-&gt;atom_htp.htp.hp);		<span class="comment">//统计表头中的原子数目</span></span><br><span class="line">	n2 = <span class="built_in">CountAtom</span>(L-&gt;atom_htp.htp.tp);		<span class="comment">//统计表尾中的原子数目</span></span><br><span class="line">	<span class="keyword">return</span> (n1 + n2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="（5）广义表的复制"><a href="#（5）广义表的复制" class="headerlink" title="（5）广义表的复制"></a>（5）广义表的复制</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*复制广义表*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">CopyGList</span><span class="params">(GList S, GList* T)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (S == <span class="literal">NULL</span>) &#123;				<span class="comment">//复制空表</span></span><br><span class="line">		*T = <span class="literal">NULL</span>;</span><br><span class="line">		<span class="keyword">return</span> OK;</span><br><span class="line">	&#125;</span><br><span class="line">	*T = (GLNode*)<span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(GLNode));</span><br><span class="line">	<span class="keyword">if</span> (*T == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> ERROR;</span><br><span class="line">	(*T)-&gt;tag = S-&gt;tag;</span><br><span class="line">	<span class="keyword">if</span> (S-&gt;tag == ATOM)</span><br><span class="line">		(*T)-&gt;atom_htp.atom = S-&gt;atom_htp.atom;		<span class="comment">//复制单个原子</span></span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">/*复制表头*/</span></span><br><span class="line">		<span class="built_in">CopyGList</span>(S-&gt;atom_htp.htp.hp, &amp;((*T)-&gt;atom_htp.htp.hp));</span><br><span class="line">		<span class="comment">/*复制表尾*/</span></span><br><span class="line">		<span class="built_in">CopyGList</span>(S-&gt;atom_htp.htp.tp, &amp;((*T)-&gt;atom_htp.htp.tp));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>考研</category>
+      </categories>
+      <tags>
+        <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据结构-第四章串</title>
+    <url>/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%B8%B2/</url>
+    <content><![CDATA[<h1 id="第四章串"><a href="#第四章串" class="headerlink" title="第四章串"></a>第四章串</h1><h2 id="第一节串的概念和存储结构"><a href="#第一节串的概念和存储结构" class="headerlink" title="第一节串的概念和存储结构"></a>第一节串的概念和存储结构</h2><h3 id="1-串的概念"><a href="#1-串的概念" class="headerlink" title="1.串的概念"></a>1.串的概念</h3><p>​    由0个或多个字符组成的有效序列，一般记作</p>
+<script type="math/tex; mode=display">
+S='a_1a_2a_3...a_n'~~~（n≥0）</script><span id="more"></span>
+<h3 id="2-串的存储结构和基本算法的实现"><a href="#2-串的存储结构和基本算法的实现" class="headerlink" title="2.串的存储结构和基本算法的实现"></a>2.串的存储结构和基本算法的实现</h3><h4 id="（1）定长顺序存储表示"><a href="#（1）定长顺序存储表示" class="headerlink" title="（1）定长顺序存储表示"></a>（1）定长顺序存储表示</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAXLEN 255		<span class="comment">//预定义最大串长255</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>&#123;</span><br><span class="line">	<span class="type">char</span> ch[MAXLEN];		<span class="comment">//每个分量存储一个字符</span></span><br><span class="line">	<span class="type">int</span> length;				<span class="comment">//串的实际长度</span></span><br><span class="line">&#125;SString;</span><br></pre></td></tr></table></figure>
+<h4 id="（2）堆分配存储表示"><a href="#（2）堆分配存储表示" class="headerlink" title="（2）堆分配存储表示"></a>（2）堆分配存储表示</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>&#123;</span><br><span class="line">    <span class="type">char</span> *ch;		<span class="comment">//按串长分配存储区，ch指向串的基地址</span></span><br><span class="line">    <span class="type">int</span> length;		<span class="comment">//串的长度</span></span><br><span class="line">&#125;HString;</span><br></pre></td></tr></table></figure>
+<h4 id="（3）基本操作"><a href="#（3）基本操作" class="headerlink" title="（3）基本操作"></a>（3）基本操作</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">StrAssign</span>(&amp;T,chars)：赋值操作。把串T赋值为chars。</span><br><span class="line"><span class="built_in">StrCopy</span>(&amp;T,S)：复制操作。由串S复制得到串T。</span><br><span class="line"><span class="built_in">StrEmpty</span>(S)：判空操作。若S为空串，则返回TRUE，否则返回FALSE。</span><br><span class="line"><span class="built_in">StrLength</span>(S)：求串长。返回串S的元素个数。</span><br><span class="line"><span class="built_in">ClearString</span>(&amp;S)：清空操作。将S清为空串。</span><br><span class="line"><span class="built_in">Concat</span>(&amp;T,S1,S2)：串联接。用T返回由S1和S2联接而成的新串</span><br><span class="line"><span class="built_in">SubString</span>(&amp;Sub,S,pos,len)：求子串。用Sub返回串S的第pos个字符起长度为len的子串。</span><br><span class="line"><span class="built_in">Index</span>(S,T)：定位操作。若主串S中存在与串T值相同的子串，则返回它在主串S中第一次出现的位置；否则函数值为<span class="number">0</span>。</span><br><span class="line"><span class="built_in">StrCompare</span>(S,T)：比较操作。若S&gt;T，则返回值&gt;<span class="number">0</span>；若S=T，则返回值=<span class="number">0</span>；若S&lt;T，则返回值&lt;<span class="number">0</span>。</span><br><span class="line"><span class="built_in">DestroyString</span>(&amp;S)：销毁中。将串S销毁。</span><br></pre></td></tr></table></figure>
+<h2 id="第二节串的匹配算法"><a href="#第二节串的匹配算法" class="headerlink" title="第二节串的匹配算法"></a>第二节串的匹配算法</h2><h3 id="1-BF算法（简单模式匹配算法）"><a href="#1-BF算法（简单模式匹配算法）" class="headerlink" title="1.BF算法（简单模式匹配算法）"></a>1.BF算法（简单模式匹配算法）</h3><p>时间复杂度：最好O（n），最坏O（nm）</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">BF</span><span class="params">(string S,string T,<span class="type">int</span> pos)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> i = pos;</span><br><span class="line">    <span class="type">int</span> j = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>( i &lt;= S.<span class="built_in">size</span>() &amp;&amp; j &lt;= T.<span class="built_in">size</span>() )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>( S[i<span class="number">-1</span>] == T[j<span class="number">-1</span>] )</span><br><span class="line">        &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            i = i-j+<span class="number">2</span>;<span class="comment">//i为母串S的匹配失败的位置，j为模式串S的匹配失败的位置，i-j为S第一次匹配位置之前的长度，</span></span><br><span class="line">            <span class="comment">//+2的原因是一个1是本次匹配的开始位置 ，另一个1是下一次匹配的开始位置。</span></span><br><span class="line">            j = <span class="number">1</span>;<span class="comment">//模式串的下一次匹配开始位置依旧是第一个字符</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>( j &gt; T.<span class="built_in">size</span>() )</span><br><span class="line">        <span class="keyword">return</span> i - T.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> pos;</span><br><span class="line">    string S,T;</span><br><span class="line">    <span class="keyword">while</span>( <span class="literal">true</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;请输入母串：&quot;</span>;</span><br><span class="line">        cin&gt;&gt;S;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;请输入模式串：&quot;</span>;</span><br><span class="line">        cin&gt;&gt;T;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;请输入在母串中开始寻找的位置（小于等于&quot;</span>&lt;&lt;S.<span class="built_in">size</span>()&lt;&lt;<span class="string">&quot;）：&quot;</span>;</span><br><span class="line">        cin&gt;&gt;pos;</span><br><span class="line">        <span class="keyword">while</span> ( pos &gt; S.<span class="built_in">size</span>() )</span><br><span class="line">        &#123;</span><br><span class="line">            cout&lt;&lt;<span class="string">&quot;请重新输入在母串中开始寻找的位置（小于等于&quot;</span>&lt;&lt;S.<span class="built_in">size</span>()&lt;&lt;<span class="string">&quot;）：&quot;</span>;</span><br><span class="line">            cin&gt;&gt;pos;</span><br><span class="line">        &#125;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;模式串在自母串第 &quot;</span>&lt;&lt;pos&lt;&lt;<span class="string">&quot; 位开始出现的位置为 &quot;</span>&lt;&lt;<span class="built_in">BF</span>(S,T,pos)&lt;&lt;endl&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="2-KMP算法"><a href="#2-KMP算法" class="headerlink" title="2.KMP算法"></a>2.KMP算法</h3><h4 id="（1）next数组"><a href="#（1）next数组" class="headerlink" title="（1）next数组"></a>（1）next数组</h4><p>以‘ababa’举例说明：</p>
+<ul>
+<li>‘a’的前缀和后缀都是空集，最长相等前后缀长度为0；</li>
+<li>‘ab’的前缀为{a}，后缀为{b}，{a}且{b}=空集，最长相等前后缀长度为0；</li>
+<li>‘aba’的前缀是{a,ab}，后缀是{a,ba}，{a,ab}且{a,ba}={a}，最长相等前后缀长度为1；</li>
+<li>‘abab’的前缀是{a,ab,aba}，后缀是{a,ba,bab}，{a,ab,aba}且{a,ba,bab}={a}，最长相等前后缀长度为1；</li>
+<li>‘ababa’的前缀是{a,ab,aba,abab}，后缀是{a,ba,aba,baba}，{a,ab,aba,abab}且{a,ba,aba,baba}={a,aba}，最长相等前后缀长度为3；</li>
+</ul>
+<p>时间复杂度：O（n+m）；优点：主串不回溯</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">Next</span><span class="params">(<span class="type">char</span>*T,<span class="type">int</span> *next)</span>&#123;</span><br><span class="line">    <span class="type">int</span> i=<span class="number">1</span>;</span><br><span class="line">    next[<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i&lt;<span class="built_in">strlen</span>(T)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (j==<span class="number">0</span>||T[i<span class="number">-1</span>]==T[j<span class="number">-1</span>]) &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">            next[i]=j;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            j=next[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">KMP</span><span class="params">(<span class="type">char</span> * S,<span class="type">char</span> * T)</span>&#123;</span><br><span class="line">    <span class="type">int</span> next[<span class="number">10</span>];</span><br><span class="line">    Next(T,next);<span class="comment">//根据模式串T,初始化next数组</span></span><br><span class="line">    <span class="type">int</span> i=<span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> j=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i&lt;=<span class="built_in">strlen</span>(S)&amp;&amp;j&lt;=<span class="built_in">strlen</span>(T)) &#123;</span><br><span class="line">        <span class="comment">//j==0:代表模式串的第一个字符就和当前测试的字符不相等；S[i-1]==T[j-1],如果对应位置字符相等，两种情况下，指向当前测试的两个指针下标i和j都向后移</span></span><br><span class="line">        <span class="keyword">if</span> (j==<span class="number">0</span> || S[i<span class="number">-1</span>]==T[j<span class="number">-1</span>]) &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            j=next[j];<span class="comment">//如果测试的两个字符不相等，i不动，j变为当前测试字符串的next值</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (j&gt;<span class="built_in">strlen</span>(T)) &#123;<span class="comment">//如果条件为真，说明匹配成功</span></span><br><span class="line">        <span class="keyword">return</span> i-(<span class="type">int</span>)<span class="built_in">strlen</span>(T);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> i=KMP(<span class="string">&quot;ababcabcacbab&quot;</span>,<span class="string">&quot;abcac&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,i);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="（2）nextval数组"><a href="#（2）nextval数组" class="headerlink" title="（2）nextval数组"></a>（2）nextval数组</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">j</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+<th style="text-align:center">7</th>
+<th style="text-align:center">8</th>
+<th style="text-align:center">9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">模式串T</td>
+<td style="text-align:center">a</td>
+<td style="text-align:center">b</td>
+<td style="text-align:center">a</td>
+<td style="text-align:center">b</td>
+<td style="text-align:center">a</td>
+<td style="text-align:center">a</td>
+<td style="text-align:center">a</td>
+<td style="text-align:center">b</td>
+<td style="text-align:center">a</td>
+</tr>
+<tr>
+<td style="text-align:center">next</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center">nextval</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+]]></content>
+      <categories>
+        <category>考研</category>
+      </categories>
+      <tags>
+        <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>深度学习之三大算法：CNN、RNN和GAN</title>
+    <url>/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E4%B8%89%E5%A4%A7%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<p>以算法区分深度学习应用，算法类别可分成三大类：</p>
+<ul>
+<li>常用于影像数据进行分析处理的<strong>卷积神经网络(简称CNN)</strong></li>
+<li>文本分析或自然语言处理的<strong>递归神经网络(简称RNN)</strong></li>
+<li>常用于数据生成或非监督式学习应用的<strong>生成对抗网络(简称GAN)</strong></li>
+</ul>
+<span id="more"></span>
+<h1 id="卷积神经网络CNN"><a href="#卷积神经网络CNN" class="headerlink" title="卷积神经网络CNN"></a><strong>卷积神经网络CNN</strong></h1><p>因为应用种类多样，本篇会以算法类别细分，CNN主要应用可分为图像分类(image classification)、目标检测(object detection)及语义分割(semantic segmentation)。</p>
+<h2 id="1、图像分类-Classification"><a href="#1、图像分类-Classification" class="headerlink" title="1、图像分类(Classification)"></a><strong>1、图像分类(Classification)</strong></h2><p>将图像进行类别筛选，通过深度学习方法识别图片属于哪种分类类别，其主要重点在于一张图像只包含一种分类类别，即使该影像内容可能有多个目标，所以单纯图像分类的应用并不普遍。不过由于单一目标识别对深度学习算法来说是正确率最高的，所以实际上很多应用会先通过目标检测方法找到该目标，再缩小撷取影像范围进行图像分类。所以只要是目标检测可应用的范围，通常也会使用图像分类方法。</p>
+<p>图像分类也是众多用来测试算法基准的方法之一，常使用由ImageNet举办的大规模视觉识别挑战赛(ILSVRC)中提供的公开图像数据进行算法测试。图像分类属于CNN的基础，其相关算法也是最易于理解，故初学者应该都先以图像分类做为跨入深度学习分析的起步。使用图像分类进行识别，通常输入为一张图像，而输出为一个文字类别。</p>
+<h2 id="2、目标检测-Object-Detection"><a href="#2、目标检测-Object-Detection" class="headerlink" title="2、目标检测 (Object Detection)"></a><strong>2、目标检测 (Object Detection)</strong></h2><p>一张图像内可有一或多个目标物，目标物也可以是属于不同类别。算法主要能达到两种目的：找到目标坐标及识别目标类别。简单来说，就是除了需要知道目标是什么，还需要知道它在哪个位置。</p>
+<p>目标检测应用非常普遍，包含文章开头提到的人脸识别相关技术结合应用，或是制造业方面的瑕疵检测，甚至医院用于X光、超音波进行特定身体部位的病况检测等。目标识别的基础可想象为在图像分类上增加标示位置的功能，故学习上也不离图像分类的基础。不过目标检测所标示的坐标通常为矩形或方形，仅知道目标所在位置，并无法针对目标的边缘进行描绘，所以常用见的应用通常会以「知道目标位置即可」作为目标。</p>
+<p>最常见的算法为YOLO及R-CNN。其中YOLO因算法特性具有较快的识别速度，目前已来到v3版本。R-CNN针对目标位置搜寻及辨识算法和YOLO稍有不同，虽然速度稍较YOLO慢，但正确率稍高于YOLO。使用目标检测进行识别，通常输入为一张图像，而输出为一个或数个文字类别和一组或多组坐标。</p>
+<h2 id="3、语义分割-Semantic-Segmentation"><a href="#3、语义分割-Semantic-Segmentation" class="headerlink" title="3、语义分割 (Semantic Segmentation)"></a><strong>3、语义分割 (Semantic Segmentation)</strong></h2><p>算法会针对一张图像中的每个像素进行识别，也就是说不同于目标检测，语义分割可以正确区别各目标的边界像素，简单来说，语义分割就是像素级别的图像分类，针对每个像素进行分类。当然这类应用的模型就会需要较强大的GPU和花较多时间进行训练。</p>
+<p>常见应用类似目标检测，但会使用在对于图像识别有较高精细度，如需要描绘出目标边界的应用。例如制造业上的瑕疵检测，针对不规则形状的大小瑕疵，都可以正确描绘。医学上常用于分辨病理切片上的病变细胞，或是透过MRI、X光或超音波描绘出病变的区块及类别。算法如U-Net或是Mask R-CNN都是常见的实作方法。使用语义分割进行识别，通常输入为一张图像，而输出也为一张等大小的图像，但图像中会以不同色调描绘不同类别的像素。</p>
+<h1 id="递归神经网络RNN"><a href="#递归神经网络RNN" class="headerlink" title="递归神经网络RNN"></a><strong>递归神经网络RNN</strong></h1><p>有别于CNN，RNN的特色在于可处理图像或数值数据，并且由于网络本身具有记忆能力，可学习具有前后相关的数据类型。例如进行语言翻译或文本翻译，一个句子中的前后词汇通常会有一定的关系，但CNN网络无法学习到这层关系，而RNN因具有内存，所以性能会比较好。因为可以通过RNN进行文字理解，其他应用如输入一张图像，但是输出为一段关于图像叙述的句子。</p>
+<p>RNN虽然解决了CNN无法处理的问题，但其本身仍然有些缺点，所以现在很多RNN的变形网络，其中最常被使用的网络之一为长短记忆网络(Long Short-Term Network，简称LSTM)。这类网络的输入数据不限于是图像或文字，解决的问题也不限于翻译或文字理解。数值相关数据也同样可以使用LSTM进行分析，例如工厂机器预测性维修应用，可透过LSTM分析机台震动讯号，预测机器是否故障。在医学方面，LSTM可协助解读数以千计的文献，并找出特定癌症的相关信息，例如肿瘤部位、肿瘤大小、期数，甚至治疗方针或存活率等等，透过文字理解进行解析。也可结合图像识别提供病灶关键词，以协助医生撰写病理报告。</p>
+<h1 id="生成对抗网络GAN"><a href="#生成对抗网络GAN" class="headerlink" title="生成对抗网络GAN"></a><strong>生成对抗网络GAN</strong></h1><p>除了深度学习外，有一种新兴的网络称为强化学习(Reinforcement Learning)，其中一种很具有特色的网络为生成式对抗网络(GAN)。</p>
+<p>GAN的应用相关论文成长幅度相当大</p>
+<p>深度学习领域最需要的是数据，但往往不是所有应用都可以收集到大量数据，并且数据也需要人工进行标注，这是非常消耗时间及人力成本。图像数据可以通过旋转、裁切或改变明暗等方式增加数据量，但如果数据还是不够呢？目前有相当多领域透过GAN方法生成非常近似原始数据的数据，例如3D-GAN就是可以生成高质量3D对象。当然，比较有趣的应用例如人脸置换或表情置换。</p>
+<p>另外，SRGAN (Super Resolution GAN)可用于提高原始图像的分辨率，将作为低分辨率影像输入进GAN模型，并生成较高画质的影像(如下图)。这样的技术可整合至专业绘图软件中，协助设计师更有效率完成设计工作。</p>
+<p>NVIDIA也有提供一些基于GAN的平台的应用，包含透过GauGAN网络，仅需绘制简单的线条，即可完成漂亮的画作，并且还能随意修改场景的风格。</p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>神经网络</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>深度学习模型之CNN卷积神经网络（一）CNN原理概述</title>
     <url>/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/</url>
     <content><![CDATA[<h1 id="卷积神经网络的架构"><a href="#卷积神经网络的架构" class="headerlink" title="卷积神经网络的架构"></a><strong>卷积神经网络的架构</strong></h1><p><img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/卷积神经网络的架构.png" alt="卷积神经网络的架构" style="zoom:80%;"></p>
@@ -1152,7 +1185,7 @@ G-->I</pre>
 </ul>
 <p><strong>需要处理的数据量太大</strong></p>
 <p>图像是由每个带有颜色的像素构成的，且每个像素都有RGB（可简单理解为光学三原色：红、绿、蓝）3个参数来表示颜色信息。</p>
-<p>假如现在需要处理一张1000<em>1000像素的图片，就需要处理1000</em>1000*3=3，000，000个参数！如此大量的数据处理起来是非常消耗资源的，而且这还只是一张不算太大的图片。</p>
+<p>假如现在需要处理一张1000×1000像素的图片，就需要处理1000×1000×3=3,000,000个参数！如此大量的数据处理起来是非常消耗资源的，而且这还只是一张不算太大的图片。</p>
 <p><strong>保留图像特征</strong></p>
 <p>假如将一张图片划分为四个区域，其中一个区域中有圆形表示为数字1，没有圆形则表示为0，那么圆形的位置不同就会产生完全不同的数据表达，上述的这个过程就相当于是传统的图片数字化过程简化版。</p>
 <p>对于上述两个问题，CNN通过将复杂问题简化和保留图像特征就较为完美地解决了，那么，CNN是如何进行实现的呢？</p>
@@ -1242,8 +1275,8 @@ G-->I</pre>
 <p>一般 CNN 结构依次为</p>
 <ul>
 <li>INPUT</li>
-<li>[[CONV -&gt; RELU]N -&gt; POOL?]M</li>
-<li>[FC -&gt; RELU]*K</li>
+<li>[ [ CONV -&gt; RELU ] N -&gt; POOL ? ] M</li>
+<li>[ FC -&gt; RELU ] * K</li>
 <li>FC</li>
 </ul>
 <h1 id="卷积神经网络的几点说明"><a href="#卷积神经网络的几点说明" class="headerlink" title="卷积神经网络的几点说明"></a><strong>卷积神经网络的几点说明</strong></h1><h2 id="训练算法"><a href="#训练算法" class="headerlink" title="训练算法"></a>训练算法</h2><ul>
@@ -1295,39 +1328,6 @@ G-->I</pre>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h1><p>卷积网络在本质上是一种输入到输出的映射，它能够学习大量的输入与输出之间的映射关系，而不需要任何输入和输出之间的精确的数学表达式，只要用已知的模式对卷积网络加以训练，网络就具有输入输出对之间的映射能力。</p>
 <p>CNN 一个非常重要的特点就是头重脚轻（越往输入权值越小，越往输出权值越多），呈现出一个倒三角的形态，这就很好地避免了 BP 神经网络中反向传播的时候梯度损失得太快。</p>
 <p>卷积神经网络 CNN 主要用来识别位移、缩放及其他形式扭曲不变性的二维图形。由于 CNN 的特征检测层通过训练数据进行学习，所以在使用 CNN 时，避免了显式的特征抽取，而隐式地从训练数据中进行学习；再者由于同一特征映射面上的神经元权值相同，所以网络可以并行学习，这也是卷积网络相对于神经元彼此相连网络的一大优势。卷积神经网络以其局部权值共享的特殊结构在语音识别和图像处理方面有着独特的优越性，其布局更接近于实际的生物神经网络，权值共享降低了网络的复杂性，特别是多维输入向量的图像可以直接输入网络这一特点避免了特征提取和分类过程中数据重建的复杂度。</p>
-]]></content>
-      <categories>
-        <category>深度学习</category>
-      </categories>
-      <tags>
-        <tag>神经网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>深度学习之三大算法：CNN、RNN和GAN</title>
-    <url>/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E4%B8%89%E5%A4%A7%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[<p>以算法区分深度学习应用，算法类别可分成三大类：</p>
-<ul>
-<li>常用于影像数据进行分析处理的<strong>卷积神经网络(简称CNN)</strong></li>
-<li>文本分析或自然语言处理的<strong>递归神经网络(简称RNN)</strong></li>
-<li>常用于数据生成或非监督式学习应用的<strong>生成对抗网络(简称GAN)</strong></li>
-</ul>
-<span id="more"></span>
-<h1 id="卷积神经网络CNN"><a href="#卷积神经网络CNN" class="headerlink" title="卷积神经网络CNN"></a><strong>卷积神经网络CNN</strong></h1><p>因为应用种类多样，本篇会以算法类别细分，CNN主要应用可分为图像分类(image classification)、目标检测(object detection)及语义分割(semantic segmentation)。</p>
-<h2 id="1、图像分类-Classification"><a href="#1、图像分类-Classification" class="headerlink" title="1、图像分类(Classification)"></a><strong>1、图像分类(Classification)</strong></h2><p>将图像进行类别筛选，通过深度学习方法识别图片属于哪种分类类别，其主要重点在于一张图像只包含一种分类类别，即使该影像内容可能有多个目标，所以单纯图像分类的应用并不普遍。不过由于单一目标识别对深度学习算法来说是正确率最高的，所以实际上很多应用会先通过目标检测方法找到该目标，再缩小撷取影像范围进行图像分类。所以只要是目标检测可应用的范围，通常也会使用图像分类方法。</p>
-<p>图像分类也是众多用来测试算法基准的方法之一，常使用由ImageNet举办的大规模视觉识别挑战赛(ILSVRC)中提供的公开图像数据进行算法测试。图像分类属于CNN的基础，其相关算法也是最易于理解，故初学者应该都先以图像分类做为跨入深度学习分析的起步。使用图像分类进行识别，通常输入为一张图像，而输出为一个文字类别。</p>
-<h2 id="2、目标检测-Object-Detection"><a href="#2、目标检测-Object-Detection" class="headerlink" title="2、目标检测 (Object Detection)"></a><strong>2、目标检测 (Object Detection)</strong></h2><p>一张图像内可有一或多个目标物，目标物也可以是属于不同类别。算法主要能达到两种目的：找到目标坐标及识别目标类别。简单来说，就是除了需要知道目标是什么，还需要知道它在哪个位置。</p>
-<p>目标检测应用非常普遍，包含文章开头提到的人脸识别相关技术结合应用，或是制造业方面的瑕疵检测，甚至医院用于X光、超音波进行特定身体部位的病况检测等。目标识别的基础可想象为在图像分类上增加标示位置的功能，故学习上也不离图像分类的基础。不过目标检测所标示的坐标通常为矩形或方形，仅知道目标所在位置，并无法针对目标的边缘进行描绘，所以常用见的应用通常会以「知道目标位置即可」作为目标。</p>
-<p>最常见的算法为YOLO及R-CNN。其中YOLO因算法特性具有较快的识别速度，目前已来到v3版本。R-CNN针对目标位置搜寻及辨识算法和YOLO稍有不同，虽然速度稍较YOLO慢，但正确率稍高于YOLO。使用目标检测进行识别，通常输入为一张图像，而输出为一个或数个文字类别和一组或多组坐标。</p>
-<h2 id="3、语义分割-Semantic-Segmentation"><a href="#3、语义分割-Semantic-Segmentation" class="headerlink" title="3、语义分割 (Semantic Segmentation)"></a><strong>3、语义分割 (Semantic Segmentation)</strong></h2><p>算法会针对一张图像中的每个像素进行识别，也就是说不同于目标检测，语义分割可以正确区别各目标的边界像素，简单来说，语义分割就是像素级别的图像分类，针对每个像素进行分类。当然这类应用的模型就会需要较强大的GPU和花较多时间进行训练。</p>
-<p>常见应用类似目标检测，但会使用在对于图像识别有较高精细度，如需要描绘出目标边界的应用。例如制造业上的瑕疵检测，针对不规则形状的大小瑕疵，都可以正确描绘。医学上常用于分辨病理切片上的病变细胞，或是透过MRI、X光或超音波描绘出病变的区块及类别。算法如U-Net或是Mask R-CNN都是常见的实作方法。使用语义分割进行识别，通常输入为一张图像，而输出也为一张等大小的图像，但图像中会以不同色调描绘不同类别的像素。</p>
-<h1 id="递归神经网络RNN"><a href="#递归神经网络RNN" class="headerlink" title="递归神经网络RNN"></a><strong>递归神经网络RNN</strong></h1><p>有别于CNN，RNN的特色在于可处理图像或数值数据，并且由于网络本身具有记忆能力，可学习具有前后相关的数据类型。例如进行语言翻译或文本翻译，一个句子中的前后词汇通常会有一定的关系，但CNN网络无法学习到这层关系，而RNN因具有内存，所以性能会比较好。因为可以通过RNN进行文字理解，其他应用如输入一张图像，但是输出为一段关于图像叙述的句子。</p>
-<p>RNN虽然解决了CNN无法处理的问题，但其本身仍然有些缺点，所以现在很多RNN的变形网络，其中最常被使用的网络之一为长短记忆网络(Long Short-Term Network，简称LSTM)。这类网络的输入数据不限于是图像或文字，解决的问题也不限于翻译或文字理解。数值相关数据也同样可以使用LSTM进行分析，例如工厂机器预测性维修应用，可透过LSTM分析机台震动讯号，预测机器是否故障。在医学方面，LSTM可协助解读数以千计的文献，并找出特定癌症的相关信息，例如肿瘤部位、肿瘤大小、期数，甚至治疗方针或存活率等等，透过文字理解进行解析。也可结合图像识别提供病灶关键词，以协助医生撰写病理报告。</p>
-<h1 id="生成对抗网络GAN"><a href="#生成对抗网络GAN" class="headerlink" title="生成对抗网络GAN"></a><strong>生成对抗网络GAN</strong></h1><p>除了深度学习外，有一种新兴的网络称为强化学习(Reinforcement Learning)，其中一种很具有特色的网络为生成式对抗网络(GAN)。</p>
-<p>GAN的应用相关论文成长幅度相当大</p>
-<p>深度学习领域最需要的是数据，但往往不是所有应用都可以收集到大量数据，并且数据也需要人工进行标注，这是非常消耗时间及人力成本。图像数据可以通过旋转、裁切或改变明暗等方式增加数据量，但如果数据还是不够呢？目前有相当多领域透过GAN方法生成非常近似原始数据的数据，例如3D-GAN就是可以生成高质量3D对象。当然，比较有趣的应用例如人脸置换或表情置换。</p>
-<p>另外，SRGAN (Super Resolution GAN)可用于提高原始图像的分辨率，将作为低分辨率影像输入进GAN模型，并生成较高画质的影像(如下图)。这样的技术可整合至专业绘图软件中，协助设计师更有效率完成设计工作。</p>
-<p>NVIDIA也有提供一些基于GAN的平台的应用，包含透过GauGAN网络，仅需绘制简单的线条，即可完成漂亮的画作，并且还能随意修改场景的风格。</p>
 ]]></content>
       <categories>
         <category>深度学习</category>
