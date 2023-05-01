@@ -1676,6 +1676,9 @@ pre code {
     font-size: 1.125em;
   }
 }
+.post-body p {
+  text-indent: 2em;
+}
 @media (min-width: 992px) {
   .post-body {
     text-align: justify;
