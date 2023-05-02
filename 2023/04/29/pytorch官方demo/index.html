@@ -45,7 +45,7 @@
 <meta property="og:image" content="http://linvilyao.github.io/2023/04/29/pytorch%E5%AE%98%E6%96%B9demo/%E9%A2%84%E6%B5%8B%E7%BB%93%E6%9E%9C.png">
 <meta property="og:image" content="http://linvilyao.github.io/2023/04/29/pytorch%E5%AE%98%E6%96%B9demo/softmax%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C.png">
 <meta property="article:published_time" content="2023-04-29T15:55:00.000Z">
-<meta property="article:modified_time" content="2023-05-02T08:26:47.191Z">
+<meta property="article:modified_time" content="2023-05-02T13:56:23.694Z">
 <meta property="article:author" content="Linvil Yao">
 <meta property="article:tag" content="神经网络">
 <meta name="twitter:card" content="summary">
@@ -174,7 +174,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -208,6 +208,9 @@
     </div>
     <ul class="links-of-recent-posts-list">
         <li class="links-of-recent-posts-item">
+          <a href="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/" title="2023&#x2F;05&#x2F;02&#x2F;AlexNet网络结构及数据集下载&#x2F;">深度学习模型之CNN卷积神经网络（三）AlexNet网络结构及数据集下载</a>
+        </li>
+        <li class="links-of-recent-posts-item">
           <a href="/2023/04/29/pytorch%E5%AE%98%E6%96%B9demo/" title="2023&#x2F;04&#x2F;29&#x2F;pytorch官方demo&#x2F;">深度学习模型之CNN卷积神经网络（二）Pytorch官方demo（LeNet）</a>
         </li>
         <li class="links-of-recent-posts-item">
@@ -218,9 +221,6 @@
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%8D%81%E7%AB%A0%E6%9F%A5%E6%89%BE/" title="2023&#x2F;04&#x2F;23&#x2F;数据结构-第十章查找&#x2F;">数据结构之查找</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%B9%9D%E7%AB%A0%E6%8E%92%E5%BA%8F/" title="2023&#x2F;04&#x2F;23&#x2F;数据结构-第九章排序&#x2F;">数据结构之排序</a>
         </li>
     </ul>
   </div>
@@ -279,7 +279,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-05-02 16:26:47" itemprop="dateModified" datetime="2023-05-02T16:26:47+08:00">2023-05-02</time>
+      <time title="修改时间：2023-05-02 21:56:23" itemprop="dateModified" datetime="2023-05-02T21:56:23+08:00">2023-05-02</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -393,7 +393,7 @@
 <p>以及卷积输出维度的变化</p>
 <p><img src="/2023/04/29/pytorch%E5%AE%98%E6%96%B9demo/Conv2d函数定义4卷积输出维度的变化.png" alt="Conv2d函数定义4卷积输出维度的变化"></p>
 <p>实际相当于</p>
-<p>\begin{flalign}<br>        O = (W-F+2P)/S + 1<br>        \end{flalign}</p>
+<p>\begin{flalign}<br>        N = (W-F+2P)/S + 1<br>        \end{flalign}</p>
 <ul>
 <li>输入图片大小：W×W</li>
 <li>Filter大小：F×F</li>
@@ -412,6 +412,7 @@
 <h3 id="下载及测试数据集"><a href="#下载及测试数据集" class="headerlink" title="下载及测试数据集"></a>下载及测试数据集</h3><p>使用Compose函数将使用的一些预处理方法给打包成一个整体，首先通过CIFAR10导入数据集，将训练集的每一个图像transform预处理函数进行预处理</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">transform = transforms.Compose(</span><br><span class="line">    [transforms.ToTensor(),</span><br><span class="line">     transforms.Normalize((<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>), (<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>))</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
 <p>50000张训练照片，下载数据集download=True,下载成功后改download=False；root代表将数据集下载到什么地方，train=True时会导入CIFAR10训练集的样本；download=True自动下载；transform=transform对图像进行预处理</p>
+<p>或者在当前文件夹下新建data文件夹，<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1300Lz9xthY11o2jfTPpx3g?pwd=1234">直接下载</a>CIFAR10数据集并在data文件夹下解压</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transet = torchvision.datasets.CIFAR10(root=<span class="string">&quot;./data&quot;</span>, train=<span class="literal">True</span>, download=<span class="literal">True</span>, transform=transform)</span><br></pre></td></tr></table></figure>
 <p>将数据集导入进来，分成一个批次一个批次，这里指每一批随机拿出batch_size=36张图片进行训练；shuffle=True表示是否要将数据集打乱；一般为True，num_workers理解为载入数据的线程数，目前windows环境下也可以设置，但不能超过支持的线程个数，可以加快图片载入的速度。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trainloader = torch.utils.data.DataLoader(transet, batch_size=<span class="number">36</span>, shuffle=<span class="literal">True</span>, num_workers=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
@@ -506,6 +507,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/" rel="next" title="深度学习模型之CNN卷积神经网络（三）AlexNet网络结构及数据集下载">
+                  深度学习模型之CNN卷积神经网络（三）AlexNet网络结构及数据集下载 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
