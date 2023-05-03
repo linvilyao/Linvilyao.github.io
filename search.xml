@@ -1492,7 +1492,7 @@ S='a_1a_2a_3...a_n'~~~（n≥0）</script><span id="more"></span>
 <p>在初始化函数中，会实现在搭建网络过程中所需要使用到的一些网络层结构</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br></pre></td></tr></table></figure>
 <p>super函数：因为在定义类的过程中继承了nn.Module这个父类，而super函数是用来解决多重继承中调用父类方法中可能出现的一系列问题，简而言之就是——只要涉及到多继承，一般都会使用super函数</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">super</span>(LeNet, self).__init__()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># python2.0版本</span></span><br><span class="line"><span class="built_in">super</span>(LeNet, self).__init__()</span><br><span class="line"><span class="comment"># python3.0版本；在3.0版本下，2.0版本的方式的也能用</span></span><br><span class="line"><span class="comment"># super().__init__()</span></span><br></pre></td></tr></table></figure>
 <p>conv1相当于图片中的第一个Convolutions，通过nn.Conv2d()函数来定义卷积层。</p>
 <p>3:图片深度，16：使用了16个卷积核 = 输出16维度的特征矩阵，5：卷积核大小5×5</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">self.conv1 = nn.Conv2d(<span class="number">3</span>, <span class="number">16</span>, <span class="number">5</span>) </span><br></pre></td></tr></table></figure>
@@ -1545,7 +1545,7 @@ S='a_1a_2a_3...a_n'~~~（n≥0）</script><span id="more"></span>
 <p>50000张训练照片，下载数据集download=True,下载成功后改download=False；root代表将数据集下载到什么地方，train=True时会导入CIFAR10训练集的样本；download=True自动下载；transform=transform对图像进行预处理</p>
 <p>或者在当前文件夹下新建data文件夹，<a href="https://pan.baidu.com/s/1300Lz9xthY11o2jfTPpx3g?pwd=1234">直接下载</a>CIFAR10数据集并在data文件夹下解压</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">transet = torchvision.datasets.CIFAR10(root=<span class="string">&quot;./data&quot;</span>, train=<span class="literal">True</span>, download=<span class="literal">True</span>, transform=transform)</span><br></pre></td></tr></table></figure>
-<p>将数据集导入进来，分成一个批次一个批次，这里指每一批随机拿出batch_size=36张图片进行训练；shuffle=True表示是否要将数据集打乱；一般为True，num_workers理解为载入数据的线程数，目前windows环境下也可以设置，但不能超过支持的线程个数，可以加快图片载入的速度。</p>
+<p>将数据集导入进来，分成一个个批次，这里指每一批随机拿出batch_size=36张图片进行训练；shuffle=True表示是否要将数据集打乱，一般为True；num_workers理解为载入数据的线程数，目前windows环境下也可以设置，但不能超过支持的线程个数，可以加快图片载入的速度。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">trainloader = torch.utils.data.DataLoader(transet, batch_size=<span class="number">36</span>, shuffle=<span class="literal">True</span>, num_workers=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
 <p>10000张测试图片，测试时将batch_size改为4</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">testset = torchvision.datasets.CIFAR10(root=<span class="string">&quot;./data&quot;</span>, train=<span class="literal">False</span>, download=<span class="literal">False</span>, transform=transform)</span><br><span class="line">testloader = torch.utils.data.DataLoader(testset, batch_size=<span class="number">10000</span>, shuffle=<span class="literal">False</span>, num_workers=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
@@ -1595,11 +1595,11 @@ S='a_1a_2a_3...a_n'~~~（n≥0）</script><span id="more"></span>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> step % <span class="number">500</span> == <span class="number">499</span>:</span><br></pre></td></tr></table></figure>
 <p>with是一个上下文管理器，意思是在接下来的计算过程中，不要去计算每个节点的误差损失梯度；否则会自动生成前向的传播图，会占用大量内存，测试时应该禁用</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    outputs = net(test_image)  <span class="comment"># [batch, 10]</span></span><br></pre></td></tr></table></figure>
-<p>predict_y寻找outputs中数值最大的，也就是最有可能的标签类型；dim：第几个维度，第0隔维度时batch，第1隔维度指10隔标签结果；[1]指只需要知道index即可，不需要知晓具体的值</p>
+<p>predict_y寻找outputs中数值最大的，也就是最有可能的标签类型；dim：第几个维度，第0个维度是batch，第1个维度指10个标签结果；[1]指只需要知道index即可，不需要知晓具体的值</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">predict_y = torch.<span class="built_in">max</span>(outputs, dim=<span class="number">1</span>)[<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
 <p>将预测的标签类别和真实的标签类别进行比较，相同的地方返回1，不相同返回0；使用求和函数，得出在本次预测对了多少个样本；tensor得到的并不是数值，item()才可以拿到</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 数据准确率</span></span><br><span class="line">accuracy = torch.eq(predict_y, test_label).<span class="built_in">sum</span>().item() / test_label.size(<span class="number">0</span>)    </span><br></pre></td></tr></table></figure>
-<p>迭代到第几轮 在某一轮的多少步 训练过程中的累加误差 测试样本的准确率</p>
+<p>迭代到第几轮，在某一轮的多少步，训练过程中的累加误差，测试样本的准确率</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;[%d, %5d] train_loss: %.3f  test_accuracy: %.3f&#x27;</span> %</span><br><span class="line">      (epoch + <span class="number">1</span>, step + <span class="number">1</span>, running_loss / <span class="number">500</span>, accuracy))</span><br><span class="line">running_loss = <span class="number">0.0</span></span><br></pre></td></tr></table></figure>
 <p>debug一下，会暂时没反应，点开任务管理器，CPU已经100%，等待一段时间会有打印结果</p>
 <p><img src="/2023/04/29/pytorch%E5%AE%98%E6%96%B9demo/CPU满.png" style="zoom:50%;"></p>
