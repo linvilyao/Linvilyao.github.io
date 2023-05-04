@@ -20,28 +20,33 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="第五章数组第一节数组的概念1.数据概念​    数组是由n（n≥1）个相同类型的数据元素构成的有限序列">
+    <meta name="description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础4.1》，作为随堂笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据结构之数组">
-<meta property="og:url" content="http://linvilyao.github.io/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%BA%94%E7%AB%A0%E6%95%B0%E7%BB%84/index.html">
+<meta property="og:title" content="深度学习模型之CNN卷积神经网络（五）VGG网络详解及感受野的计算">
+<meta property="og:url" content="http://linvilyao.github.io/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/index.html">
 <meta property="og:site_name" content="Linvil&#39;s Blog">
-<meta property="og:description" content="第五章数组第一节数组的概念1.数据概念​    数组是由n（n≥1）个相同类型的数据元素构成的有限序列">
+<meta property="og:description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础4.1》，作为随堂笔记">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-04-23T14:43:47.000Z">
-<meta property="article:modified_time" content="2023-05-02T08:28:11.224Z">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/VGG%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E8%A1%A8.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/%E6%84%9F%E5%8F%97%E9%87%8E.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/VGG%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E5%9B%BE.png">
+<meta property="article:published_time" content="2023-05-04T14:49:48.000Z">
+<meta property="article:modified_time" content="2023-05-04T16:32:01.322Z">
 <meta property="article:author" content="Linvil Yao">
-<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="神经网络">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://linvilyao.github.io/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/VGG%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E8%A1%A8.png">
 
 
-<link rel="canonical" href="http://linvilyao.github.io/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%BA%94%E7%AB%A0%E6%95%B0%E7%BB%84/">
+<link rel="canonical" href="http://linvilyao.github.io/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%BA%94%E7%AB%A0%E6%95%B0%E7%BB%84/","path":"2023/04/23/数据结构-第五章数组/","title":"数据结构之数组"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/","path":"2023/05/04/VGG网络详解及感受野的计算/","title":"深度学习模型之CNN卷积神经网络（五）VGG网络详解及感受野的计算"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>数据结构之数组 | Linvil's Blog</title>
+<title>深度学习模型之CNN卷积神经网络（五）VGG网络详解及感受野的计算 | Linvil's Blog</title>
   
 
 
@@ -141,7 +146,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0%E6%95%B0%E7%BB%84"><span class="nav-number">1.</span> <span class="nav-text">第五章数组</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E8%8A%82%E6%95%B0%E7%BB%84%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">第一节数组的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.数据概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%95%B0%E7%BB%84%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">2.数组的实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E8%8A%82%E7%89%B9%E6%AE%8A%E7%9F%A9%E9%98%B5%E5%92%8C%E7%A8%80%E7%96%8F%E7%9F%A9%E9%98%B5%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AD%98%E5%82%A8"><span class="nav-number">1.2.</span> <span class="nav-text">第二节特殊矩阵和稀疏矩阵的压缩存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%89%B9%E6%AE%8A%E7%9F%A9%E9%98%B5%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AD%98%E5%82%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.特殊矩阵的压缩存储</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%EF%BC%881%EF%BC%8C0%EF%BC%89"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">（1）对称矩阵（1，0）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E4%B8%89%E8%A7%92%E7%9F%A9%E9%98%B5%EF%BC%881%EF%BC%8C0%EF%BC%89"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">（2）三角矩阵（1，0）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E4%B8%89%E5%AF%B9%E8%A7%92%E7%9F%A9%E9%98%B5%EF%BC%881%EF%BC%8C0%EF%BC%89"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">（3）三对角矩阵（1，0）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%A8%80%E7%96%8F%E7%9F%A9%E9%98%B5%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AD%98%E5%82%A8"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.稀疏矩阵的压缩存储</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#VGG%E7%9F%A5%E8%AF%86%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">VGG知识介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E7%9A%84%E4%BA%AE%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">网络的亮点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%84%9F%E5%8F%97%E9%87%8E"><span class="nav-number">1.2.</span> <span class="nav-text">什么是感受野</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%AE%A1%E7%AE%97%E6%84%9F%E5%8F%97%E9%87%8E%EF%BC%9F"><span class="nav-number">1.3.</span> <span class="nav-text">如何计算感受野？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%C3%97-7%E5%8D%B7%E7%A7%AF%E6%A0%B8%E5%92%8C3-%C3%97-3-%C3%97-3%E6%89%80%E9%9C%80%E5%8F%82%E6%95%B0%E5%AF%B9%E6%AF%94"><span class="nav-number">1.4.</span> <span class="nav-text">7 × 7卷积核和3 × 3 × 3所需参数对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VGG%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">VGG网络架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -225,7 +230,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%BA%94%E7%AB%A0%E6%95%B0%E7%BB%84/">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -238,12 +243,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="数据结构之数组 | Linvil's Blog">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="深度学习模型之CNN卷积神经网络（五）VGG网络详解及感受野的计算 | Linvil's Blog">
+      <meta itemprop="description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础4.1》，作为随堂笔记">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          数据结构之数组
+          深度学习模型之CNN卷积神经网络（五）VGG网络详解及感受野的计算
         </h1>
 
         <div class="post-meta-container">
@@ -254,14 +259,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2023-04-23 22:43:47" itemprop="dateCreated datePublished" datetime="2023-04-23T22:43:47+08:00">2023-04-23</time>
+      <time title="创建时间：2023-05-04 22:49:48" itemprop="dateCreated datePublished" datetime="2023-05-04T22:49:48+08:00">2023-05-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-05-02 16:28:11" itemprop="dateModified" datetime="2023-05-02T16:28:11+08:00">2023-05-02</time>
+      <time title="修改时间：2023-05-05 00:32:01" itemprop="dateModified" datetime="2023-05-05T00:32:01+08:00">2023-05-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -269,12 +274,12 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%80%83%E7%A0%94/" itemprop="url" rel="index"><span itemprop="name">考研</span></a>
+          <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
         </span>
     </span>
 
   
-    <span id="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%BA%94%E7%AB%A0%E6%95%B0%E7%BB%84/" class="post-meta-item leancloud_visitors" data-flag-title="数据结构之数组" title="阅读次数">
+    <span id="/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/" class="post-meta-item leancloud_visitors" data-flag-title="深度学习模型之CNN卷积神经网络（五）VGG网络详解及感受野的计算" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -289,8 +294,8 @@
     </span>
     <span class="post-meta-item-text">Valine：</span>
   
-    <a title="valine" href="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%BA%94%E7%AB%A0%E6%95%B0%E7%BB%84/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%BA%94%E7%AB%A0%E6%95%B0%E7%BB%84/" itemprop="commentCount"></span>
+    <a title="valine" href="/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -301,17 +306,18 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>115</span>
+      <span>2.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
+            <div class="post-description">本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础4.1》，作为随堂笔记</div>
         </div>
       </header>
 
@@ -319,72 +325,67 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="第五章数组"><a href="#第五章数组" class="headerlink" title="第五章数组"></a>第五章数组</h1><h2 id="第一节数组的概念"><a href="#第一节数组的概念" class="headerlink" title="第一节数组的概念"></a>第一节数组的概念</h2><h3 id="1-数据概念"><a href="#1-数据概念" class="headerlink" title="1.数据概念"></a>1.数据概念</h3><p>​    数组是由n（n≥1）个相同类型的数据元素构成的有限序列</p>
-<span id="more"></span>
-<h3 id="2-数组的实现"><a href="#2-数组的实现" class="headerlink" title="2.数组的实现"></a>2.数组的实现</h3><p>​    以一维数组A[0…n-1]为例，其存储结构关系式为</p>
-<script type="math/tex; mode=display">
-LOC(a_i) = LOC(a_0)+i*L\quad\quad (0≤i<n)</script><p>​    其中，L时每个数组元素所占的存储单元</p>
-<h2 id="第二节特殊矩阵和稀疏矩阵的压缩存储"><a href="#第二节特殊矩阵和稀疏矩阵的压缩存储" class="headerlink" title="第二节特殊矩阵和稀疏矩阵的压缩存储"></a>第二节特殊矩阵和稀疏矩阵的压缩存储</h2><h3 id="1-特殊矩阵的压缩存储"><a href="#1-特殊矩阵的压缩存储" class="headerlink" title="1.特殊矩阵的压缩存储"></a>1.特殊矩阵的压缩存储</h3><h4 id="（1）对称矩阵（1，0）"><a href="#（1）对称矩阵（1，0）" class="headerlink" title="（1）对称矩阵（1，0）"></a>（1）对称矩阵（1，0）</h4><script type="math/tex; mode=display">
-k=
-\begin{cases}
-i(i-1)/2+j-1,\quad\quad i≥j（下三角区和主对角线元素）\\\\
-j(j-1)/2+i-1,\quad\quad i<j（上三角区元素a_{ij} = a_{ji}）
-\end{cases}</script><h4 id="（2）三角矩阵（1，0）"><a href="#（2）三角矩阵（1，0）" class="headerlink" title="（2）三角矩阵（1，0）"></a>（2）三角矩阵（1，0）</h4><p>下三角矩阵</p>
-<script type="math/tex; mode=display">
-k=
-\begin{cases}
-i(i-1)/2+j-1,\quad\quad i≥j（下三角区和主对角线元素）\\\\
-n(n+1)/2,\quad\quad~~~~~~~~~~~ i<j（上三角区元素）
-\end{cases}</script><p>上三角矩阵</p>
-<script type="math/tex; mode=display">
-k=
-\begin{cases}
-(i-1)(2n-i+2)/2+(j-i),\quad\quad i≤j（上三角区和主对角线元素）\\\\
-n(n+1)/2,\quad\quad~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ i>j（下三角区元素）
-\end{cases}</script><h4 id="（3）三对角矩阵（1，0）"><a href="#（3）三对角矩阵（1，0）" class="headerlink" title="（3）三对角矩阵（1，0）"></a>（3）三对角矩阵（1，0）</h4><script type="math/tex; mode=display">
-k = 2i+j-3</script><h3 id="2-稀疏矩阵的压缩存储"><a href="#2-稀疏矩阵的压缩存储" class="headerlink" title="2.稀疏矩阵的压缩存储"></a>2.稀疏矩阵的压缩存储</h3><p>稀疏矩阵压缩存储后便失去了随机存取特性</p>
-<script type="math/tex; mode=display">
-M=\left[
-\matrix{
- 4 & 0 & 0 & 0\\
- 0 & 0 & 6 & 0\\
- 0 & 9 & 0 & 0\\
- 0 & 23 & 0 & 0\\
-}
-\right]</script><p>对应三元组</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">i</th>
-<th style="text-align:center">j</th>
-<th style="text-align:center">v</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">4</td>
-</tr>
-<tr>
-<td style="text-align:center">1</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">6</td>
-</tr>
-<tr>
-<td style="text-align:center">2</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">9</td>
-</tr>
-<tr>
-<td style="text-align:center">3</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">23</td>
-</tr>
-</tbody>
-</table>
-</div>
+        <p>VGG在2014年由牛津大学著名研究组VGG(Visual GeometryGroup)提出，斩获该年ImageNet竞赛中 Localization Task(定位任务)第一名和 classification Task(分类任务)第二名。</p>
+<p>VGG原论文：VERY DEEP CONVOLUTIONAL NETWORKS FOR LARGE-SCALE IMAGE RECOGNITION</p>
+<h1 id="VGG知识介绍"><a href="#VGG知识介绍" class="headerlink" title="VGG知识介绍"></a>VGG知识介绍</h1><p>下图中显示了6个VGG网络的配置，6个配置中作者尝试了不同深度、是否使用LRN，以及卷积核大小为1为3的效果。实际使用过程中，我们常常使用D配置：一共有16层，其中包括13个卷积层，3个全连接层。</p>
+<p><img src="/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/VGG网络架构表.png" style="zoom:80%;"></p>
+<h2 id="网络的亮点"><a href="#网络的亮点" class="headerlink" title="网络的亮点"></a>网络的亮点</h2><ul>
+<li>通过堆叠多个3×3的卷积核来替代大尺度卷积核（为了减少所需的参数）</li>
+</ul>
+<p>论文内提到，可以通过堆叠两个3×3的卷积核替代一个5×5的卷积核，堆叠三个3×3的卷积核替代一个7×7的卷积核（拥有相同的感受野）</p>
+<h2 id="什么是感受野"><a href="#什么是感受野" class="headerlink" title="什么是感受野"></a>什么是感受野</h2><p>在卷积神经网络中，决定某一层输出结果中一个元素所对应的输入层的区域大小，被称作感受野（receptive filed）。通俗解释是：输出feature map上的一个单元对应输入层上的区域大小 </p>
+<p><img src="/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/感受野.png" style="zoom: 50%;"></p>
+<p>例子如图所示，最下面是一个9 × 9 × 1的特征矩阵，首先通过卷积层Conv1（卷积核大小3 × 3，步距为2），通过下方的计算公式：（ 9 - 3 + 0 ）/ 2 + 1 = 4，因此得到第二层的特征矩阵大小为4 × 4 × 1；再通过最大池化下采样层MaxPool1（池化核大小2 × 2，步距为2），通过下方计算公式：（ 4 - 3 + 1 ）/ 2 + 1 = 2，因此得到第三层的特征矩阵大小为2 × 2 × 1。</p>
+<p>\begin{flalign}<br>        out_{size} = (in_{size} - F_{size} + 2P)/S + 1<br>        \end{flalign}</p>
+<p>那么，在第三层特征层当中的一个单元，在第二层中对应的一个感受野是2 × 2的区域，在第三层图中显示是一个5 × 5的感受野大小。</p>
+<h2 id="如何计算感受野？"><a href="#如何计算感受野？" class="headerlink" title="如何计算感受野？"></a>如何计算感受野？</h2><ul>
+<li>F（ i ）：第 i 层感受野；</li>
+<li>Stride：第 i 层的步距；</li>
+<li>Ksize：卷积核或采样核尺寸</li>
+</ul>
+<p><img src="/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/感受野的计算.png" style="zoom:80%;"></p>
+<p>论文内提到，可以通过堆叠两个3×3的卷积核替代一个5×5的卷积核，堆叠三个3×3的卷积核替代一个7×7的卷积核</p>
+<p>注意：在VGG网络中，卷积层的步距默认为1</p>
+<p>假设：一个特征矩阵通过3 × 3 × 3的卷积层后，所得到的Feature map，Feature map上的一个单位对应上一层的感受野为（ 1 - 1 ）× 1 + 3 = 3；如果再计算上上一层的感受野为（ 3 - 1 ）× 1 + 3 = 5；如果再计算上上上层的感受野为（ 5 - 1 ）× 1 + 3 = 7</p>
+<p>也就是说，<strong>我们通过3 × 3 × 3的卷积核卷积之后所得到的的特征矩阵上的一个单位在原图上对应的感受野相当于是一个7 × 7的大小，那么也就与采用一个7 × 7的卷积核的大小所得到的的感受野是相同的</strong></p>
+<p>因此，<strong>当我们使用多个小的卷积核去堆叠就可以去替代一个大的卷积核，目的是为了节省网络训练参数的个数</strong></p>
+<h2 id="7-×-7卷积核和3-×-3-×-3所需参数对比"><a href="#7-×-7卷积核和3-×-3-×-3所需参数对比" class="headerlink" title="7 × 7卷积核和3 × 3 × 3所需参数对比"></a>7 × 7卷积核和3 × 3 × 3所需参数对比</h2><p>假设输入输出channel为C，下方两个C分别表示卷积核的深度和组数</p>
+<p>7 × 7卷积核所需参数 ：7 × 7 × C × C = 49CC</p>
+<p>3 × 3 × 3卷积核所需参数 ：3 × 3 × C × C <strong>+</strong> 3 × 3 × C × C <strong>+</strong> 3 × 3 × C × C = 27CC</p>
+<h1 id="VGG网络架构"><a href="#VGG网络架构" class="headerlink" title="VGG网络架构"></a>VGG网络架构</h1><ul>
+<li>input：224*224的RGB图片</li>
+<li>通过2层3 × 3的卷积层、1层最大下采样池化层</li>
+<li>再通过2层3 × 3的卷积层、1层最大下采样池化层</li>
+<li>再通过3层3 × 3的卷积层、1层最大下采样池化层</li>
+<li>再通过3层3 × 3的卷积层、1层最大下采样池化层</li>
+<li>再通过3层3 × 3的卷积层、1层最大下采样池化层</li>
+<li>连接3个全连接层</li>
+<li>经过soft-max处理得到概率分布</li>
+</ul>
+<p><img src="/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/VGG网络架构图.png" style="zoom:80%;"></p>
+<p>补充参数：</p>
+<ul>
+<li>表中的卷积核：默认stride为1、padding为1<strong>（这样通过一个3 × 3的卷积核进行卷积之后，其输入输出的特征矩阵的高度和宽度不变）</strong>。公式计算得证：（ 3 - 3 + 2 ）/ 1 + 1 = 3</li>
+<li>最大下采样池化核：默认size为2、stride为2<strong>（相当于将特征矩阵的高宽缩小为原来的一半）</strong></li>
+</ul>
+<p>对照左边的图，进行更直观的理解</p>
+<p>左边的图形，是根据右表中D模型进行绘制。图中黑色框代表：卷积层+激活函数；红色框代表：最大下采样操作；蓝色框代表：全连接层+激活函数；橙色框代表：softmax处理</p>
+<ol>
+<li>首先，输入224×224×3的RGB彩色图像；</li>
+<li>通过两层3×3的卷积核之后，得到224×224×64特征矩阵大小（stride为1、padding为1——长宽不变；表中标注conv3-64——采用卷积核个数为64，因此输出深度也为64）；</li>
+<li>紧接着进入到最大下采样操作， 将特征矩阵缩减为原来的一半，得到112×112×64特征矩阵大小；</li>
+<li>通过两层3×3的卷积核之后（采用卷积核个数为128），得到112×112×128特征矩阵大小；</li>
+<li>进入到最大下采样操作， 将特征矩阵缩减为原来的一半，得到56×56×128特征矩阵大小；</li>
+<li>通过三层3×3的卷积核之后（采用卷积核个数为256），得到56×56×256特征矩阵大小；</li>
+<li>进入到最大下采样操作， 将特征矩阵缩减为原来的一半，得到28×28×256特征矩阵大小；</li>
+<li>通过三层3×3的卷积核之后（采用卷积核个数为512），得到28×28×512特征矩阵大小；</li>
+<li>进入到最大下采样操作， 将特征矩阵缩减为原来的一半，得到14×14×512特征矩阵大小；</li>
+<li>通过三层3×3的卷积核之后（采用卷积核个数为512），得到14×14×512特征矩阵大小；</li>
+<li>进入到最大下采样操作， 将特征矩阵缩减为原来的一半，得到7×7×512特征矩阵大小；</li>
+<li>进入全连接层，全连接层1和全连接层2所采用的节点个数都是4096，全连接层3有1000各节点，因为ImageNet的分类任务有1000个类别<strong>（注意：最后一个全连接层不需要加ReLU激活函数，因为最后需要用到softmax函数来激活）</strong>。</li>
+<li>最后是一个softmax激活函数，将预测结果转化为概率分布</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本节课主要讲解CGG16的网络结构，以及拓展感受野的知识点，下节课将会使用Pytorch去搭建VGG16网络。</p>
 
     </div>
 
@@ -394,21 +395,18 @@ M=\left[
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"><i class="fa fa-tag"></i> 数据结构</a>
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag"><i class="fa fa-tag"></i> 神经网络</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%B8%B2/" rel="prev" title="数据结构之串">
-                  <i class="fa fa-chevron-left"></i> 数据结构之串
+                <a href="/2023/05/03/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAAlexNet%E5%B9%B6%E8%AE%AD%E7%BB%83%E8%8A%B1%E5%88%86%E7%B1%BB%E6%95%B0%E6%8D%AE%E9%9B%86/" rel="prev" title="深度学习模型之CNN卷积神经网络（四）使用pytorch搭建AlexNet并训练花分类数据集">
+                  <i class="fa fa-chevron-left"></i> 深度学习模型之CNN卷积神经网络（四）使用pytorch搭建AlexNet并训练花分类数据集
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%85%AD%E7%AB%A0%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E5%92%8C%E5%B9%BF%E4%B9%89%E8%A1%A8/" rel="next" title="数据结构之递归算法和广义表">
-                  数据结构之递归算法和广义表 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -525,7 +523,7 @@ darkmode.showWidget();
 </script>
 
 
-<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%BA%94%E7%AB%A0%E6%95%B0%E7%BB%84/"}</script>
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/"}</script>
 <script>
 document.addEventListener('page:loaded', () => {
   NexT.utils.loadComments(CONFIG.valine.el)
