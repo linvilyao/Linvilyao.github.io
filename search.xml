@@ -1825,6 +1825,8 @@ S='a_1a_2a_3...a_n'~~~（n≥0）</script><span id="more"></span>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">data_transform = &#123;</span><br><span class="line">    <span class="string">&quot;train&quot;</span>: transforms.Compose([transforms.RandomResizedCrop(<span class="number">224</span>),</span><br><span class="line">                                 transforms.RandomHorizontalFlip(),</span><br><span class="line">                                 transforms.ToTensor(),</span><br><span class="line">                                 transforms.Normalize((<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>), (<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>))]),</span><br></pre></td></tr></table></figure>
 <h3 id="调用vgg函数"><a href="#调用vgg函数" class="headerlink" title="调用vgg函数"></a>调用vgg函数</h3><p>通过model_name确认调用哪一个配置文件，num_classes和init_weights参数输入进去之后，会保存在model中**kwargs的可变长度字典当中。当调用VGG类时，即可调用相应的参数。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model_name = <span class="string">&#x27;vgg16&#x27;</span></span><br><span class="line">net = vgg(model_name=model_name, num_classes=<span class="number">5</span>, init_weights=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>因为VGG网络非常大，而训练集样本太小（只有3k+），是无法充分训练vgg网络，因此不做训练展示，且网络太大， 训练起来可能需要几个小时，在训练中能够达到的准确率大概在80%，时间漫长效果不太好，不建议日常使用。</p>
+<p>如果需要使用VGG网络，建议使用迁移学习的方法。</p>
 ]]></content>
       <categories>
         <category>深度学习</category>
