@@ -153,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -187,6 +187,9 @@
     </div>
     <ul class="links-of-recent-posts-list">
         <li class="links-of-recent-posts-item">
+          <a href="/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" title="2023&#x2F;05&#x2F;09&#x2F;GoogLeNet网络详解&#x2F;">深度学习模型之CNN卷积神经网络（七）GoogLeNet网络详解</a>
+        </li>
+        <li class="links-of-recent-posts-item">
           <a href="/2023/05/07/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAVGG%E7%BD%91%E7%BB%9C/" title="2023&#x2F;05&#x2F;07&#x2F;使用pytorch搭建VGG网络&#x2F;">深度学习模型之CNN卷积神经网络（六）使用pytorch搭建VGG网络</a>
         </li>
         <li class="links-of-recent-posts-item">
@@ -197,9 +200,6 @@
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/" title="2023&#x2F;05&#x2F;02&#x2F;AlexNet网络结构及数据集下载&#x2F;">深度学习模型之CNN卷积神经网络（三）AlexNet网络结构及数据集下载</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/2023/04/29/pytorch%E5%AE%98%E6%96%B9demo/" title="2023&#x2F;04&#x2F;29&#x2F;pytorch官方demo&#x2F;">深度学习模型之CNN卷积神经网络（二）Pytorch官方demo（LeNet）</a>
         </li>
     </ul>
   </div>
@@ -220,13 +220,33 @@
   <div class="post-block">
     <div class="post-content">
       <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 17 篇日志。 继续努力。</span>
+        <span class="collection-header">嗯..! 目前共计 18 篇日志。 继续努力。</span>
       </div>
 
       
     <div class="collection-year">
       <span class="collection-header">2023</span>
     </div>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2023-05-09T21:07:21+08:00"
+              content="2023-05-09">
+          05-09
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" itemprop="url">
+            <span itemprop="name">深度学习模型之CNN卷积神经网络（七）GoogLeNet网络详解</span>
+          </a>
+      </div>
+
+      
+    </header>
+  </article>
 
   <article itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
@@ -408,26 +428,6 @@
     </header>
   </article>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2023-04-23T22:48:23+08:00"
-              content="2023-04-23">
-          04-23
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%85%AB%E7%AB%A0%E5%9B%BE/" itemprop="url">
-            <span itemprop="name">数据结构之图</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
 
     </div>
   </div>
@@ -475,6 +475,26 @@
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 -->
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("04/21/2023 22:22:22");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "已运行 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
 
     </div>
   </footer>
