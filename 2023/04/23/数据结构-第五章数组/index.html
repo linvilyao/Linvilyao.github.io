@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="第五章数组第一节数组的概念1.数据概念​    数组是由n（n≥1）个相同类型的数据元素构成的有限序列">
+    <meta name="description" content="第五章数组 第一节数组的概念 1.数据概念 ​	数组是由n（n≥1）个相同类型的数据元素构成的有限序列">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构之数组">
 <meta property="og:url" content="http://linvilyao.github.io/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E4%BA%94%E7%AB%A0%E6%95%B0%E7%BB%84/index.html">
 <meta property="og:site_name" content="Linvil&#39;s Blog">
-<meta property="og:description" content="第五章数组第一节数组的概念1.数据概念​    数组是由n（n≥1）个相同类型的数据元素构成的有限序列">
+<meta property="og:description" content="第五章数组 第一节数组的概念 1.数据概念 ​	数组是由n（n≥1）个相同类型的数据元素构成的有限序列">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-04-23T14:43:47.000Z">
 <meta property="article:modified_time" content="2023-05-02T08:28:11.224Z">
@@ -90,7 +90,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">20</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -141,7 +141,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0%E6%95%B0%E7%BB%84"><span class="nav-number">1.</span> <span class="nav-text">第五章数组</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E8%8A%82%E6%95%B0%E7%BB%84%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">第一节数组的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.数据概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%95%B0%E7%BB%84%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">2.数组的实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E8%8A%82%E7%89%B9%E6%AE%8A%E7%9F%A9%E9%98%B5%E5%92%8C%E7%A8%80%E7%96%8F%E7%9F%A9%E9%98%B5%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AD%98%E5%82%A8"><span class="nav-number">1.2.</span> <span class="nav-text">第二节特殊矩阵和稀疏矩阵的压缩存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%89%B9%E6%AE%8A%E7%9F%A9%E9%98%B5%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AD%98%E5%82%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.特殊矩阵的压缩存储</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%EF%BC%881%EF%BC%8C0%EF%BC%89"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">（1）对称矩阵（1，0）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E4%B8%89%E8%A7%92%E7%9F%A9%E9%98%B5%EF%BC%881%EF%BC%8C0%EF%BC%89"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">（2）三角矩阵（1，0）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E4%B8%89%E5%AF%B9%E8%A7%92%E7%9F%A9%E9%98%B5%EF%BC%881%EF%BC%8C0%EF%BC%89"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">（3）三对角矩阵（1，0）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%A8%80%E7%96%8F%E7%9F%A9%E9%98%B5%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AD%98%E5%82%A8"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.稀疏矩阵的压缩存储</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">第五章数组</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E8%8A%82%E6%95%B0%E7%BB%84%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">第一节数组的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.数据概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%95%B0%E7%BB%84%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">2.数组的实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E8%8A%82%E7%89%B9%E6%AE%8A%E7%9F%A9%E9%98%B5%E5%92%8C%E7%A8%80%E7%96%8F%E7%9F%A9%E9%98%B5%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AD%98%E5%82%A8"><span class="nav-number">1.2.</span> <span class="nav-text">第二节特殊矩阵和稀疏矩阵的压缩存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%89%B9%E6%AE%8A%E7%9F%A9%E9%98%B5%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AD%98%E5%82%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.特殊矩阵的压缩存储</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%EF%BC%881%EF%BC%8C0%EF%BC%89"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">（1）对称矩阵（1，0）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E4%B8%89%E8%A7%92%E7%9F%A9%E9%98%B5%EF%BC%881%EF%BC%8C0%EF%BC%89"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">（2）三角矩阵（1，0）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E4%B8%89%E5%AF%B9%E8%A7%92%E7%9F%A9%E9%98%B5%EF%BC%881%EF%BC%8C0%EF%BC%89"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">（3）三对角矩阵（1，0）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%A8%80%E7%96%8F%E7%9F%A9%E9%98%B5%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AD%98%E5%82%A8"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.稀疏矩阵的压缩存储</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -156,7 +156,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -190,6 +190,9 @@
     </div>
     <ul class="links-of-recent-posts-list">
         <li class="links-of-recent-posts-item">
+          <a href="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/" title="2023&#x2F;05&#x2F;11&#x2F;ResNet网络结构，BN以及迁移学习详解&#x2F;">深度学习模型之CNN卷积神经网络（九）ResNet网络结构、BN以及迁移学习详解</a>
+        </li>
+        <li class="links-of-recent-posts-item">
           <a href="/2023/05/10/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAGoogLeNet%E7%BD%91%E7%BB%9C/" title="2023&#x2F;05&#x2F;10&#x2F;使用pytorch搭建GoogLeNet网络&#x2F;">深度学习模型之CNN卷积神经网络（八）使用pytorch搭建GoogLeNet网络</a>
         </li>
         <li class="links-of-recent-posts-item">
@@ -200,9 +203,6 @@
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/" title="2023&#x2F;05&#x2F;04&#x2F;VGG网络详解及感受野的计算&#x2F;">深度学习模型之CNN卷积神经网络（五）VGG网络详解及感受野的计算</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/2023/05/03/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAAlexNet%E5%B9%B6%E8%AE%AD%E7%BB%83%E8%8A%B1%E5%88%86%E7%B1%BB%E6%95%B0%E6%8D%AE%E9%9B%86/" title="2023&#x2F;05&#x2F;03&#x2F;使用pytorch搭建AlexNet并训练花分类数据集&#x2F;">深度学习模型之CNN卷积神经网络（四）使用pytorch搭建AlexNet并训练花分类数据集</a>
         </li>
     </ul>
   </div>
@@ -301,7 +301,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>115</span>
+      <span>773</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -319,40 +319,61 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="第五章数组"><a href="#第五章数组" class="headerlink" title="第五章数组"></a>第五章数组</h1><h2 id="第一节数组的概念"><a href="#第一节数组的概念" class="headerlink" title="第一节数组的概念"></a>第一节数组的概念</h2><h3 id="1-数据概念"><a href="#1-数据概念" class="headerlink" title="1.数据概念"></a>1.数据概念</h3><p>​    数组是由n（n≥1）个相同类型的数据元素构成的有限序列</p>
+        <h1>第五章数组</h1>
+<h2 id="第一节数组的概念">第一节数组的概念</h2>
+<h3 id="1-数据概念">1.数据概念</h3>
+<p>​	数组是由n（n≥1）个相同类型的数据元素构成的有限序列</p>
 <span id="more"></span>
-<h3 id="2-数组的实现"><a href="#2-数组的实现" class="headerlink" title="2.数组的实现"></a>2.数组的实现</h3><p>​    以一维数组A[0…n-1]为例，其存储结构关系式为</p>
-<script type="math/tex; mode=display">
-LOC(a_i) = LOC(a_0)+i*L\quad\quad (0≤i<n)</script><p>​    其中，L时每个数组元素所占的存储单元</p>
-<h2 id="第二节特殊矩阵和稀疏矩阵的压缩存储"><a href="#第二节特殊矩阵和稀疏矩阵的压缩存储" class="headerlink" title="第二节特殊矩阵和稀疏矩阵的压缩存储"></a>第二节特殊矩阵和稀疏矩阵的压缩存储</h2><h3 id="1-特殊矩阵的压缩存储"><a href="#1-特殊矩阵的压缩存储" class="headerlink" title="1.特殊矩阵的压缩存储"></a>1.特殊矩阵的压缩存储</h3><h4 id="（1）对称矩阵（1，0）"><a href="#（1）对称矩阵（1，0）" class="headerlink" title="（1）对称矩阵（1，0）"></a>（1）对称矩阵（1，0）</h4><script type="math/tex; mode=display">
-k=
-\begin{cases}
-i(i-1)/2+j-1,\quad\quad i≥j（下三角区和主对角线元素）\\\\
-j(j-1)/2+i-1,\quad\quad i<j（上三角区元素a_{ij} = a_{ji}）
-\end{cases}</script><h4 id="（2）三角矩阵（1，0）"><a href="#（2）三角矩阵（1，0）" class="headerlink" title="（2）三角矩阵（1，0）"></a>（2）三角矩阵（1，0）</h4><p>下三角矩阵</p>
-<script type="math/tex; mode=display">
-k=
-\begin{cases}
-i(i-1)/2+j-1,\quad\quad i≥j（下三角区和主对角线元素）\\\\
-n(n+1)/2,\quad\quad~~~~~~~~~~~ i<j（上三角区元素）
-\end{cases}</script><p>上三角矩阵</p>
-<script type="math/tex; mode=display">
-k=
-\begin{cases}
-(i-1)(2n-i+2)/2+(j-i),\quad\quad i≤j（上三角区和主对角线元素）\\\\
-n(n+1)/2,\quad\quad~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ i>j（下三角区元素）
-\end{cases}</script><h4 id="（3）三对角矩阵（1，0）"><a href="#（3）三对角矩阵（1，0）" class="headerlink" title="（3）三对角矩阵（1，0）"></a>（3）三对角矩阵（1，0）</h4><script type="math/tex; mode=display">
-k = 2i+j-3</script><h3 id="2-稀疏矩阵的压缩存储"><a href="#2-稀疏矩阵的压缩存储" class="headerlink" title="2.稀疏矩阵的压缩存储"></a>2.稀疏矩阵的压缩存储</h3><p>稀疏矩阵压缩存储后便失去了随机存取特性</p>
-<script type="math/tex; mode=display">
-M=\left[
-\matrix{
- 4 & 0 & 0 & 0\\
- 0 & 0 & 6 & 0\\
- 0 & 9 & 0 & 0\\
- 0 & 23 & 0 & 0\\
-}
-\right]</script><p>对应三元组</p>
-<div class="table-container">
+<h3 id="2-数组的实现">2.数组的实现</h3>
+<p>​	以一维数组A[0…n-1]为例，其存储结构关系式为<br>
+$$<br>
+LOC(a_i) = LOC(a_0)+i*L\quad\quad (0≤i&lt;n)<br>
+$$<br>
+​	其中，L时每个数组元素所占的存储单元</p>
+<h2 id="第二节特殊矩阵和稀疏矩阵的压缩存储">第二节特殊矩阵和稀疏矩阵的压缩存储</h2>
+<h3 id="1-特殊矩阵的压缩存储">1.特殊矩阵的压缩存储</h3>
+<h4 id="（1）对称矩阵（1，0）">（1）对称矩阵（1，0）</h4>
+<p>$$<br>
+k=<br>
+\begin{cases}<br>
+i(i-1)/2+j-1,\quad\quad i≥j（下三角区和主对角线元素）\\<br>
+j(j-1)/2+i-1,\quad\quad i&lt;j（上三角区元素a_{ij} = a_{ji}）<br>
+\end{cases}<br>
+$$</p>
+<h4 id="（2）三角矩阵（1，0）">（2）三角矩阵（1，0）</h4>
+<p>下三角矩阵<br>
+$$<br>
+k=<br>
+\begin{cases}<br>
+i(i-1)/2+j-1,\quad\quad i≥j（下三角区和主对角线元素）\\<br>
+n(n+1)/2,\quad\quad~~~~~~~~~~~ i&lt;j（上三角区元素）<br>
+\end{cases}<br>
+$$<br>
+上三角矩阵<br>
+$$<br>
+k=<br>
+\begin{cases}<br>
+(i-1)(2n-i+2)/2+(j-i),\quad\quad i≤j（上三角区和主对角线元素）\\<br>
+n(n+1)/2,\quad\quad~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ i&gt;j（下三角区元素）<br>
+\end{cases}<br>
+$$</p>
+<h4 id="（3）三对角矩阵（1，0）">（3）三对角矩阵（1，0）</h4>
+<p>$$<br>
+k = 2i+j-3<br>
+$$</p>
+<h3 id="2-稀疏矩阵的压缩存储">2.稀疏矩阵的压缩存储</h3>
+<p>稀疏矩阵压缩存储后便失去了随机存取特性<br>
+$$<br>
+M=\left[<br>
+\matrix{<br>
+4 &amp; 0 &amp; 0 &amp; 0\<br>
+0 &amp; 0 &amp; 6 &amp; 0\<br>
+0 &amp; 9 &amp; 0 &amp; 0\<br>
+0 &amp; 23 &amp; 0 &amp; 0\<br>
+}<br>
+\right]<br>
+$$<br>
+对应三元组</p>
 <table>
 <thead>
 <tr>
@@ -384,7 +405,6 @@ M=\left[
 </tr>
 </tbody>
 </table>
-</div>
 
     </div>
 

@@ -106,7 +106,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">20</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -157,7 +157,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#AlexNet%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">AlexNet详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E7%9A%84%E4%BA%AE%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">网络的亮点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E6%8B%9F%E5%90%88"><span class="nav-number">1.2.</span> <span class="nav-text">过拟合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8dropout%E5%87%8F%E5%B0%91%E8%BF%87%E6%8B%9F%E5%90%88%E7%8E%B0%E8%B1%A1"><span class="nav-number">1.3.</span> <span class="nav-text">使用dropout减少过拟合现象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">AlexNet网络结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Conv1"><span class="nav-number">2.1.</span> <span class="nav-text">Conv1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Maxpooling1"><span class="nav-number">2.2.</span> <span class="nav-text">Maxpooling1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conv2"><span class="nav-number">2.3.</span> <span class="nav-text">Conv2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Maxpooling2"><span class="nav-number">2.4.</span> <span class="nav-text">Maxpooling2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conv3"><span class="nav-number">2.5.</span> <span class="nav-text">Conv3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conv4"><span class="nav-number">2.6.</span> <span class="nav-text">Conv4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conv5"><span class="nav-number">2.7.</span> <span class="nav-text">Conv5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Maxpooling3"><span class="nav-number">2.8.</span> <span class="nav-text">Maxpooling3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%82%E7%BA%A7%E5%8F%82%E6%95%B0%E6%80%BB%E7%BB%93"><span class="nav-number">2.9.</span> <span class="nav-text">层级参数总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E8%8A%B1%E5%88%86%E7%B1%BB%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">3.</span> <span class="nav-text">下载花分类数据集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">AlexNet详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E7%9A%84%E4%BA%AE%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">网络的亮点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E6%8B%9F%E5%90%88"><span class="nav-number">1.2.</span> <span class="nav-text">过拟合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8dropout%E5%87%8F%E5%B0%91%E8%BF%87%E6%8B%9F%E5%90%88%E7%8E%B0%E8%B1%A1"><span class="nav-number">1.3.</span> <span class="nav-text">使用dropout减少过拟合现象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">AlexNet网络结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Conv1"><span class="nav-number">2.1.</span> <span class="nav-text">Conv1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Maxpooling1"><span class="nav-number">2.2.</span> <span class="nav-text">Maxpooling1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conv2"><span class="nav-number">2.3.</span> <span class="nav-text">Conv2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Maxpooling2"><span class="nav-number">2.4.</span> <span class="nav-text">Maxpooling2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conv3"><span class="nav-number">2.5.</span> <span class="nav-text">Conv3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conv4"><span class="nav-number">2.6.</span> <span class="nav-text">Conv4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conv5"><span class="nav-number">2.7.</span> <span class="nav-text">Conv5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Maxpooling3"><span class="nav-number">2.8.</span> <span class="nav-text">Maxpooling3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%82%E7%BA%A7%E5%8F%82%E6%95%B0%E6%80%BB%E7%BB%93"><span class="nav-number">2.9.</span> <span class="nav-text">层级参数总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">下载花分类数据集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -172,7 +172,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -206,6 +206,9 @@
     </div>
     <ul class="links-of-recent-posts-list">
         <li class="links-of-recent-posts-item">
+          <a href="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/" title="2023&#x2F;05&#x2F;11&#x2F;ResNet网络结构，BN以及迁移学习详解&#x2F;">深度学习模型之CNN卷积神经网络（九）ResNet网络结构、BN以及迁移学习详解</a>
+        </li>
+        <li class="links-of-recent-posts-item">
           <a href="/2023/05/10/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAGoogLeNet%E7%BD%91%E7%BB%9C/" title="2023&#x2F;05&#x2F;10&#x2F;使用pytorch搭建GoogLeNet网络&#x2F;">深度学习模型之CNN卷积神经网络（八）使用pytorch搭建GoogLeNet网络</a>
         </li>
         <li class="links-of-recent-posts-item">
@@ -216,9 +219,6 @@
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/" title="2023&#x2F;05&#x2F;04&#x2F;VGG网络详解及感受野的计算&#x2F;">深度学习模型之CNN卷积神经网络（五）VGG网络详解及感受野的计算</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/2023/05/03/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAAlexNet%E5%B9%B6%E8%AE%AD%E7%BB%83%E8%8A%B1%E5%88%86%E7%B1%BB%E6%95%B0%E6%8D%AE%E9%9B%86/" title="2023&#x2F;05&#x2F;03&#x2F;使用pytorch搭建AlexNet并训练花分类数据集&#x2F;">深度学习模型之CNN卷积神经网络（四）使用pytorch搭建AlexNet并训练花分类数据集</a>
         </li>
     </ul>
   </div>
@@ -317,14 +317,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.8k</span>
+      <span>3.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -336,15 +336,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="AlexNet详解"><a href="#AlexNet详解" class="headerlink" title="AlexNet详解"></a>AlexNet详解</h1><p>AlexNet时2012年ILSVRC 2012（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，分类准确率由传统的70%+提升到80%+。它是由Hinton和他的学生Alex Krizhevsky设计的。也是从那年后，深度学习开始迅速发展。</p>
+        <h1>AlexNet详解</h1>
+<p>AlexNet时2012年ILSVRC 2012（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，分类准确率由传统的70%+提升到80%+。它是由Hinton和他的学生Alex Krizhevsky设计的。也是从那年后，深度学习开始迅速发展。</p>
 <p>ILSVRC 2012</p>
 <ul>
 <li>训练集：1,281,167张已标注图片</li>
 <li>验证集：50,000张已标注图片</li>
 <li>测试集：100,000张未标注图片</li>
 </ul>
-<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/AlexNet网络架构.png" alt="AlexNet网络架构"></p>
-<h2 id="网络的亮点"><a href="#网络的亮点" class="headerlink" title="网络的亮点"></a>网络的亮点</h2><ol>
+<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/AlexNet%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84.png" alt="AlexNet网络架构"></p>
+<h2 id="网络的亮点">网络的亮点</h2>
+<ol>
 <li>首次使用GPU进行网络加速训练</li>
 <li>使用ReLU激活函数，而不是传统的Sigmoid激活函数以及Tanh激活函数</li>
 <li>使用LRN局部响应归一化</li>
@@ -355,43 +357,50 @@
 <li>sigmoid激活函数的两个缺点：<strong>1、求导的过程比较麻烦；2、当网络比较深的时候会出现梯度消失的现象</strong>。ReLU能够解决以上问题</li>
 <li>dropout操作可以减少过拟合现象</li>
 </ul>
-<h2 id="过拟合"><a href="#过拟合" class="headerlink" title="过拟合"></a>过拟合</h2><p>过拟合：根本原因是特征维度过多，模型假设过于复杂，参数过多，训练数据过少，噪声过多，导致拟合的函数完美的预测训练集，但对新数据的测试集预测结果差。过度的拟合了训练数据，而没有考虑到泛化能力</p>
-<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/过拟合.png" alt="过拟合"></p>
+<h2 id="过拟合">过拟合</h2>
+<p>过拟合：根本原因是特征维度过多，模型假设过于复杂，参数过多，训练数据过少，噪声过多，导致拟合的函数完美的预测训练集，但对新数据的测试集预测结果差。过度的拟合了训练数据，而没有考虑到泛化能力</p>
+<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/%E8%BF%87%E6%8B%9F%E5%90%88.png" alt="过拟合"></p>
 <ul>
 <li>第一幅图是网络的一个初始状态，随机地划分了一条边界对于样本进行分类</li>
 <li>通过不断的训练过程中，网络会慢慢学习出一条分类的边界如第二幅图所示，得到了一个比较好的分类的结果</li>
 <li>第三幅图虽然能够将训练样本进行完全正确的分类，但是图中出现了过拟合现象</li>
 <li><strong>过拟合的函数能够完美地预测训练集，但是对新数据的测试机预测效果较差，过度的拟合了训练数据，而没有考虑到泛化能力</strong></li>
 </ul>
-<h2 id="使用dropout减少过拟合现象"><a href="#使用dropout减少过拟合现象" class="headerlink" title="使用dropout减少过拟合现象"></a>使用dropout减少过拟合现象</h2><p>使用Dropout的方式在网络正向传播过程中随机失活一部分神经元</p>
+<h2 id="使用dropout减少过拟合现象">使用dropout减少过拟合现象</h2>
+<p>使用Dropout的方式在网络正向传播过程中随机失活一部分神经元</p>
 <p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/Dropout.png" alt="Dropout"></p>
 <ul>
 <li>左图是一个正常的全连接的正向传播过程，每一个节点都与下层的节点进行全连接</li>
 <li>使用了dropout之后，会在每一层随机地失活一部分神经元，变相地减少了网络中训练的参数，从而达到了减少过拟合现象的作用</li>
 </ul>
-<h1 id="AlexNet网络结构"><a href="#AlexNet网络结构" class="headerlink" title="AlexNet网络结构"></a>AlexNet网络结构</h1><p>经卷积后的矩阵尺寸大小计算公式为：</p>
-<p>\begin{flalign}<br>        N = (W-F+2P)/S + 1<br>        \end{flalign}</p>
+<h1>AlexNet网络结构</h1>
+<p>经卷积后的矩阵尺寸大小计算公式为：</p>
+<p>\begin{flalign}<br>
+N = (W-F+2P)/S + 1<br>
+\end{flalign}</p>
 <ul>
 <li>输入图片大小：W×W</li>
 <li>Filter大小：F×F</li>
 <li>步长：S</li>
 <li>padding的像素数：P</li>
 </ul>
-<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/AlexNet网络架构.png" alt="AlexNet网络架构"></p>
+<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/AlexNet%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84.png" alt="AlexNet网络架构"></p>
 <ul>
 <li>这个图可以看成上下两部分：<strong>作者使用了两块GPU进行了并行运算</strong></li>
 <li>上下两部分都是一样的，只用看其中一部分即可</li>
 </ul>
-<h2 id="Conv1"><a href="#Conv1" class="headerlink" title="Conv1"></a><strong>Conv1</strong></h2><p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/第一层（Conv1）.png" alt="Conv1"></p>
+<h2 id="Conv1"><strong>Conv1</strong></h2>
+<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/%E7%AC%AC%E4%B8%80%E5%B1%82%EF%BC%88Conv1%EF%BC%89.png" alt="Conv1"></p>
 <ul>
 <li>原始图像是一个224*224的channel为3的彩色图像</li>
 <li>卷积核大小是11*11</li>
 <li>步长为4</li>
 <li>卷积核的大小为11</li>
 <li>一共有48*2=96个卷积核</li>
-<li>可以推理出padding的大小是1和2：表示在特征矩阵的左边加上一列0，右边加上两列0，上面加上一列0，下面加上两列0<strong>（注意代表padding的2p值的是两边padding的像素之和，并不一定要求两边像素一定要一样）</strong></li>
+<li>可以推理出padding的大小是1和2：表示在特征矩阵的左边加上一列0，右边加上两列0，上面加上一列0，下面加上两列0**（注意代表padding的2p值的是两边padding的像素之和，并不一定要求两边像素一定要一样）**</li>
 </ul>
-<h2 id="Maxpooling1"><a href="#Maxpooling1" class="headerlink" title="Maxpooling1"></a><strong>Maxpooling1</strong></h2><p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/Maxpooling1.png" alt="Maxpooling1"></p>
+<h2 id="Maxpooling1"><strong>Maxpooling1</strong></h2>
+<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/Maxpooling1.png" alt="Maxpooling1"></p>
 <ul>
 <li>最大池化下采样操作</li>
 <li>池化核大小等于3</li>
@@ -400,62 +409,71 @@
 <li>这一层的输入是第一层卷积层的输出</li>
 <li><strong>池化操作只会改变输出矩阵的高度和宽度，不会改变特征矩阵的深度</strong></li>
 </ul>
-<h2 id="Conv2"><a href="#Conv2" class="headerlink" title="Conv2"></a><strong>Conv2</strong></h2><p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/第二层（Conv2）.png" alt="Conv2"></p>
+<h2 id="Conv2"><strong>Conv2</strong></h2>
+<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/%E7%AC%AC%E4%BA%8C%E5%B1%82%EF%BC%88Conv2%EF%BC%89.png" alt="Conv2"></p>
 <ul>
 <li>卷积核的个数为128*2=256</li>
 <li>卷积核的大小为5</li>
 <li>padding为 [ 2，2 ]</li>
 <li>步长为1</li>
 </ul>
-<h2 id="Maxpooling2"><a href="#Maxpooling2" class="headerlink" title="Maxpooling2"></a><strong>Maxpooling2</strong></h2><p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/Maxpooling2.png" alt="Maxpooling2"></p>
+<h2 id="Maxpooling2"><strong>Maxpooling2</strong></h2>
+<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/Maxpooling2.png" alt="Maxpooling2"></p>
 <ul>
 <li>池化核大小为3</li>
 <li>padding为0</li>
 <li>步长等于2</li>
 </ul>
-<h2 id="Conv3"><a href="#Conv3" class="headerlink" title="Conv3"></a><strong>Conv3</strong></h2><p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/第三层（Conv3）.png" alt="Conv3"></p>
+<h2 id="Conv3"><strong>Conv3</strong></h2>
+<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/%E7%AC%AC%E4%B8%89%E5%B1%82%EF%BC%88Conv3%EF%BC%89.png" alt="Conv3"></p>
 <ul>
 <li>卷积核的个数为192*2=384</li>
 <li>卷积核的大小为3</li>
 <li>padding为 [ 1，1 ]</li>
 <li>步长为1</li>
 </ul>
-<h2 id="Conv4"><a href="#Conv4" class="headerlink" title="Conv4"></a><strong>Conv4</strong></h2><p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/第四层（Conv4）.png" alt="Conv4"></p>
+<h2 id="Conv4"><strong>Conv4</strong></h2>
+<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/%E7%AC%AC%E5%9B%9B%E5%B1%82%EF%BC%88Conv4%EF%BC%89.png" alt="Conv4"></p>
 <ul>
 <li>卷积核的个数为192*2=384</li>
 <li>卷积核的大小为3</li>
 <li>padding为 [ 1，1 ]</li>
 <li>步长为1</li>
 </ul>
-<h2 id="Conv5"><a href="#Conv5" class="headerlink" title="Conv5"></a><strong>Conv5</strong></h2><p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/第五层（Conv5）.png" alt="Conv5"></p>
+<h2 id="Conv5"><strong>Conv5</strong></h2>
+<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/%E7%AC%AC%E4%BA%94%E5%B1%82%EF%BC%88Conv5%EF%BC%89.png" alt="Conv5"></p>
 <ul>
 <li>卷积核的个数为128*2=256</li>
 <li>卷积核的大小为3</li>
 <li>padding为 [ 1，1 ]</li>
 <li>步长为1</li>
 </ul>
-<h2 id="Maxpooling3"><a href="#Maxpooling3" class="headerlink" title="Maxpooling3"></a><strong>Maxpooling3</strong></h2><p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/Maxpooling3.png" alt="Maxpooling3"></p>
+<h2 id="Maxpooling3"><strong>Maxpooling3</strong></h2>
+<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/Maxpooling3.png" alt="Maxpooling3"></p>
 <ul>
 <li>池化核的大小为3</li>
 <li>padding等于0</li>
 <li>步长为2</li>
-<li>输出的特征矩阵展平之后和三个全连接层进行连接<strong>（注意最后一个全连接层只有1000个节点，对应数据集的1000个类别，如果要将这个网络应用到自己的数据集的话，只需要将最后一层全连接层的节点个数改成和自己数据集的类别数一致即可）</strong></li>
+<li>输出的特征矩阵展平之后和三个全连接层进行连接**（注意最后一个全连接层只有1000个节点，对应数据集的1000个类别，如果要将这个网络应用到自己的数据集的话，只需要将最后一层全连接层的节点个数改成和自己数据集的类别数一致即可）**</li>
 </ul>
-<h2 id="层级参数总结"><a href="#层级参数总结" class="headerlink" title="层级参数总结"></a>层级参数总结</h2><p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/AlexNet网络架构过程总结.png" alt="AlexNet网络架构过程总结"></p>
-<h1 id="下载花分类数据集"><a href="#下载花分类数据集" class="headerlink" title="下载花分类数据集"></a><strong>下载花分类数据集</strong></h1><p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/下载花分类数据集.png" alt="下载花分类数据集"></p>
+<h2 id="层级参数总结">层级参数总结</h2>
+<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/AlexNet%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E8%BF%87%E7%A8%8B%E6%80%BB%E7%BB%93.png" alt="AlexNet网络架构过程总结"></p>
+<h1><strong>下载花分类数据集</strong></h1>
+<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/%E4%B8%8B%E8%BD%BD%E8%8A%B1%E5%88%86%E7%B1%BB%E6%95%B0%E6%8D%AE%E9%9B%86.png" alt="下载花分类数据集"></p>
 <p>步骤如下：</p>
 <ul>
-<li>在data_set文件夹下创建新文件夹”flower_data”</li>
+<li>在data_set文件夹下创建新文件夹&quot;flower_data&quot;</li>
 <li>点击链接下载花分类数据集 <a target="_blank" rel="noopener" href="https://storage.googleapis.com/download.tensorflow.org/example_images/flower_photos.tgz">https://storage.googleapis.com/download.tensorflow.org/example_images/flower_photos.tgz</a></li>
 <li>解压数据集到flower_data文件夹下</li>
-<li>执行”split_data.py”脚本(<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1bijzd-8zBjKLlXi5uG9pFA?pwd=1234">网盘下载</a>)自动将数据集划分成训练集train和验证集val（训练集：测试集 = 9 ：1）</li>
+<li>执行&quot;split_data.py&quot;脚本(<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1bijzd-8zBjKLlXi5uG9pFA?pwd=1234">网盘下载</a>)自动将数据集划分成训练集train和验证集val（训练集：测试集 = 9 ：1）</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">├── data_set </span><br><span class="line">	├── split_data.py</span><br><span class="line">	└── flower_data   </span><br><span class="line">		├── flower_photos（解压的数据集文件夹，3670个样本）  </span><br><span class="line">		├── train（生成的训练集，3306个样本）  </span><br><span class="line">		└── val（生成的验证集，364个样本） </span><br></pre></td></tr></table></figure>
 <p>附split_data.py代码</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> shutil <span class="keyword">import</span> copy, rmtree</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mk_file</span>(<span class="params">file_path: <span class="built_in">str</span></span>):</span><br><span class="line">    <span class="keyword">if</span> os.path.exists(file_path):</span><br><span class="line">        <span class="comment"># 如果文件夹存在，则先删除原文件夹在重新创建</span></span><br><span class="line">        rmtree(file_path)</span><br><span class="line">    os.makedirs(file_path)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="comment"># 保证随机可复现</span></span><br><span class="line">    random.seed(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将数据集中10%的数据划分到验证集中</span></span><br><span class="line">    split_rate = <span class="number">0.1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 指向你解压后的flower_photos文件夹</span></span><br><span class="line">    cwd = os.getcwd()</span><br><span class="line">    data_root = os.path.join(cwd, <span class="string">&quot;flower_data&quot;</span>)</span><br><span class="line">    origin_flower_path = os.path.join(data_root, <span class="string">&quot;flower_photos&quot;</span>)</span><br><span class="line">    <span class="keyword">assert</span> os.path.exists(origin_flower_path), <span class="string">&quot;path &#x27;&#123;&#125;&#x27; does not exist.&quot;</span>.<span class="built_in">format</span>(origin_flower_path)</span><br><span class="line"></span><br><span class="line">    flower_class = [cla <span class="keyword">for</span> cla <span class="keyword">in</span> os.listdir(origin_flower_path)</span><br><span class="line">                    <span class="keyword">if</span> os.path.isdir(os.path.join(origin_flower_path, cla))]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 建立保存训练集的文件夹</span></span><br><span class="line">    train_root = os.path.join(data_root, <span class="string">&quot;train&quot;</span>)</span><br><span class="line">    mk_file(train_root)</span><br><span class="line">    <span class="keyword">for</span> cla <span class="keyword">in</span> flower_class:</span><br><span class="line">        <span class="comment"># 建立每个类别对应的文件夹</span></span><br><span class="line">        mk_file(os.path.join(train_root, cla))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 建立保存验证集的文件夹</span></span><br><span class="line">    val_root = os.path.join(data_root, <span class="string">&quot;val&quot;</span>)</span><br><span class="line">    mk_file(val_root)</span><br><span class="line">    <span class="keyword">for</span> cla <span class="keyword">in</span> flower_class:</span><br><span class="line">        <span class="comment"># 建立每个类别对应的文件夹</span></span><br><span class="line">        mk_file(os.path.join(val_root, cla))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> cla <span class="keyword">in</span> flower_class:</span><br><span class="line">        cla_path = os.path.join(origin_flower_path, cla)</span><br><span class="line">        images = os.listdir(cla_path)</span><br><span class="line">        num = <span class="built_in">len</span>(images)</span><br><span class="line">        <span class="comment"># 随机采样验证集的索引</span></span><br><span class="line">        eval_index = random.sample(images, k=<span class="built_in">int</span>(num*split_rate))</span><br><span class="line">        <span class="keyword">for</span> index, image <span class="keyword">in</span> <span class="built_in">enumerate</span>(images):</span><br><span class="line">            <span class="keyword">if</span> image <span class="keyword">in</span> eval_index:</span><br><span class="line">                <span class="comment"># 将分配至验证集中的文件复制到相应目录</span></span><br><span class="line">                image_path = os.path.join(cla_path, image)</span><br><span class="line">                new_path = os.path.join(val_root, cla)</span><br><span class="line">                copy(image_path, new_path)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># 将分配至训练集中的文件复制到相应目录</span></span><br><span class="line">                image_path = os.path.join(cla_path, image)</span><br><span class="line">                new_path = os.path.join(train_root, cla)</span><br><span class="line">                copy(image_path, new_path)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;\r[&#123;&#125;] processing [&#123;&#125;/&#123;&#125;]&quot;</span>.<span class="built_in">format</span>(cla, index+<span class="number">1</span>, num), end=<span class="string">&quot;&quot;</span>)  <span class="comment"># processing bar</span></span><br><span class="line">        <span class="built_in">print</span>()</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;processing done!&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 <p>运行split_data.py之后，结果如图所示</p>
-<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/split_data结果.png" alt="split_data结果"></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本节课主要讲AlexNet的网络结构，以及需要使用到的数据集，下节课将会使用Pytorch来搭建AlexNet，并用下载好的花分类数据集进行训练。</p>
+<p><img src="/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/split_data%E7%BB%93%E6%9E%9C.png" alt="split_data结果"></p>
+<h1>总结</h1>
+<p>本节课主要讲AlexNet的网络结构，以及需要使用到的数据集，下节课将会使用Pytorch来搭建AlexNet，并用下载好的花分类数据集进行训练。</p>
 
     </div>
 
