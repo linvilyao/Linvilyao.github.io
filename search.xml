@@ -2403,7 +2403,7 @@ N = (W-F+2P)/S + 1<br>
       </tags>
   </entry>
   <entry>
-    <title>使用pytorch搭建ResNet并基于迁移学习训练</title>
+    <title>深度学习模型之CNN卷积神经网络（十）使用pytorch搭建ResNet并基于迁移学习训练</title>
     <url>/2023/05/13/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAResNet%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AE%AD%E7%BB%83/</url>
     <content><![CDATA[<p>工程目录</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">├── Test5_resnet</span><br><span class="line">	├── model.py（模型文件）  </span><br><span class="line">	├── train.py（调用模型训练，自动生成class_indices.json,resNet.pth）</span><br><span class="line">	├── predict.py（调用模型进行预测）</span><br><span class="line">	├── tulip.jpg（用来根据前期的训练结果来predict图片类型）</span><br><span class="line">	├── resnet-pre.pth（用于迁移学习时，提前下载好官方的resNet权重脚本）</span><br><span class="line">	└── data  </span><br><span class="line">		└── data数据集</span><br></pre></td></tr></table></figure>
