@@ -18,14 +18,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","width":240,"height":400,"display":"post","padding":14,"offset":10},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="第十章查找 第一节查找的概念 在数据集合中寻找满足某种条件的数据元素的过程">
+    <meta name="description" content="第十章查找第一节查找的概念在数据集合中寻找满足某种条件的数据元素的过程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构之查找">
 <meta property="og:url" content="http://linvilyao.github.io/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%8D%81%E7%AB%A0%E6%9F%A5%E6%89%BE/index.html">
 <meta property="og:site_name" content="Linvil&#39;s Blog">
-<meta property="og:description" content="第十章查找 第一节查找的概念 在数据集合中寻找满足某种条件的数据元素的过程">
+<meta property="og:description" content="第十章查找第一节查找的概念在数据集合中寻找满足某种条件的数据元素的过程">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-04-23T14:50:37.000Z">
 <meta property="article:modified_time" content="2023-05-02T08:27:59.697Z">
@@ -141,7 +141,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">第十章查找</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E8%8A%82%E6%9F%A5%E6%89%BE%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">第一节查找的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E8%8A%82%E9%9D%99%E6%80%81%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.</span> <span class="nav-text">第二节静态查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%A1%BA%E5%BA%8F%EF%BC%88%E7%BA%BF%E6%80%A7%EF%BC%89%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.顺序（线性）查找</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E4%B8%80%E8%88%AC%E7%BA%BF%E6%80%A7%E8%A1%A8%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">（1）一般线性表的查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%9C%89%E5%BA%8F%E8%A1%A8%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">（2）有序表的查找</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%BA%8C%E5%88%86%EF%BC%88%E6%8A%98%E5%8D%8A%EF%BC%89%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.二分（折半）查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%B4%A2%E5%BC%95%EF%BC%88%E5%88%86%E5%9D%97%EF%BC%89%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.3.</span> <span class="nav-text">3.索引（分块）查找</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E8%8A%82%E5%8A%A8%E6%80%81%E6%9F%A5%E6%89%BE"><span class="nav-number">1.3.</span> <span class="nav-text">第三节动态查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%8E%92%E5%BA%8F%E6%A0%91%EF%BC%88BST%EF%BC%89"><span class="nav-number">1.3.1.</span> <span class="nav-text">二叉排序树（BST）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%9F%A5%E6%89%BE"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">（1）查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%8F%92%E5%85%A5"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">（2）插入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E6%9E%84%E9%80%A0"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">（3）构造</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E5%88%A0%E9%99%A4"><span class="nav-number">1.3.1.4.</span> <span class="nav-text">（4）删除</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E8%8A%82%E5%93%88%E5%B8%8C%E6%9F%A5%E6%89%BE%EF%BC%88%E6%95%A3%E5%88%97%E8%A1%A8%EF%BC%89"><span class="nav-number">1.4.</span> <span class="nav-text">第四节哈希查找（散列表）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%93%88%E5%B8%8C%E6%9F%A5%E6%89%BE%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.哈希查找的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.2.</span> <span class="nav-text">2.哈希函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E7%9B%B4%E6%8E%A5%E5%AE%9A%E5%9D%80%E6%B3%95"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">（1）直接定址法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E9%99%A4%E7%95%99%E4%BD%99%E6%95%B0%E6%B3%95"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">（2）除留余数法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E6%95%B0%E5%AD%97%E5%88%86%E6%9E%90%E6%B3%95"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">（3）数字分析法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E5%B9%B3%E6%96%B9%E5%8F%96%E4%B8%AD%E6%B3%95"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">（4）平方取中法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%93%88%E5%B8%8C%E5%86%B2%E7%AA%81%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">1.4.3.</span> <span class="nav-text">3.哈希冲突的解决方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%BC%80%E6%94%BE%E5%9C%B0%E5%9D%80%E6%B3%95"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">（1）开放地址法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%93a-%E7%BA%BF%E6%80%A7%E6%8E%A2%E6%B5%8B%E6%B3%95"><span class="nav-number">1.4.3.1.1.</span> <span class="nav-text">–a.线性探测法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%93b-%E5%B9%B3%E6%96%B9%E6%8E%A2%E6%B5%8B%E6%B3%95"><span class="nav-number">1.4.3.1.2.</span> <span class="nav-text">–b.平方探测法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%93c-%E5%8F%8C%E6%95%A3%E5%88%97%E6%B3%95"><span class="nav-number">1.4.3.1.3.</span> <span class="nav-text">–c.双散列法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%93d-%E4%BC%AA%E9%9A%8F%E6%9C%BA%E5%BA%8F%E5%88%97%E6%B3%95"><span class="nav-number">1.4.3.1.4.</span> <span class="nav-text">–d.伪随机序列法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%8B%89%E9%93%BE%E6%B3%95%EF%BC%88%E9%93%BE%E6%8E%A5%E6%B3%95%EF%BC%89"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">（2）拉链法（链接法）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%95%A3%E5%88%97%E6%9F%A5%E6%89%BE%E5%8F%8A%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90"><span class="nav-number">1.4.4.</span> <span class="nav-text">4.散列查找及性能分析</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E5%8D%81%E7%AB%A0%E6%9F%A5%E6%89%BE"><span class="nav-number">1.</span> <span class="nav-text">第十章查找</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E8%8A%82%E6%9F%A5%E6%89%BE%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">第一节查找的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E8%8A%82%E9%9D%99%E6%80%81%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.</span> <span class="nav-text">第二节静态查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%A1%BA%E5%BA%8F%EF%BC%88%E7%BA%BF%E6%80%A7%EF%BC%89%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.顺序（线性）查找</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E4%B8%80%E8%88%AC%E7%BA%BF%E6%80%A7%E8%A1%A8%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">（1）一般线性表的查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%9C%89%E5%BA%8F%E8%A1%A8%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">（2）有序表的查找</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%BA%8C%E5%88%86%EF%BC%88%E6%8A%98%E5%8D%8A%EF%BC%89%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.二分（折半）查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%B4%A2%E5%BC%95%EF%BC%88%E5%88%86%E5%9D%97%EF%BC%89%E6%9F%A5%E6%89%BE"><span class="nav-number">1.2.3.</span> <span class="nav-text">3.索引（分块）查找</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E8%8A%82%E5%8A%A8%E6%80%81%E6%9F%A5%E6%89%BE"><span class="nav-number">1.3.</span> <span class="nav-text">第三节动态查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%8E%92%E5%BA%8F%E6%A0%91%EF%BC%88BST%EF%BC%89"><span class="nav-number">1.3.1.</span> <span class="nav-text">二叉排序树（BST）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%9F%A5%E6%89%BE"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">（1）查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%8F%92%E5%85%A5"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">（2）插入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E6%9E%84%E9%80%A0"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">（3）构造</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E5%88%A0%E9%99%A4"><span class="nav-number">1.3.1.4.</span> <span class="nav-text">（4）删除</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E8%8A%82%E5%93%88%E5%B8%8C%E6%9F%A5%E6%89%BE%EF%BC%88%E6%95%A3%E5%88%97%E8%A1%A8%EF%BC%89"><span class="nav-number">1.4.</span> <span class="nav-text">第四节哈希查找（散列表）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%93%88%E5%B8%8C%E6%9F%A5%E6%89%BE%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.哈希查找的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.2.</span> <span class="nav-text">2.哈希函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E7%9B%B4%E6%8E%A5%E5%AE%9A%E5%9D%80%E6%B3%95"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">（1）直接定址法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E9%99%A4%E7%95%99%E4%BD%99%E6%95%B0%E6%B3%95"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">（2）除留余数法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E6%95%B0%E5%AD%97%E5%88%86%E6%9E%90%E6%B3%95"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">（3）数字分析法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E5%B9%B3%E6%96%B9%E5%8F%96%E4%B8%AD%E6%B3%95"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">（4）平方取中法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%93%88%E5%B8%8C%E5%86%B2%E7%AA%81%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">1.4.3.</span> <span class="nav-text">3.哈希冲突的解决方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%BC%80%E6%94%BE%E5%9C%B0%E5%9D%80%E6%B3%95"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">（1）开放地址法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%94a-%E7%BA%BF%E6%80%A7%E6%8E%A2%E6%B5%8B%E6%B3%95"><span class="nav-number">1.4.3.1.1.</span> <span class="nav-text">—a.线性探测法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%94b-%E5%B9%B3%E6%96%B9%E6%8E%A2%E6%B5%8B%E6%B3%95"><span class="nav-number">1.4.3.1.2.</span> <span class="nav-text">—b.平方探测法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%94c-%E5%8F%8C%E6%95%A3%E5%88%97%E6%B3%95"><span class="nav-number">1.4.3.1.3.</span> <span class="nav-text">—c.双散列法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%94d-%E4%BC%AA%E9%9A%8F%E6%9C%BA%E5%BA%8F%E5%88%97%E6%B3%95"><span class="nav-number">1.4.3.1.4.</span> <span class="nav-text">—d.伪随机序列法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%8B%89%E9%93%BE%E6%B3%95%EF%BC%88%E9%93%BE%E6%8E%A5%E6%B3%95%EF%BC%89"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">（2）拉链法（链接法）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%95%A3%E5%88%97%E6%9F%A5%E6%89%BE%E5%8F%8A%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90"><span class="nav-number">1.4.4.</span> <span class="nav-text">4.散列查找及性能分析</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -178,6 +178,7 @@
       </div>
 
 
+
   <div class="links-of-recent-posts motion-element">
     <div class="links-of-recent-posts-title">
       <i class="fa fa-history fa-fw"></i>
@@ -203,8 +204,17 @@
   </div>
     </div>
 
+
+
     
+
+
+
   </aside>
+
+
+
+
 
 
     </div>
@@ -314,63 +324,33 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1>第十章查找</h1>
-<h2 id="第一节查找的概念">第一节查找的概念</h2>
-<p>在数据集合中寻找满足某种条件的数据元素的过程</p>
+        <h1 id="第十章查找"><a href="#第十章查找" class="headerlink" title="第十章查找"></a>第十章查找</h1><h2 id="第一节查找的概念"><a href="#第一节查找的概念" class="headerlink" title="第一节查找的概念"></a>第一节查找的概念</h2><p>在数据集合中寻找满足某种条件的数据元素的过程</p>
 <span id="more"></span>
-<h2 id="第二节静态查找">第二节静态查找</h2>
-<h3 id="1-顺序（线性）查找">1.顺序（线性）查找</h3>
-<h4 id="（1）一般线性表的查找">（1）一般线性表的查找</h4>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>&#123;					<span class="comment">//查找表的数据结构</span></span><br><span class="line">    ElemType *elem;				<span class="comment">//元素存储空间基址，建表时按实际长度分配，0号单元留空</span></span><br><span class="line">    <span class="type">int</span> TableLen;				<span class="comment">//表的长度</span></span><br><span class="line">&#125;SSTable;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">Search_Seq</span><span class="params">(SSTable ST,ElemType key)</span></span>&#123;</span><br><span class="line">    ST.elem[<span class="number">0</span>] = key;			<span class="comment">//哨兵</span></span><br><span class="line">    <span class="keyword">for</span>(i = ST.TableLen;ST.elem[i]!=key,--i);	<span class="comment">//从后往前找</span></span><br><span class="line">    <span class="keyword">return</span> i;					<span class="comment">//若表中不存在关键字为key的元素，将查找到i=0时退出for循环</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="第二节静态查找"><a href="#第二节静态查找" class="headerlink" title="第二节静态查找"></a>第二节静态查找</h2><h3 id="1-顺序（线性）查找"><a href="#1-顺序（线性）查找" class="headerlink" title="1.顺序（线性）查找"></a>1.顺序（线性）查找</h3><h4 id="（1）一般线性表的查找"><a href="#（1）一般线性表的查找" class="headerlink" title="（1）一般线性表的查找"></a>（1）一般线性表的查找</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>&#123;					<span class="comment">//查找表的数据结构</span></span><br><span class="line">    ElemType *elem;				<span class="comment">//元素存储空间基址，建表时按实际长度分配，0号单元留空</span></span><br><span class="line">    <span class="type">int</span> TableLen;				<span class="comment">//表的长度</span></span><br><span class="line">&#125;SSTable;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">Search_Seq</span><span class="params">(SSTable ST,ElemType key)</span></span>&#123;</span><br><span class="line">    ST.elem[<span class="number">0</span>] = key;			<span class="comment">//哨兵</span></span><br><span class="line">    <span class="keyword">for</span>(i = ST.TableLen;ST.elem[i]!=key,--i);	<span class="comment">//从后往前找</span></span><br><span class="line">    <span class="keyword">return</span> i;					<span class="comment">//若表中不存在关键字为key的元素，将查找到i=0时退出for循环</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>对于有n个元素的表，给定值key与表中第i个元素相等，即定位第i个元素时，需进行n-i+1次关键词的比较。</p>
-<p>\begin{flalign}<br>
-&amp;1.查找成功时:\<br>
-&amp;顺序查找的平均长度为：ASL_{成功} = \sum_{i=1}^nP_i(n-i+1)\<br>
-&amp;当每个元素的查找概率相等，即P_i=1/n时，有：ASL_{成功} = \sum_{i=1}^nP_i(n-i+1)=(n+1)/2\<br>
-&amp;2.查找失败时：\<br>
-&amp;与表中各关键词的比较次数时n+1次，从而顺序查找不成功的平均查找长度为：ASL_{不成功} = n+1<br>
-\end{flalign}</p>
-<h4 id="（2）有序表的查找">（2）有序表的查找</h4>
-<p>\begin{flalign}<br>
-&amp;1.查找成功时:\<br>
-&amp;顺序查找的平均长度为：ASL_{成功} = \sum_{i=1}^nP_i(n-i+1)\<br>
-&amp;当每个元素的查找概率相等，即P_i=1/n时，有：ASL_{成功} = \sum_{i=1}^nP_i(n-i+1)=(n+1)/2\<br>
-&amp;2.查找失败时：\<br>
-&amp;查找不成功的平均查找长度为：ASL_{不成功} = \sum_{j=1}^nq_i(l_j-1)=(1+2…+n+n)/(n+1)=n/2+n/(n+1)<br>
-\end{flalign}</p>
-<h3 id="2-二分（折半）查找">2.二分（折半）查找</h3>
-<p>时间复杂度：O(logn)</p>
+<p>\begin{flalign}<br>&amp;1.查找成功时:\\<br>&amp;顺序查找的平均长度为：ASL_{成功} = \sum_{i=1}^nP_i(n-i+1)\\<br>&amp;当每个元素的查找概率相等，即P_i=1/n时，有：ASL_{成功} = \sum_{i=1}^nP_i(n-i+1)=(n+1)/2\\<br>&amp;2.查找失败时：\\<br>&amp;与表中各关键词的比较次数时n+1次，从而顺序查找不成功的平均查找长度为：ASL_{不成功} = n+1<br>\end{flalign}</p>
+<h4 id="（2）有序表的查找"><a href="#（2）有序表的查找" class="headerlink" title="（2）有序表的查找"></a>（2）有序表的查找</h4><p>\begin{flalign}<br>&amp;1.查找成功时:\\<br>&amp;顺序查找的平均长度为：ASL_{成功} = \sum_{i=1}^nP_i(n-i+1)\\<br>&amp;当每个元素的查找概率相等，即P_i=1/n时，有：ASL_{成功} = \sum_{i=1}^nP_i(n-i+1)=(n+1)/2\\<br>&amp;2.查找失败时：\\<br>&amp;查找不成功的平均查找长度为：ASL_{不成功} = \sum_{j=1}^nq_i(l_j-1)=(1+2…+n+n)/(n+1)=n/2+n/(n+1)<br>\end{flalign}</p>
+<h3 id="2-二分（折半）查找"><a href="#2-二分（折半）查找" class="headerlink" title="2.二分（折半）查找"></a>2.二分（折半）查找</h3><p>时间复杂度：O(logn)</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">Binary_Search</span><span class="params">(SeqList L,ElemType key)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> low = <span class="number">0</span>,high = L.TableLen<span class="number">-1</span>,mid;</span><br><span class="line">    <span class="keyword">while</span>(low&lt;=high)&#123;</span><br><span class="line">        min = (low+high)/<span class="number">2</span>;							<span class="comment">//取中间位置</span></span><br><span class="line">        <span class="keyword">if</span>(L.elem[mid] = key)	<span class="keyword">return</span> min;			<span class="comment">//查找成功则返回所在位置</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(L.elem[mid]&gt;key)	high = mid<span class="number">-1</span>;	<span class="comment">//从前半部分继续查找</span></span><br><span class="line">        <span class="keyword">else</span>	low = mid+<span class="number">1</span>;						<span class="comment">//从后半部分继续查找</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;										<span class="comment">//查找失败，返回-1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>\begin{flalign}<br>
-&amp;ASL_{成功} = 1/n\sum_{i=1}^nl_i=1/n(1<em>1+2</em>2+…+h<em>2^{h-1})=(n+1)/n</em>log_2(n+1)≈log_2(n+1)-1\<br>
-\end{flalign}</p>
-<h3 id="3-索引（分块）查找">3.索引（分块）查找</h3>
-<p>基本思想：将查找表氛围若干子块。块内元素可以无序，但块之间时有序的，即第一个块中的最大关键字小于第二块中的所有记录的关键字，以此类推。再建立一个索引表，索引表中每个元素含有各块的最大关键字和各块中的第一个元素的地址，索引表按关键字有序排列。<br>
-$$<br>
-\begin{flalign}<br>
-&amp;1.分块查找的平均查找长度为索引查找和块内查找的平均长度之和，设索引查找和块内查找的平均查找长度分别为L_l和L_s\<br>
-&amp;~~~则分块查找的平均查找长度为：ASL = L_l+L_s\<br>
-&amp;2.将长度为n的查找表均匀的分成b块，每块有s各记录，在等概率情况下，若块内和索引表中均采用顺序查找\<br>
-&amp;~~~则平均查找长度为：ASL = L_l+L_s = (b+1)/2+(s+1)/2 = (s^2+2s+n)/(2s)\<br>
-&amp;3.若s = \sqrt n，则平均查找长度取最小值\sqrt n+1；\<br>
-&amp;4.若对索引表采用折半查找时，\<br>
-&amp;~~~则平均查找长度为ASL= L_l+L_s = \lceil log_2(b+1)\rceil+(s+1)/2<br>
-\end{flalign}<br>
-$$</p>
-<h2 id="第三节动态查找">第三节动态查找</h2>
-<h3 id="二叉排序树（BST）">二叉排序树（BST）</h3>
-<p>二叉排序树（二叉查找树）或者是一棵空树，或者时具有下列特性的二叉树：</p>
+<p>\begin{flalign}<br>&amp;ASL_{成功} = 1/n\sum_{i=1}^nl_i=1/n(1<em>1+2</em>2+…+h<em>2^{h-1})=(n+1)/n</em>log_2(n+1)≈log_2(n+1)-1\\<br>\end{flalign}</p>
+<h3 id="3-索引（分块）查找"><a href="#3-索引（分块）查找" class="headerlink" title="3.索引（分块）查找"></a>3.索引（分块）查找</h3><p>基本思想：将查找表氛围若干子块。块内元素可以无序，但块之间时有序的，即第一个块中的最大关键字小于第二块中的所有记录的关键字，以此类推。再建立一个索引表，索引表中每个元素含有各块的最大关键字和各块中的第一个元素的地址，索引表按关键字有序排列。</p>
+<script type="math/tex; mode=display">
+\begin{flalign}
+&1.分块查找的平均查找长度为索引查找和块内查找的平均长度之和，设索引查找和块内查找的平均查找长度分别为L_l和L_s\\
+&~~~则分块查找的平均查找长度为：ASL = L_l+L_s\\
+&2.将长度为n的查找表均匀的分成b块，每块有s各记录，在等概率情况下，若块内和索引表中均采用顺序查找\\
+&~~~则平均查找长度为：ASL = L_l+L_s = (b+1)/2+(s+1)/2 = (s^2+2s+n)/(2s)\\
+&3.若s = \sqrt n，则平均查找长度取最小值\sqrt n+1；\\
+&4.若对索引表采用折半查找时，\\
+&~~~则平均查找长度为ASL= L_l+L_s = \lceil log_2(b+1)\rceil+(s+1)/2
+\end{flalign}</script><h2 id="第三节动态查找"><a href="#第三节动态查找" class="headerlink" title="第三节动态查找"></a>第三节动态查找</h2><h3 id="二叉排序树（BST）"><a href="#二叉排序树（BST）" class="headerlink" title="二叉排序树（BST）"></a>二叉排序树（BST）</h3><p>二叉排序树（二叉查找树）或者是一棵空树，或者时具有下列特性的二叉树：</p>
 <p>1）若左子树非空，则左子树上所有结点的值均小于根结点的值；</p>
 <p>2）若右子树非空，则右子树上所有结点的值均大于根结点的值；</p>
 <p>3）左、右子数也分别是一棵二叉排序树。</p>
-<h4 id="（1）查找">（1）查找</h4>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BSTNode *<span class="title">BST_Search</span><span class="params">(BiTree T,ElemType key)</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(T&amp;&amp;key!=T-&gt;data)&#123;				<span class="comment">//若树空或等于根结点值，则结束循环</span></span><br><span class="line">        <span class="keyword">if</span>(key&lt;T-&gt;data)	T = T-&gt;lchild;	<span class="comment">//小于，则在左子树上查找</span></span><br><span class="line">        <span class="keyword">else</span>	T = T-&gt;rchild;			<span class="comment">//大于，则在右子树上查找</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> T;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="（2）插入">（2）插入</h4>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">BST_Insert</span><span class="params">(BiTree &amp;T,KetType k)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(T)&#123;									<span class="comment">//原树为空，新插入的记录为新结点</span></span><br><span class="line">        T = (BiTree)<span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(BSTNode));</span><br><span class="line">        T-&gt;data = k;</span><br><span class="line">        T-&gt;lchild = T-&gt;rchild = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;							<span class="comment">//返回1，表示插入成功</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(k == T-&gt;data)	<span class="keyword">return</span> <span class="number">0</span>;		<span class="comment">//树中存在相同关键字的结点，插入失败</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(k &lt; T-data)		<span class="keyword">return</span> <span class="built_in">BST_Insert</span>(T-&gt;lchild,k);		<span class="comment">//插入到T的左子树</span></span><br><span class="line">    <span class="keyword">else</span>	<span class="keyword">return</span> <span class="built_in">BST_Insert</span>(T-&gt;rchild,k);		<span class="comment">//插入到T的右子树</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="（3）构造">（3）构造</h4>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Creat_BST</span><span class="params">(BiTree &amp;T,KetType str[],<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    T = <span class="literal">NULL</span>;					<span class="comment">//初始时T为空树</span></span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(i &lt; n)&#123;				<span class="comment">//依次将每个关键字插入到二叉排序树中</span></span><br><span class="line">        <span class="built_in">BST_Insert</span>(T,str[i]);	</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="（4）删除">（4）删除</h4>
-<p>①若被删除结点z时叶结点，则直接删除，不会破坏二叉排序树的性质；</p>
+<h4 id="（1）查找"><a href="#（1）查找" class="headerlink" title="（1）查找"></a>（1）查找</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BSTNode *<span class="title">BST_Search</span><span class="params">(BiTree T,ElemType key)</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(T&amp;&amp;key!=T-&gt;data)&#123;				<span class="comment">//若树空或等于根结点值，则结束循环</span></span><br><span class="line">        <span class="keyword">if</span>(key&lt;T-&gt;data)	T = T-&gt;lchild;	<span class="comment">//小于，则在左子树上查找</span></span><br><span class="line">        <span class="keyword">else</span>	T = T-&gt;rchild;			<span class="comment">//大于，则在右子树上查找</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> T;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="（2）插入"><a href="#（2）插入" class="headerlink" title="（2）插入"></a>（2）插入</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">BST_Insert</span><span class="params">(BiTree &amp;T,KetType k)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(T)&#123;									<span class="comment">//原树为空，新插入的记录为新结点</span></span><br><span class="line">        T = (BiTree)<span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(BSTNode));</span><br><span class="line">        T-&gt;data = k;</span><br><span class="line">        T-&gt;lchild = T-&gt;rchild = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;							<span class="comment">//返回1，表示插入成功</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(k == T-&gt;data)	<span class="keyword">return</span> <span class="number">0</span>;		<span class="comment">//树中存在相同关键字的结点，插入失败</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(k &lt; T-data)		<span class="keyword">return</span> <span class="built_in">BST_Insert</span>(T-&gt;lchild,k);		<span class="comment">//插入到T的左子树</span></span><br><span class="line">    <span class="keyword">else</span>	<span class="keyword">return</span> <span class="built_in">BST_Insert</span>(T-&gt;rchild,k);		<span class="comment">//插入到T的右子树</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="（3）构造"><a href="#（3）构造" class="headerlink" title="（3）构造"></a>（3）构造</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Creat_BST</span><span class="params">(BiTree &amp;T,KetType str[],<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    T = <span class="literal">NULL</span>;					<span class="comment">//初始时T为空树</span></span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(i &lt; n)&#123;				<span class="comment">//依次将每个关键字插入到二叉排序树中</span></span><br><span class="line">        <span class="built_in">BST_Insert</span>(T,str[i]);	</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="（4）删除"><a href="#（4）删除" class="headerlink" title="（4）删除"></a>（4）删除</h4><p>①若被删除结点z时叶结点，则直接删除，不会破坏二叉排序树的性质；</p>
 <p>②若结点z只有一棵左子树或右子树，则让z的子数称为z父节点的子数，代替z的位置；</p>
 <p>③若结点z有左、右两棵子数，则令z的直接后继（或直接前驱）替代z，然后二叉排序树中删去这个直接后继（或直接前驱），这样就转换成了第一种或第二种情况。</p>
 <pre class="mermaid">graph TB;
@@ -393,6 +373,7 @@ C-->G
 E-->J
 G-->H
 H-->I</pre>
+
 <p>删除78结点后</p>
 <pre class="mermaid">graph TB;
 A((53))
@@ -412,54 +393,27 @@ E-->J
 H-->F
 H-->G
 G-->I</pre>
-<p>\begin{flalign}<br>
-平衡二叉树的递推公式：n_0=0,n_1=1,n_2=2,n_h=1+n_{h-1}+n_{h-2}<br>
-\end{flalign}</p>
-<h2 id="第四节哈希查找（散列表）">第四节哈希查找（散列表）</h2>
-<h3 id="1-哈希查找的概念">1.哈希查找的概念</h3>
-<p>散列函数：一个把查找表中的关键字映射成该关键字对应的地址的函数，记为Hash(key)=Addr（这里的地址可以实数组下标、索引或内存地址等）</p>
+
+<p>\begin{flalign}<br>平衡二叉树的递推公式：n_0=0,n_1=1,n_2=2,n_h=1+n_{h-1}+n_{h-2}<br>\end{flalign}</p>
+<h2 id="第四节哈希查找（散列表）"><a href="#第四节哈希查找（散列表）" class="headerlink" title="第四节哈希查找（散列表）"></a>第四节哈希查找（散列表）</h2><h3 id="1-哈希查找的概念"><a href="#1-哈希查找的概念" class="headerlink" title="1.哈希查找的概念"></a>1.哈希查找的概念</h3><p>散列函数：一个把查找表中的关键字映射成该关键字对应的地址的函数，记为Hash(key)=Addr（这里的地址可以实数组下标、索引或内存地址等）</p>
 <p>散列表：根据关键字而直接进行访问的数据结构。即<em>散列表建立了关键字和存储地址之间的一种直接映射关系</em>。</p>
-<h3 id="2-哈希函数">2.哈希函数</h3>
-<h4 id="（1）直接定址法">（1）直接定址法</h4>
-<p>\begin{flalign}<br>
-H(key)=key或H(key)=a×key+b<br>
-\end{flalign}</p>
-<h4 id="（2）除留余数法">（2）除留余数法</h4>
-<p>假定散列表表长为m，取一个不大于m但最接近或等于m的质数p，则散列函数如下：</p>
-<p>\begin{flalign}<br>
-H(key)=key%p<br>
-\end{flalign}</p>
-<h4 id="（3）数字分析法">（3）数字分析法</h4>
-<h4 id="（4）平方取中法">（4）平方取中法</h4>
-<p>取关键字的平方值的中间几位作为散列地址。适用于关键字的每位取值都不够均匀或均小于散列地址所需的位数。</p>
-<h3 id="3-哈希冲突的解决方法">3.哈希冲突的解决方法</h3>
-<h4 id="（1）开放地址法">（1）开放地址法</h4>
-<p>\begin{flalign}<br>
-H_i = (H(key)+d_i)%m\<br>
-H(key)为散列函数：i = 0,1,2,…,k(k ≤ m-1)；m表示散列表表长；d_i为增量序列<br>
-\end{flalign}</p>
-<h5 id="–a-线性探测法">–a.线性探测法</h5>
-<p>特点：冲突发生时，顺序查看表中下一个单元（探测到表尾地址m-1时，下一个探测地址时表首地址0），知道招初一个空闲单元（当表为填满时一定要找到一个空闲单元）或查遍全表。</p>
+<h3 id="2-哈希函数"><a href="#2-哈希函数" class="headerlink" title="2.哈希函数"></a>2.哈希函数</h3><h4 id="（1）直接定址法"><a href="#（1）直接定址法" class="headerlink" title="（1）直接定址法"></a>（1）直接定址法</h4><p>\begin{flalign}<br>H(key)=key或H(key)=a×key+b<br>\end{flalign}</p>
+<h4 id="（2）除留余数法"><a href="#（2）除留余数法" class="headerlink" title="（2）除留余数法"></a>（2）除留余数法</h4><p>假定散列表表长为m，取一个不大于m但最接近或等于m的质数p，则散列函数如下：</p>
+<p>\begin{flalign}<br>H(key)=key\%p<br>\end{flalign}</p>
+<h4 id="（3）数字分析法"><a href="#（3）数字分析法" class="headerlink" title="（3）数字分析法"></a>（3）数字分析法</h4><h4 id="（4）平方取中法"><a href="#（4）平方取中法" class="headerlink" title="（4）平方取中法"></a>（4）平方取中法</h4><p>取关键字的平方值的中间几位作为散列地址。适用于关键字的每位取值都不够均匀或均小于散列地址所需的位数。</p>
+<h3 id="3-哈希冲突的解决方法"><a href="#3-哈希冲突的解决方法" class="headerlink" title="3.哈希冲突的解决方法"></a>3.哈希冲突的解决方法</h3><h4 id="（1）开放地址法"><a href="#（1）开放地址法" class="headerlink" title="（1）开放地址法"></a>（1）开放地址法</h4><p>\begin{flalign}<br>H_i = (H(key)+d_i)\%m\\<br>H(key)为散列函数：i = 0,1,2,..,k(k ≤ m-1)；m表示散列表表长；d_i为增量序列<br>\end{flalign}</p>
+<h5 id="—a-线性探测法"><a href="#—a-线性探测法" class="headerlink" title="—a.线性探测法"></a>—a.线性探测法</h5><p>特点：冲突发生时，顺序查看表中下一个单元（探测到表尾地址m-1时，下一个探测地址时表首地址0），知道招初一个空闲单元（当表为填满时一定要找到一个空闲单元）或查遍全表。</p>
 <p>缺点：容易造成大量元素在相邻的散列地址上“聚集”（或堆积）起来，大大降低查找效率。</p>
-<h5 id="–b-平方探测法">–b.平方探测法</h5>
-<p>特点：当d~i~ = 0²，1²，-1²，2²，-2²，…，k²，-k²时，称为平方探测法，其中k ≤ m/2，散列表长度m必须是一个可以表示成4k+3的素数，又称二次探测法。</p>
+<h5 id="—b-平方探测法"><a href="#—b-平方探测法" class="headerlink" title="—b.平方探测法"></a>—b.平方探测法</h5><p>特点：当d~i~ = 0²，1²，-1²，2²，-2²，…，k²，-k²时，称为平方探测法，其中k ≤ m/2，散列表长度m必须是一个可以表示成4k+3的素数，又称二次探测法。</p>
 <p>优点：可以避免出现“堆积”问题。</p>
 <p>缺点：不能探测散列表上的所有单元，但至少可以探测到一半单元。</p>
-<h5 id="–c-双散列法">–c.双散列法</h5>
-<p>​		当d~i~=Hash~2~(key)时，称为双散列法。当通过第一个散列函数H(key)得到的地址发生冲突时，利用第二个散列函数Hash~2~(key)计算该关键字的地址增量。具体散列函数形式如下：</p>
-<p>\begin{flalign}<br>
-H_i=(H(key)+i×Hash_2(key))%m<br>
-\end{flalign}</p>
+<h5 id="—c-双散列法"><a href="#—c-双散列法" class="headerlink" title="—c.双散列法"></a>—c.双散列法</h5><p>​        当d~i~=Hash~2~(key)时，称为双散列法。当通过第一个散列函数H(key)得到的地址发生冲突时，利用第二个散列函数Hash~2~(key)计算该关键字的地址增量。具体散列函数形式如下：</p>
+<p>\begin{flalign}<br>H_i=(H(key)+i×Hash_2(key))\%m<br>\end{flalign}</p>
 <p>初始探测位置H~0~=H(key)%m。i是冲突的次数，初始为0。最多经过m-1次探测就会遍历表中所有位置，回到H~0~位置。</p>
-<h5 id="–d-伪随机序列法">–d.伪随机序列法</h5>
-<p>d~i~ = 伪随机序列时，称为伪随机序列法。</p>
-<h4 id="（2）拉链法（链接法）">（2）拉链法（链接法）</h4>
-<p>同线性探测法，但改为链表形式。</p>
-<h3 id="4-散列查找及性能分析">4.散列查找及性能分析</h3>
-<p>散列表的查找效率取决三个因素：散列函数、处理冲突的方法和装填因子。</p>
-<p>\begin{flalign}<br>
-\alpha = 表中记录数n/散列表长度m<br>
-\end{flalign}</p>
+<h5 id="—d-伪随机序列法"><a href="#—d-伪随机序列法" class="headerlink" title="—d.伪随机序列法"></a>—d.伪随机序列法</h5><p>d~i~ = 伪随机序列时，称为伪随机序列法。</p>
+<h4 id="（2）拉链法（链接法）"><a href="#（2）拉链法（链接法）" class="headerlink" title="（2）拉链法（链接法）"></a>（2）拉链法（链接法）</h4><p>同线性探测法，但改为链表形式。</p>
+<h3 id="4-散列查找及性能分析"><a href="#4-散列查找及性能分析" class="headerlink" title="4.散列查找及性能分析"></a>4.散列查找及性能分析</h3><p>散列表的查找效率取决三个因素：散列函数、处理冲突的方法和装填因子。</p>
+<p>\begin{flalign}<br>\alpha = 表中记录数n/散列表长度m<br>\end{flalign}</p>
 <p>散列表的平均查找长度依赖于散列表的装填因子α，而不直接依赖于n或m。直观地看，α越大，表示装填的记录越“满”，发生冲突的可能性越大，反之发生冲突的可能性越小。</p>
 
     </div>
@@ -599,21 +553,6 @@ setInterval("createtime()",250);
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
-
-
-<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%8D%81%E7%AB%A0%E6%9F%A5%E6%89%BE/"}</script>
-<script>
-document.addEventListener('page:loaded', () => {
-  NexT.utils.loadComments(CONFIG.valine.el)
-    .then(() => NexT.utils.getScript(
-      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
-      { condition: window.Valine }
-    ))
-    .then(() => {
-      new Valine(CONFIG.valine);
-    });
-});
-</script>
 <script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
 
 <script>
@@ -633,6 +572,21 @@ var options = {
 const darkmode = new Darkmode(options);
 window.darkmode = darkmode;
 darkmode.showWidget();
+</script>
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/04/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AC%AC%E5%8D%81%E7%AB%A0%E6%9F%A5%E6%89%BE/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
 </script>
 
 </body>

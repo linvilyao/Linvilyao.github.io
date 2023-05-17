@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","width":240,"height":400,"display":"post","padding":14,"offset":10},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础6.1.2》，作为随堂笔记。本节课学习ReaNeXt网络的详细结构、与ResNet的对比情况">
 <meta property="og:type" content="article">
@@ -151,7 +151,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">ResNet和ResNeXt的比较</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">ResNeXt的创新点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E5%87%BABlock%E6%A8%A1%E5%9D%97"><span class="nav-number">2.1.</span> <span class="nav-text">提出Block模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Block%E6%A8%A1%E5%9D%97%E4%BB%85%E9%80%82%E7%94%A8%E5%B1%82%E7%BB%93%E6%9E%84%E2%89%A53"><span class="nav-number">2.2.</span> <span class="nav-text">Block模块仅适用层结构≥3</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ResNet%E5%92%8CResNeXt%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">1.</span> <span class="nav-text">ResNet和ResNeXt的比较</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ResNeXt%E7%9A%84%E5%88%9B%E6%96%B0%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">ResNeXt的创新点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E5%87%BABlock%E6%A8%A1%E5%9D%97"><span class="nav-number">2.1.</span> <span class="nav-text">提出Block模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Block%E6%A8%A1%E5%9D%97%E4%BB%85%E9%80%82%E7%94%A8%E5%B1%82%E7%BB%93%E6%9E%84%E2%89%A53"><span class="nav-number">2.2.</span> <span class="nav-text">Block模块仅适用层结构≥3</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -188,6 +188,7 @@
       </div>
 
 
+
   <div class="links-of-recent-posts motion-element">
     <div class="links-of-recent-posts-title">
       <i class="fa fa-history fa-fw"></i>
@@ -213,8 +214,17 @@
   </div>
     </div>
 
+
+
     
+
+
+
   </aside>
+
+
+
+
 
 
     </div>
@@ -320,16 +330,15 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>本堂课讲述根据ResNet网络之后再次升级的ResNeXt网络，对原先ResNet的一些地方做了优化处理，原论文：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1611.05431">img Transformations for Deep Neural Networks</a></p>
-<h1>ResNet和ResNeXt的比较</h1>
-<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/50层以上的ResNet和50层以上的ResNeXt残差比较.png" alt="50层以上的ResNet和50层以上的ResNeXt残差比较 " style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<h1 id="ResNet和ResNeXt的比较"><a href="#ResNet和ResNeXt的比较" class="headerlink" title="ResNet和ResNeXt的比较"></a>ResNet和ResNeXt的比较</h1><p><img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/50层以上的ResNet和50层以上的ResNeXt残差比较.png" alt="50层以上的ResNet和50层以上的ResNeXt残差比较 " style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); "></p>
 <p>上图（左）是在ResNet网络中提到的<strong>实线型残差结构</strong>，在主分支中先对channel为256的特征矩阵<strong>降维</strong>到64，之后用3x3的卷积层进行<strong>卷积处理</strong>，再通过1x1的卷积核<strong>升维</strong>到256，以此来减少参数，最后将得到的特征矩阵与shortcut的特征矩阵相加得到输出特征矩阵</p>
 <p>在ResNeXt网络中，使用上图（右）的结构替代上图（左）的结构，经下图展示，替换之后的ResNeXt网络结构确实比原先的ResNet在各性能上更优秀</p>
-<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/ResNet和ResNeXt性能对比.png" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<p><img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/ResNet和ResNeXt性能对比.png" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); "></p>
 <p>下图（左）是ResNet-50与ResNeXt-50在ImageNet上top-1的错误率比较，在对焦验证集中ResNet-50val（蓝色）和ResNeXt-50val（橙色）两条实线的错误率比较，明显的是在计算量相同的情况下，RexNeXt-50比ResNet-50的错误率更低。</p>
 <p>下图（右）是ResNet-101与ResNeXt-101在ImageNet上top-1的错误率比较，与50层类似，在计算量相同的情况下，RexNeXt-101比ResNet-101的错误率更低。</p>
-<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/ResNet和ResNeXt的对比.png" alt="ResNet和ResNeXt的对比" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<p><img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/ResNet和ResNeXt的对比.png" alt="ResNet和ResNeXt的对比" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); "></p>
 <p><strong>Group Convolution对比Convolution</strong></p>
-<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/GroupConvolution解释.png" alt="Group Convolution解释" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<p><img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/GroupConvolution解释.png" alt="Group Convolution解释" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); "></p>
 <p><strong>Convolution</strong></p>
 <blockquote>
 <p>假设输入特征矩阵size = k x k，channel = 4，那么此时对于每一个卷积核的channel要与输入特征矩阵的channel保持一致，所以卷积核的channel = 4。假设输出特征矩阵channel = n，表示需要输入n个卷积核来进行卷积处理。</p>
@@ -341,10 +350,8 @@
 <p>综上，需要使用到的参数Parameters = ( k x k x $C_{in}$/g x n/g ) / g = k x k x $C_{in}$ x n x 1/g（$C_{in}$表示输入特征矩阵的channel，n表示使用卷积核的个数，g表示分了多少个组）</p>
 </blockquote>
 <p>注意：<strong>当g = $C_{in}$，n = $C_{in}$，此时就是DW Conv（深度卷积depthwise conv），相当于对输入特征矩阵的每个channel分配了一个channel为1的卷积核进行卷积</strong></p>
-<h1>ResNeXt的创新点</h1>
-<h2 id="提出Block模块">提出Block模块</h2>
-<p>在原论文中，作者提出以下a、b、c三种block模块，它们在数学计算上完全等价</p>
-<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/Block模块.png" alt="Block模块" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<h1 id="ResNeXt的创新点"><a href="#ResNeXt的创新点" class="headerlink" title="ResNeXt的创新点"></a>ResNeXt的创新点</h1><h2 id="提出Block模块"><a href="#提出Block模块" class="headerlink" title="提出Block模块"></a>提出Block模块</h2><p>在原论文中，作者提出以下a、b、c三种block模块，它们在数学计算上完全等价</p>
+<p><img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/Block模块.png" alt="Block模块" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); "></p>
 <p><strong>（c）block模块</strong></p>
 <blockquote>
 <p>首先通过1 x 1的卷积层进行降维处理，在经过Group Conv进行处理，且卷积核size = 3 x 3，group = 32，之后再通过1 x 1的卷积核进行升维处理，最后将输出与shortcut的输出相加，得到最终输出特征矩阵</p>
@@ -360,21 +367,19 @@
 <p>然后通过1 x 1的卷积核将特征矩阵升维从channel = 4到channel = 256，之后进行相加，<strong>原理上同（b）的concatenate拼接之后得到的特征矩阵一致</strong>；</p>
 <p>最后将输出与shortcut的输出相加，得到最终输出特征矩阵</p>
 </blockquote>
-<p><strong>（a）block模块的升维和相加步骤</strong></p>
-<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/（a）虚线框图像解释.png" alt="（a）虚线框图像解释" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<p> <strong>（a）block模块的升维和相加步骤</strong></p>
+<p><img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/（a）虚线框图像解释.png" alt="（a）虚线框图像解释" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); "></p>
 <blockquote>
 <p>假设pants = 2，pants中采用数量为1的1 x 1的卷积核进行卷积。对这两个pants分别进行卷积之后会得到对应的feature map，再将二者的feature map进行相加，最终得到结果的feature map。</p>
 </blockquote>
 <p><strong>（b）block模块的concatenate步骤</strong></p>
-<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/（b）虚线框图像解释.png" alt="（b）虚线框图像解释" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<p><img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/（b）虚线框图像解释.png" alt="（b）虚线框图像解释" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); "></p>
 <blockquote>
 <p>将按照pants = 2的feature map进行拼接，得到上图最左边的feature map，此处采用的kernel同样是1 x 1大小，且将对应的4个卷积核参数进行拼接，最终得到的feature map和前面（a）升维且相加之后的feature map的结果一致。</p>
 </blockquote>
-<h2 id="Block模块仅适用层结构≥3">Block模块仅适用层结构≥3</h2>
-<p>对于浅层的18、34层，其Inception的层级仅只有两层，搭建出来的block已经没有意义了。如果进行拆分之后再进行卷积，再进行相加的话，其实并未产生实质的变化，只不过卷积的个数变多了。</p>
-<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/Block模块仅适用≥3层的层结构.png" alt="Block模块仅适用≥3层的层结构" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
-<h1>总结</h1>
-<p>本次论文最大创新点就是提出Block模块，再次提高了整体网络的性能。</p>
+<h2 id="Block模块仅适用层结构≥3"><a href="#Block模块仅适用层结构≥3" class="headerlink" title="Block模块仅适用层结构≥3"></a>Block模块仅适用层结构≥3</h2><p>对于浅层的18、34层，其Inception的层级仅只有两层，搭建出来的block已经没有意义了。如果进行拆分之后再进行卷积，再进行相加的话，其实并未产生实质的变化，只不过卷积的个数变多了。</p>
+<p><img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/Block模块仅适用≥3层的层结构.png" alt="Block模块仅适用≥3层的层结构" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); "></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本次论文最大创新点就是提出Block模块，再次提高了整体网络的性能。</p>
 
     </div>
 
@@ -511,21 +516,6 @@ setInterval("createtime()",250);
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
-
-
-<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/"}</script>
-<script>
-document.addEventListener('page:loaded', () => {
-  NexT.utils.loadComments(CONFIG.valine.el)
-    .then(() => NexT.utils.getScript(
-      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
-      { condition: window.Valine }
-    ))
-    .then(() => {
-      new Valine(CONFIG.valine);
-    });
-});
-</script>
 <script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
 
 <script>
@@ -545,6 +535,21 @@ var options = {
 const darkmode = new Darkmode(options);
 window.darkmode = darkmode;
 darkmode.showWidget();
+</script>
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
 </script>
 
 </body>
