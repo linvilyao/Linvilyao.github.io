@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>深度学习模型之CNN卷积神经网络（三）AlexNet网络结构及数据集下载</title>
+    <title>深度学习模型之CNN（三）AlexNet网络结构及数据集下载</title>
     <url>/2023/05/02/AlexNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8B%E8%BD%BD/</url>
     <content><![CDATA[<h1>AlexNet详解</h1>
 <p>AlexNet时2012年ILSVRC 2012（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，分类准确率由传统的70%+提升到80%+。它是由Hinton和他的学生Alex Krizhevsky设计的。也是从那年后，深度学习开始迅速发展。</p>
@@ -150,7 +150,7 @@ N = (W-F+2P)/S + 1<br>
       </tags>
   </entry>
   <entry>
-    <title>深度学习模型之CNN卷积神经网络（七）GoogLeNet网络详解</title>
+    <title>深度学习模型之CNN（七）GoogLeNet网络详解</title>
     <url>/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<h1>GoogLeNet详解</h1>
 <p>GoogLeNet在2014年由Google团队提出，斩获当年ImageNet竞赛中Classification Task (分类任务) 第一名。原论文地址：<a href="https://arxiv.org/abs/1409.4842">Going deeper with convolutions</a></p>
@@ -212,7 +212,7 @@ N = (W-F+2P)/S + 1<br>
       </tags>
   </entry>
   <entry>
-    <title>深度学习模型之CNN卷积神经网络（九）ResNet网络结构、BN以及迁移学习详解</title>
+    <title>深度学习模型之CNN（九）ResNet网络结构、BN以及迁移学习详解</title>
     <url>/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<h1>ResNet详解</h1>
 <p>ResNet在2015年由微软实验室提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名（超级NB）。原论文：<a href="https://arxiv.org/abs/1512.03385">Deep Residual Learning for Image Recognition</a></p>
@@ -348,10 +348,11 @@ $$</p>
       </categories>
       <tags>
         <tag>神经网络</tag>
+        <tag>CNN网络详解</tag>
       </tags>
   </entry>
   <entry>
-    <title>深度学习模型之CNN卷积神经网络（五）VGG网络详解及感受野的计算</title>
+    <title>深度学习模型之CNN（五）VGG网络详解及感受野的计算</title>
     <url>/2023/05/04/VGG%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%84%9F%E5%8F%97%E9%87%8E%E7%9A%84%E8%AE%A1%E7%AE%97/</url>
     <content><![CDATA[<p>VGG在2014年由牛津大学著名研究组VGG(Visual GeometryGroup)提出，斩获该年ImageNet竞赛中 Localization Task(定位任务)第一名和 classification Task(分类任务)第二名。</p>
 <p>VGG原论文：VERY DEEP CONVOLUTIONAL NETWORKS FOR LARGE-SCALE IMAGE RECOGNITION</p>
@@ -429,6 +430,7 @@ out_{size} = (in_{size} - F_{size} + 2P)/S + 1<br>
       </categories>
       <tags>
         <tag>神经网络</tag>
+        <tag>CNN网络详解</tag>
       </tags>
   </entry>
   <entry>
@@ -1796,7 +1798,7 @@ $$</p>
       </tags>
   </entry>
   <entry>
-    <title>深度学习模型之CNN卷积神经网络（一）CNN原理概述</title>
+    <title>深度学习模型之CNN（一）CNN原理概述</title>
     <url>/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/</url>
     <content><![CDATA[<h1><strong>卷积神经网络的架构</strong></h1>
 <img src="/2023/04/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%B9%8BCNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E4%B8%80%EF%BC%89CNN%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0/卷积神经网络的架构.png" alt="卷积神经网络的架构" style="zoom:80%;">
@@ -1980,10 +1982,11 @@ O = (W-K+2P)/S + 1<br>
       </categories>
       <tags>
         <tag>神经网络</tag>
+        <tag>CNN网络详解</tag>
       </tags>
   </entry>
   <entry>
-    <title>深度学习模型之CNN卷积神经网络（二）Pytorch官方demo（LeNet）</title>
+    <title>深度学习模型之CNN（二）Pytorch官方demo（LeNet）</title>
     <url>/2023/04/29/pytorch%E5%AE%98%E6%96%B9demo/</url>
     <content><![CDATA[<p>因为之前一直没有搭建conda的环境，笔记也是后来补充，过程忘得七七八八了，就直接从demo代码开始记录。</p>
 <p>By the way, <strong>Anaconda Navigator用管理员打开下载包更能省事</strong>。</p>
@@ -2157,10 +2160,12 @@ N = (W-F+2P)/S + 1<br>
       </categories>
       <tags>
         <tag>神经网络</tag>
+        <tag>CNN网络详解</tag>
+        <tag>Pytorch搭建CNN</tag>
       </tags>
   </entry>
   <entry>
-    <title>深度学习模型之CNN卷积神经网络（八）使用pytorch搭建GoogLeNet网络</title>
+    <title>深度学习模型之CNN（八）使用pytorch搭建GoogLeNet网络</title>
     <url>/2023/05/10/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAGoogLeNet%E7%BD%91%E7%BB%9C/</url>
     <content><![CDATA[<h1>pytorch搭建GoogLeNet</h1>
 <p>model模型搭建对照以下参数表及网络架构图</p>
@@ -2237,10 +2242,11 @@ N = (W-F+2P)/S + 1<br>
       </categories>
       <tags>
         <tag>神经网络</tag>
+        <tag>Pytorch搭建CNN</tag>
       </tags>
   </entry>
   <entry>
-    <title>深度学习模型之CNN卷积神经网络（四）使用pytorch搭建AlexNet并训练花分类数据集</title>
+    <title>深度学习模型之CNN（四）使用pytorch搭建AlexNet并训练花分类数据集</title>
     <url>/2023/05/03/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAAlexNet%E5%B9%B6%E8%AE%AD%E7%BB%83%E8%8A%B1%E5%88%86%E7%B1%BB%E6%95%B0%E6%8D%AE%E9%9B%86/</url>
     <content><![CDATA[<h1>AlexNet网络架构</h1>
 <p><img src="/2023/05/03/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAAlexNet%E5%B9%B6%E8%AE%AD%E7%BB%83%E8%8A%B1%E5%88%86%E7%B1%BB%E6%95%B0%E6%8D%AE%E9%9B%86/AlexNet%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E8%BF%87%E7%A8%8B%E6%80%BB%E7%BB%93.png" alt="AlexNet网络架构过程总结"></p>
@@ -2333,10 +2339,11 @@ N = (W-F+2P)/S + 1<br>
       </categories>
       <tags>
         <tag>神经网络</tag>
+        <tag>Pytorch搭建CNN</tag>
       </tags>
   </entry>
   <entry>
-    <title>深度学习模型之CNN卷积神经网络（六）使用pytorch搭建VGG网络</title>
+    <title>深度学习模型之CNN（六）使用pytorch搭建VGG网络</title>
     <url>/2023/05/07/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAVGG%E7%BD%91%E7%BB%9C/</url>
     <content><![CDATA[<p><img src="/2023/05/07/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAVGG%E7%BD%91%E7%BB%9C/VGG%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E8%A1%A8.png" alt="VGG网络架构表"></p>
 <p>在上堂课讲解了D模型，今次以实操的形式，针对模型A、B、D、E做一个代码的实现。将代码构造分为两部分：提取特征网络结构（图中橙色框）、分类网络结构（图中绿色框）</p>
@@ -2400,10 +2407,11 @@ N = (W-F+2P)/S + 1<br>
       </categories>
       <tags>
         <tag>神经网络</tag>
+        <tag>Pytorch搭建CNN</tag>
       </tags>
   </entry>
   <entry>
-    <title>深度学习模型之CNN卷积神经网络（十）使用pytorch搭建ResNet并基于迁移学习训练</title>
+    <title>深度学习模型之CNN（十）使用pytorch搭建ResNet并基于迁移学习训练</title>
     <url>/2023/05/13/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAResNet%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AE%AD%E7%BB%83/</url>
     <content><![CDATA[<p>工程目录</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">├── Test5_resnet</span><br><span class="line">	├── model.py（模型文件）  </span><br><span class="line">	├── train.py（调用模型训练，自动生成class_indices.json,resNet.pth）</span><br><span class="line">	├── predict.py（调用模型进行预测）</span><br><span class="line">	├── tulip.jpg（用来根据前期的训练结果来predict图片类型）</span><br><span class="line">	├── resnet-pre.pth（用于迁移学习时，提前下载好官方的resNet权重脚本）</span><br><span class="line">	└── data  </span><br><span class="line">		└── data数据集</span><br></pre></td></tr></table></figure>
@@ -2528,10 +2536,11 @@ N = (W-F+2P)/S + 1<br>
       </categories>
       <tags>
         <tag>神经网络</tag>
+        <tag>Pytorch搭建CNN</tag>
       </tags>
   </entry>
   <entry>
-    <title>ResNeXt网络结构</title>
+    <title>深度学习模型之CNN（十一）ResNeXt网络结构</title>
     <url>/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/</url>
     <content><![CDATA[<p>本堂课讲述根据ResNet网络之后再次升级的ResNeXt网络，对原先ResNet的一些地方做了优化处理，原论文：<a href="https://arxiv.org/abs/1611.05431">img Transformations for Deep Neural Networks</a></p>
 <h1>ResNet和ResNeXt的比较</h1>
@@ -2595,6 +2604,7 @@ N = (W-F+2P)/S + 1<br>
       </categories>
       <tags>
         <tag>神经网络</tag>
+        <tag>CNN网络详解</tag>
       </tags>
   </entry>
 </search>
