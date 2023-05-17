@@ -215,7 +215,7 @@ N = (W-F+2P)/S + 1<br>
     <title>深度学习模型之CNN卷积神经网络（九）ResNet网络结构、BN以及迁移学习详解</title>
     <url>/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<h1>ResNet详解</h1>
-<p>ResNet在2015年由微软实验室提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名（超级NB）。原论文：<a href="https://xn--ariv-rma.org/abs/1512.03385">Deep Residual Learning for Image Recognition</a></p>
+<p>ResNet在2015年由微软实验室提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名（超级NB）。原论文：<a href="https://arxiv.org/abs/1512.03385">Deep Residual Learning for Image Recognition</a></p>
 <p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/ResNet-34%E5%B1%82%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%9B%BE.png" alt="ResNet-34层网络结构图"></p>
 <h2 id="网络中的创新点">网络中的创新点</h2>
 <ul>
@@ -2522,6 +2522,73 @@ N = (W-F+2P)/S + 1<br>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> transforms</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> model <span class="keyword">import</span> resnet34</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    device = torch.device(<span class="string">&quot;cuda:0&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"></span><br><span class="line">    data_transform = transforms.Compose(</span><br><span class="line">        [transforms.Resize(<span class="number">256</span>),</span><br><span class="line">         transforms.CenterCrop(<span class="number">224</span>),</span><br><span class="line">         transforms.ToTensor(),</span><br><span class="line">         transforms.Normalize([<span class="number">0.485</span>, <span class="number">0.456</span>, <span class="number">0.406</span>], [<span class="number">0.229</span>, <span class="number">0.224</span>, <span class="number">0.225</span>])])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># load image</span></span><br><span class="line">    img_path = <span class="string">&quot;./tulip.jpg&quot;</span></span><br><span class="line">    <span class="keyword">assert</span> os.path.exists(img_path), <span class="string">&quot;file: &#x27;&#123;&#125;&#x27; dose not exist.&quot;</span>.<span class="built_in">format</span>(img_path)</span><br><span class="line">    img = Image.<span class="built_in">open</span>(img_path)</span><br><span class="line">    plt.imshow(img)</span><br><span class="line">    <span class="comment"># [N, C, H, W]</span></span><br><span class="line">    img = data_transform(img)</span><br><span class="line">    <span class="comment"># expand batch dimension</span></span><br><span class="line">    img = torch.unsqueeze(img, dim=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># read class_indict</span></span><br><span class="line">    json_path = <span class="string">&#x27;./class_indices.json&#x27;</span></span><br><span class="line">    <span class="keyword">assert</span> os.path.exists(json_path), <span class="string">&quot;file: &#x27;&#123;&#125;&#x27; dose not exist.&quot;</span>.<span class="built_in">format</span>(json_path)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(json_path, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        class_indict = json.load(f)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># create model</span></span><br><span class="line">    model = resnet34(num_classes=<span class="number">5</span>).to(device)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># load model weights</span></span><br><span class="line">    weights_path = <span class="string">&quot;./resNet34.pth&quot;</span></span><br><span class="line">    <span class="keyword">assert</span> os.path.exists(weights_path), <span class="string">&quot;file: &#x27;&#123;&#125;&#x27; dose not exist.&quot;</span>.<span class="built_in">format</span>(weights_path)</span><br><span class="line">    model.load_state_dict(torch.load(weights_path, map_location=device))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># prediction</span></span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="comment"># predict class</span></span><br><span class="line">        output = torch.squeeze(model(img.to(device))).cpu()</span><br><span class="line">        predict = torch.softmax(output, dim=<span class="number">0</span>)</span><br><span class="line">        predict_cla = torch.argmax(predict).numpy()</span><br><span class="line"></span><br><span class="line">    print_res = <span class="string">&quot;class: &#123;&#125;   prob: &#123;:.3&#125;&quot;</span>.<span class="built_in">format</span>(class_indict[<span class="built_in">str</span>(predict_cla)],</span><br><span class="line">                                                 predict[predict_cla].numpy())</span><br><span class="line">    plt.title(print_res)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(predict)):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;class: &#123;:10&#125;   prob: &#123;:.3&#125;&quot;</span>.<span class="built_in">format</span>(class_indict[<span class="built_in">str</span>(i)],</span><br><span class="line">                                                  predict[i].numpy()))</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 <p>预测结果（迁移学习）</p>
 <p><img src="/2023/05/13/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAResNet%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AE%AD%E7%BB%83/predict%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E9%A2%84%E6%B5%8B%E7%BB%93%E6%9E%9C.png" alt="predict迁移学习预测结果"></p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>神经网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ResNeXt网络结构</title>
+    <url>/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<p>本堂课讲述根据ResNet网络之后再次升级的ResNeXt网络，对原先ResNet的一些地方做了优化处理，原论文：<a href="https://arxiv.org/abs/1611.05431">img Transformations for Deep Neural Networks</a></p>
+<h1>ResNet和ResNeXt的比较</h1>
+<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/50层以上的ResNet和50层以上的ResNeXt残差比较.png" alt="50层以上的ResNet和50层以上的ResNeXt残差比较 " style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<p>上图（左）是在ResNet网络中提到的<strong>实线型残差结构</strong>，在主分支中先对channel为256的特征矩阵<strong>降维</strong>到64，之后用3x3的卷积层进行<strong>卷积处理</strong>，再通过1x1的卷积核<strong>升维</strong>到256，以此来减少参数，最后将得到的特征矩阵与shortcut的特征矩阵相加得到输出特征矩阵</p>
+<p>在ResNeXt网络中，使用上图（右）的结构替代上图（左）的结构，经下图展示，替换之后的ResNeXt网络结构确实比原先的ResNet在各性能上更优秀</p>
+<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/ResNet和ResNeXt性能对比.png" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<p>下图（左）是ResNet-50与ResNeXt-50在ImageNet上top-1的错误率比较，在对焦验证集中ResNet-50val（蓝色）和ResNeXt-50val（橙色）两条实线的错误率比较，明显的是在计算量相同的情况下，RexNeXt-50比ResNet-50的错误率更低。</p>
+<p>下图（右）是ResNet-101与ResNeXt-101在ImageNet上top-1的错误率比较，与50层类似，在计算量相同的情况下，RexNeXt-101比ResNet-101的错误率更低。</p>
+<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/ResNet和ResNeXt的对比.png" alt="ResNet和ResNeXt的对比" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<p><strong>Group Convolution对比Convolution</strong></p>
+<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/GroupConvolution解释.png" alt="Group Convolution解释" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<p><strong>Convolution</strong></p>
+<blockquote>
+<p>假设输入特征矩阵size = k x k，channel = 4，那么此时对于每一个卷积核的channel要与输入特征矩阵的channel保持一致，所以卷积核的channel = 4。假设输出特征矩阵channel = n，表示需要输入n个卷积核来进行卷积处理。</p>
+<p>综上，需要使用到的参数Parameters = k x k x $C_{in}$ x n（$C_{in}$表示输入特征矩阵的channel，n表示使用卷积核的个数）</p>
+</blockquote>
+<p><strong>Group Convolution</strong></p>
+<blockquote>
+<p>假设输入特征矩阵size = k x k，channel = 4，将输入特征矩阵的channel划分为两个组，之后对每一个组分别进行卷积操作。假设对划分的一个组而言，所采用的卷积核的channel要与该组的channel保持一致，因此卷积核channel = 4 / 2 = 2。假设输出特征矩阵channel = n，则经过分成两组之后，其中一组的channel = n / 2，表示需要输入n / 2个卷积核来进行卷积处理。</p>
+<p>综上，需要使用到的参数Parameters = ( k x k x $C_{in}$/g x n/g ) / g = k x k x $C_{in}$ x n x 1/g（$C_{in}$表示输入特征矩阵的channel，n表示使用卷积核的个数，g表示分了多少个组）</p>
+</blockquote>
+<p>注意：<strong>当g = $C_{in}$，n = $C_{in}$，此时就是DW Conv（深度卷积depthwise conv），相当于对输入特征矩阵的每个channel分配了一个channel为1的卷积核进行卷积</strong></p>
+<h1>ResNeXt的创新点</h1>
+<h2 id="提出Block模块">提出Block模块</h2>
+<p>在原论文中，作者提出以下a、b、c三种block模块，它们在数学计算上完全等价</p>
+<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/Block模块.png" alt="Block模块" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<p><strong>（c）block模块</strong></p>
+<blockquote>
+<p>首先通过1 x 1的卷积层进行降维处理，在经过Group Conv进行处理，且卷积核size = 3 x 3，group = 32，之后再通过1 x 1的卷积核进行升维处理，最后将输出与shortcut的输出相加，得到最终输出特征矩阵</p>
+</blockquote>
+<p><strong>（b）block模块</strong></p>
+<blockquote>
+<p>通过32个分支进行处理（total 32 paths），对于每个分支都首先采用1 x 1的卷积核进行降维处理，每一个分支都将特征矩阵从channel = 256降维到channel = 4，因分支 = 32，所以<strong>实际上通过这一层的降维处理之后，总体channel = 4 x 32 = 128，同（c）的第一步处理一致</strong>；</p>
+<p>之后对每个分支的特征矩阵进行3 x 3的卷积核进行卷积处理，处理之后再通过concatenate拼接，再通过1 x 1的卷积核进行升维处理，最后将输出与shortcut的输出相加，得到最终输出特征矩阵</p>
+</blockquote>
+<p><strong>（a）block模块</strong></p>
+<blockquote>
+<p>通过32个分支进行处理（total 32 paths），对于每个分支都首先采用1 x 1的卷积核进行降维处理，每一个分支都将特征矩阵从channel = 256降维到channel = 4；之后对每个分支的特征矩阵进行3 x 3的卷积核进行卷积处理；</p>
+<p>然后通过1 x 1的卷积核将特征矩阵升维从channel = 4到channel = 256，之后进行相加，<strong>原理上同（b）的concatenate拼接之后得到的特征矩阵一致</strong>；</p>
+<p>最后将输出与shortcut的输出相加，得到最终输出特征矩阵</p>
+</blockquote>
+<p><strong>（a）block模块的升维和相加步骤</strong></p>
+<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/（a）虚线框图像解释.png" alt="（a）虚线框图像解释" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<blockquote>
+<p>假设pants = 2，pants中采用数量为1的1 x 1的卷积核进行卷积。对这两个pants分别进行卷积之后会得到对应的feature map，再将二者的feature map进行相加，最终得到结果的feature map。</p>
+</blockquote>
+<p><strong>（b）block模块的concatenate步骤</strong></p>
+<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/（b）虚线框图像解释.png" alt="（b）虚线框图像解释" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<blockquote>
+<p>将按照pants = 2的feature map进行拼接，得到上图最左边的feature map，此处采用的kernel同样是1 x 1大小，且将对应的4个卷积核参数进行拼接，最终得到的feature map和前面（a）升维且相加之后的feature map的结果一致。</p>
+</blockquote>
+<h2 id="Block模块仅适用层结构≥3">Block模块仅适用层结构≥3</h2>
+<p>对于浅层的18、34层，其Inception的层级仅只有两层，搭建出来的block已经没有意义了。如果进行拆分之后再进行卷积，再进行相加的话，其实并未产生实质的变化，只不过卷积的个数变多了。</p>
+<img src="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/Block模块仅适用≥3层的层结构.png" alt="Block模块仅适用≥3层的层结构" style="border-width: 5px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<h1>总结</h1>
+<p>本次论文最大创新点就是提出Block模块，再次提高了整体网络的性能。</p>
 ]]></content>
       <categories>
         <category>深度学习</category>
