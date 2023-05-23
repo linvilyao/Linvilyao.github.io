@@ -33,7 +33,6 @@
 <meta property="og:image" content="http://linvilyao.github.io/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/%E5%8E%9F%E8%AE%BA%E6%96%87%E4%B8%AD%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8.png">
 <meta property="og:image" content="http://linvilyao.github.io/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/residual%E4%B8%AD%E5%AE%9E%E8%99%9A%E7%BA%BF%E7%9A%84%E5%8C%BA%E5%88%AB-34%E5%B1%82.png">
 <meta property="og:image" content="http://linvilyao.github.io/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/residual%E4%B8%AD%E5%AE%9E%E8%99%9A%E7%BA%BF%E7%9A%84%E5%8C%BA%E5%88%AB-%E6%9B%B4%E9%AB%98%E5%B1%82.png">
-<meta property="og:image" content="http://linvilyao.github.io/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/Batch%20Normalization.png">
 <meta property="og:image" content="http://linvilyao.github.io/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/BN%E5%8E%9F%E7%90%86%E5%9B%BE.png">
 <meta property="og:image" content="http://linvilyao.github.io/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/%E5%85%AC%E5%BC%8F.png">
 <meta property="og:image" content="http://linvilyao.github.io/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/BN%E6%A0%87%E5%87%86%E5%8C%96%E5%8E%9F%E7%90%86%E7%A4%BA%E4%BE%8B.png">
@@ -155,7 +154,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ResNet%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">ResNet详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E5%88%9B%E6%96%B0%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">网络中的创新点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E6%88%96%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8"><span class="nav-number">1.1.1.</span> <span class="nav-text">梯度消失或梯度爆炸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%80%E5%8C%96%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">退化问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#residual%E6%A8%A1%E5%9D%97%EF%BC%88%E6%AE%8B%E5%B7%AE%E7%BB%93%E6%9E%84%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">residual模块（残差结构）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2%E7%BB%93%E6%9E%84%E5%AF%B9%E6%AF%94"><span class="nav-number">1.2.1.</span> <span class="nav-text">图形结构对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8F%82%E6%95%B0%E5%AF%B9%E6%AF%94"><span class="nav-number">1.2.2.</span> <span class="nav-text">使用参数对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%8D%E7%BB%B4%E6%97%B6%E7%9A%84shortcut"><span class="nav-number">1.2.3.</span> <span class="nav-text">降维时的shortcut</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#34%E5%B1%82%E6%AE%8B%E5%B7%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">34层残差结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E9%AB%98%E5%B1%82%E7%9A%84%E6%AE%8B%E5%B7%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">更高层的残差结构</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Batch-Normalization%E6%A0%87%E5%87%86%E5%8C%96%E5%A4%84%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">Batch Normalization标准化处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BN%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.1.</span> <span class="nav-text">BN原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8BN%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.2.</span> <span class="nav-text">使用BN需要注意的问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E7%AE%80%E4%BB%8B"><span class="nav-number">2.</span> <span class="nav-text">迁移学习简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">ResNet详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E5%88%9B%E6%96%B0%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">网络中的创新点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E6%88%96%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8"><span class="nav-number">1.1.1.</span> <span class="nav-text">梯度消失或梯度爆炸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%80%E5%8C%96%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">退化问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#residual%E6%A8%A1%E5%9D%97%EF%BC%88%E6%AE%8B%E5%B7%AE%E7%BB%93%E6%9E%84%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">residual模块（残差结构）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2%E7%BB%93%E6%9E%84%E5%AF%B9%E6%AF%94"><span class="nav-number">1.2.1.</span> <span class="nav-text">图形结构对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8F%82%E6%95%B0%E5%AF%B9%E6%AF%94"><span class="nav-number">1.2.2.</span> <span class="nav-text">使用参数对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%8D%E7%BB%B4%E6%97%B6%E7%9A%84shortcut"><span class="nav-number">1.2.3.</span> <span class="nav-text">降维时的shortcut</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#34%E5%B1%82%E6%AE%8B%E5%B7%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">34层残差结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E9%AB%98%E5%B1%82%E7%9A%84%E6%AE%8B%E5%B7%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">更高层的残差结构</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Batch-Normalization%E6%A0%87%E5%87%86%E5%8C%96%E5%A4%84%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">Batch Normalization标准化处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BN%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.1.</span> <span class="nav-text">BN原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8BN%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.2.</span> <span class="nav-text">使用BN需要注意的问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">迁移学习简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -187,7 +186,29 @@
   </nav>
 </div>
 
-
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/05/23/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAMobileNetV2V3%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AE%AD%E7%BB%83/" title="2023&#x2F;05&#x2F;23&#x2F;使用pytorch搭建MobileNetV2V3并基于迁移学习训练&#x2F;">深度学习模型之CNN（十四）使用pytorch搭建MobileNetV2V3并基于迁移学习训练</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/05/22/MobileNetv1v2v3%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" title="2023&#x2F;05&#x2F;22&#x2F;MobileNetv1v2v3网络详解&#x2F;">深度学习模型之CNN（十三）MobileNetv1v2v3网络详解</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/05/21/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAResNeXt%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AE%AD%E7%BB%83/" title="2023&#x2F;05&#x2F;21&#x2F;使用pytorch搭建ResNeXt并基于迁移学习训练&#x2F;">深度学习模型之CNN（十二）使用pytorch搭建ResNeXt并基于迁移学习训练</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/05/17/ResNeXt%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84/" title="2023&#x2F;05&#x2F;17&#x2F;ResNeXt网络结构&#x2F;">深度学习模型之CNN（十一）ResNeXt网络结构</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/05/13/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAResNet%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AE%AD%E7%BB%83/" title="2023&#x2F;05&#x2F;13&#x2F;使用pytorch搭建ResNet并基于迁移学习训练&#x2F;">深度学习模型之CNN（十）使用pytorch搭建ResNet并基于迁移学习训练</a>
+        </li>
+    </ul>
+  </div>
         </div>
       </div>
 
@@ -320,7 +341,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.7k</span>
+      <span>4.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -339,35 +360,41 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="ResNet详解"><a href="#ResNet详解" class="headerlink" title="ResNet详解"></a>ResNet详解</h1><p>ResNet在2015年由微软实验室提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名（超级NB）。原论文：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1512.03385">Deep Residual Learning for Image Recognition</a></p>
-<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/ResNet-34层网络结构图.png" alt="ResNet-34层网络结构图"></p>
-<h2 id="网络中的创新点"><a href="#网络中的创新点" class="headerlink" title="网络中的创新点"></a>网络中的创新点</h2><ul>
+        <h1>ResNet详解</h1>
+<p>ResNet在2015年由微软实验室提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名（超级NB）。原论文：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1512.03385">Deep Residual Learning for Image Recognition</a></p>
+<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/ResNet-34%E5%B1%82%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%9B%BE.png" alt="ResNet-34层网络结构图"></p>
+<h2 id="网络中的创新点">网络中的创新点</h2>
+<ul>
 <li>超深的网络结构（突破1000层）</li>
 <li>提出residual模块（残差模块，因为有了残差模块，才能够搭建层数很深的网络）</li>
 <li>使用Batch Normalization加速训练（丢弃dropout）</li>
 </ul>
 <p>卷积层和池化层不断叠加是否都会导致准确率不断提高？</p>
 <p>下图（左）通过简单将卷积层和池化层进行堆叠所搭建的网络结构，橙黄色曲线表示20层的网络结构，最终的训练错误率在[1%, 2%]，红色区县表示56层网络结构，最终的训练错误率在[7%, 8%]，很明显，当仅仅通过简单的把卷积层和最大池化下采样层堆叠网络，并不代表层数越深效果越好。</p>
-<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/层数加深导致准确率变化情况.png" alt="层数加深导致准确率变化情况"></p>
+<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/%E5%B1%82%E6%95%B0%E5%8A%A0%E6%B7%B1%E5%AF%BC%E8%87%B4%E5%87%86%E7%A1%AE%E7%8E%87%E5%8F%98%E5%8C%96%E6%83%85%E5%86%B5.png" alt="层数加深导致准确率变化情况"></p>
 <p>那么是什么原因导致更深的网络造成效果越差呢？</p>
 <p>在ResNet论文中，作者给出以下两个结论：</p>
 <ul>
 <li>梯度消失或梯度爆炸</li>
 <li>退化问题（degradation problem）</li>
 </ul>
-<h3 id="梯度消失或梯度爆炸"><a href="#梯度消失或梯度爆炸" class="headerlink" title="梯度消失或梯度爆炸"></a><strong>梯度消失或梯度爆炸</strong></h3><p>随着网络层级越来越深，梯度消失或梯度爆炸的现象会越来越明显。</p>
+<h3 id="梯度消失或梯度爆炸"><strong>梯度消失或梯度爆炸</strong></h3>
+<p>随着网络层级越来越深，梯度消失或梯度爆炸的现象会越来越明显。</p>
 <blockquote>
 <p>假设每一层误差梯度小于1，那么在反向传播过程中，每向前传播一次，都要乘以这个小于1的系数。当网络越来越深的时候，所乘的小于1的系数越多，那么这个数越趋近于0，梯度就会越来越小，这就是所说的梯度消失现象。</p>
 <p>反过来，当每一层误差梯度是一个大于1的数，那么在反向传播过程中，每向前传播一次，都要乘以这个大于1的系数。当网络越来越深的时候，梯度就会越来越大，这就是所说的梯度爆炸现象。</p>
 </blockquote>
 <p><strong>如何解决梯度消失/爆炸</strong>：通常对数据进行标准化处理、权重初始化、以及这堂课将会讲述的<strong>Batch Normalization标准化处理</strong>来解决</p>
-<h3 id="退化问题"><a href="#退化问题" class="headerlink" title="退化问题"></a>退化问题</h3><p>在解决了梯度消失或梯度爆炸的问题之后，可能仍然会出现层数深的没有层数小的效果好的问题。也就是网络越深反而识别错误率提高的现象。</p>
+<h3 id="退化问题">退化问题</h3>
+<p>在解决了梯度消失或梯度爆炸的问题之后，可能仍然会出现层数深的没有层数小的效果好的问题。也就是网络越深反而识别错误率提高的现象。</p>
 <p><strong>那该如何来解决提到的退化问题呢？</strong></p>
 <p>在ResNet论文当中，作者提到一个名为<strong>残差的结构</strong>，通过残差结构，即能解决退化问题</p>
 <p>上图（右）就是在原论文中所搭建的一系列网络，里面有20、32、44、56、110层的网络。其中实线代表验证集的错误率变化情况，虚线代表测试集的错误率变化情况（主要看验证集中的错误率）</p>
 <p>在图中，随着层数的加深，错误率越小，效果越好。对比图左，ResNet确实解决了文中所提到的退化问题，因此，我们即可以使用文中提到的残差结构来不断加深网络，以获得更好的结果</p>
-<h2 id="residual模块（残差结构）"><a href="#residual模块（残差结构）" class="headerlink" title="residual模块（残差结构）"></a>residual模块（残差结构）</h2><p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/residual结构.png" alt="residual结构"></p>
-<h3 id="图形结构对比"><a href="#图形结构对比" class="headerlink" title="图形结构对比"></a>图形结构对比</h3><p>图中代表着两种不同的残差结构，左边的结构主要针对网络层数较少的结构，对应的是32层的网络结构；右边的结构对应的是50、101、152层的网络结构。</p>
+<h2 id="residual模块（残差结构）">residual模块（残差结构）</h2>
+<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/residual%E7%BB%93%E6%9E%84.png" alt="residual结构"></p>
+<h3 id="图形结构对比">图形结构对比</h3>
+<p>图中代表着两种不同的残差结构，左边的结构主要针对网络层数较少的结构，对应的是32层的网络结构；右边的结构对应的是50、101、152层的网络结构。</p>
 <p>左边结构的主分支，将输入特征矩阵通过2个3×3的卷积层得到结果，右边有一个弧线，直接从输入连接到输出，并在输出点有个+符号。意思是：<strong>在主分支上通过一系列卷积层之后所得到的特征矩阵，再与输入特征矩阵进行相加，相加之后再通过ReLU激活函数</strong>。且在主分支上，第一次卷积层之后通过ReLU激活函数激活，但第二层是在与输入特征矩阵相加之后，再通过ReLU激活函数激活的。</p>
 <p><strong>注意：主分支与侧分支（shortcut）的输出特征矩阵中shape必须相同</strong></p>
 <p>右边结构的主分支，将输入特征矩阵先通过1×1卷积层，再通过3×3的卷积层，最后通过1×1的卷积层之后，与侧分支的输入特征矩阵进行相加，最终得出结果。</p>
@@ -375,65 +402,78 @@
 <blockquote>
 <p>在结构中，输入深度为256的特征矩阵，通过1×1卷积层，高宽不变，深度由256变为64，因此第一个卷积层是起到降维的作用。再通过一个3×3卷积层，之后再经过1×1卷积层，高宽不变，深度由64变为256，因此这一个卷积层是起到升维的作用。</p>
 </blockquote>
-<h3 id="使用参数对比"><a href="#使用参数对比" class="headerlink" title="使用参数对比"></a>使用参数对比</h3><p>左侧residual结构所需参数：3 × 3 × 256 × 256 + 3 × 3 × 256 × 256 = 1,179,648</p>
+<h3 id="使用参数对比">使用参数对比</h3>
+<p>左侧residual结构所需参数：3 × 3 × 256 × 256 + 3 × 3 × 256 × 256 = 1,179,648</p>
 <p>右侧residual结构所需参数：1 × 1 × 256 × 64 + 3 × 3 × 64 × 64 + 1 × 1 × 64 × 256 = 69,632</p>
 <p>使用的残差结构越多，减少的参数也就越多</p>
-<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/原论文中的参数列表.png" alt="原论文中的参数列表"></p>
+<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/%E5%8E%9F%E8%AE%BA%E6%96%87%E4%B8%AD%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8.png" alt="原论文中的参数列表"></p>
 <p>上图是原论文给出的不同深度的ResNet网络结构配置，代表着在不同层数下的参数列表，所对应的是18、34、50、101、152层的网络结构。注意表中的残差结构给出了主分支上卷积核的大小与卷积核个数，表中 残差块×N 表示将该残差结构重复N次。</p>
 <p>图中显示，这几个网络框架是一致的，同样是通过1个7X7的卷积层，再通过3X3的最大池化下采样层，再分别通过一系列残差结构，最后再接1个平均池化下采样层以及全连接层输出，softmax将输出转化为概率分布。</p>
-<h3 id="降维时的shortcut"><a href="#降维时的shortcut" class="headerlink" title="降维时的shortcut"></a>降维时的shortcut</h3><h4 id="34层残差结构"><a href="#34层残差结构" class="headerlink" title="34层残差结构"></a>34层残差结构</h4><p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/residual中实虚线的区别-34层.png" alt="residual中实虚线的区别-34层"></p>
+<h3 id="降维时的shortcut">降维时的shortcut</h3>
+<h4 id="34层残差结构">34层残差结构</h4>
+<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/residual%E4%B8%AD%E5%AE%9E%E8%99%9A%E7%BA%BF%E7%9A%84%E5%8C%BA%E5%88%AB-34%E5%B1%82.png" alt="residual中实虚线的区别-34层"></p>
 <p>经过对 ResNet34层网络的观察，可以发现有些残差块的shortcut是实线的，而有些则是虚线的。这二者间有什么区别呢？</p>
 <p>对于上图左两层3X3卷积层的残差结构来说，输入特征矩阵深度和输出特征矩阵的shape是一致的，所以能够直接进行相加。但是对于上图右虚线的残差结构来说，其输入和输出的shape是不一致的。</p>
 <p>上图右对应到参数表中，是ResNet-34层conv3.x第一层，输入特征矩阵shape是[56, 56, 64]，输出特征矩阵shape是[28, 28, 128]</p>
 <p><strong>只有通过虚线残差结构，得到输出之后输入到实线对应的残差结构当中，才能够保证输入特征矩阵和输出特征矩阵的shape保持一致。</strong></p>
-<h4 id="更高层的残差结构"><a href="#更高层的残差结构" class="headerlink" title="更高层的残差结构"></a>更高层的残差结构</h4><p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/residual中实虚线的区别-更高层.png" alt="residual中实虚线的区别-更高层"></p>
+<h4 id="更高层的残差结构">更高层的残差结构</h4>
+<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/residual%E4%B8%AD%E5%AE%9E%E8%99%9A%E7%BA%BF%E7%9A%84%E5%8C%BA%E5%88%AB-%E6%9B%B4%E9%AB%98%E5%B1%82.png" alt="residual中实虚线的区别-更高层"></p>
 <p>上图右虚线对应的参数，也就是参数表中conv3.x对应的一系列残差结构：50,101,152层。输入特征矩阵的shape是[56, 56, 256],输出特征矩阵的shape是[28, 28, 512]</p>
 <blockquote>
 <p>对于主分支而言，stride=1，所以第一层1X1卷积层只起到降维的作用，不改变高宽，将深度从256改为128；在第二层stride=2，（ 56 - 3 + 1 ）/ 2 + 1 = 28，所以第二层3X3卷积层将特征矩阵的高宽缩减为原本的一半，深度不变；第三层stride=1，所以第三层1X1卷积层只起到升维的作用，不改变高宽，将深度从128升到512。</p>
-<p>对于shortcut分支，仅使用1X1，深度为512，stride = 2的卷积层对输入特征矩阵起到升维且改变高宽的目的。深度1X1，将深度从256改为512；stride = 2，将输入特征矩阵高宽56，改为28。</p>
-<script type="math/tex; mode=display">
-N = （ W-F+2P ）/S+1</script></blockquote>
+<p>对于shortcut分支，仅使用1X1，深度为512，stride = 2的卷积层对输入特征矩阵起到升维且改变高宽的目的。深度1X1，将深度从256改为512；stride = 2，将输入特征矩阵高宽56，改为28。<br>
+$$<br>
+N = （ W-F+2P ）/S+1<br>
+$$</p>
+</blockquote>
 <p>原论文中，作者对于残差结构的shortcut有optionA、B、C三个方法，但作者通过一系列对比之后，得出optionB方法效果最好。</p>
 <p>由此得知，虚线残差结构有一个额外的作用，<strong>就是将输入特征矩阵的shape与输出特征矩阵的shape保持一致（变化高宽深）</strong>，而在实线中，输入和输出特征矩阵的shape是完全无变化的</p>
 <p>所以在参数表中，50层及以上的深层网络结构，<strong>conv3、conv4、conv5所对应的一系列残差结构的第一层都是虚线残差结构</strong>。因为第一层需要将上一层输出的特征矩阵的高宽深度调整为当前层所需要的特征矩阵的高宽深度。<strong>在conv2中，仅仅改变了深度（所以用的还是实线）</strong></p>
-<h2 id="Batch-Normalization标准化处理"><a href="#Batch-Normalization标准化处理" class="headerlink" title="Batch Normalization标准化处理"></a>Batch Normalization标准化处理</h2><p>老师博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37541097/article/details/104434557">Batch Normalization详解以及pytorch实验</a></p>
+<h2 id="Batch-Normalization标准化处理">Batch Normalization标准化处理</h2>
+<p>老师博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37541097/article/details/104434557">Batch Normalization详解以及pytorch实验</a></p>
 <p>Batch Normalization是google团队在2015年论文<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1502.03167">《Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift》</a>提出的。通过该方法能够加速网络的收敛并提升准确率。本文主要分为以下几个部分：</p>
 <ul>
 <li>BN的原理</li>
 <li>使用pytorch验证本文的观点</li>
 <li>使用BN需要注意的地方（BN没用好就是个坑）</li>
 </ul>
-<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/Batch Normalization.png" alt="Batch Normalization"></p>
-<h3 id="BN原理"><a href="#BN原理" class="headerlink" title="BN原理"></a>BN原理</h3><p>在之前搭建网络过程中，通常第一步会对图像进行标准化处理，也就是将图像数据调整到满足某分布规律，这样能够加速网络的收敛。如下图所示，对于conv1而言，输入的就是经过预处理之后满足某分布规律的特征矩阵，但对于conv2而言，输入的feature map就不一定满足某分布规律了，而Batch Normalization目的即是使feature map满足均值为0，方差为1的分布规律。</p>
+<p>![Batch Normalization](ResNet网络结构，BN以及迁移学习详解/Batch Normalization.png)</p>
+<h3 id="BN原理">BN原理</h3>
+<p>在之前搭建网络过程中，通常第一步会对图像进行标准化处理，也就是将图像数据调整到满足某分布规律，这样能够加速网络的收敛。如下图所示，对于conv1而言，输入的就是经过预处理之后满足某分布规律的特征矩阵，但对于conv2而言，输入的feature map就不一定满足某分布规律了，而Batch Normalization目的即是使feature map满足均值为0，方差为1的分布规律。</p>
 <p><strong>注意：Batch Normalization的目的是使我们的一批（Batch）feature map满足均值为0，方差为1 分布规律，并不指某一个feature map</strong></p>
-<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/BN原理图.png" alt="BN原理图"></p>
-<p>原论文中有一句：“对于一个拥有d维的输入x，我们将对它的每一个维度进行标准化处理。” </p>
+<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/BN%E5%8E%9F%E7%90%86%E5%9B%BE.png" alt="BN原理图"></p>
+<p>原论文中有一句：“对于一个拥有d维的输入x，我们将对它的每一个维度进行标准化处理。”</p>
 <blockquote>
 <p>假设我们输入的x是RGB三通道的彩色图像，那么这里的d就是输入图像的channels即d=3，$x=(x^{(1)}+x^{(2)}+x^{(3)})$，$x^{(1)}$代表我们的R通道所对应的特征矩阵，依此类推。标准化处理也就是<strong>分别</strong>对R通道，G通道，B通道进行处理。</p>
 </blockquote>
-<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/公式.png" alt="原论文公式"></p>
+<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/%E5%85%AC%E5%BC%8F.png" alt="原论文公式"></p>
 <p>γ主要调整数据方差的大小，β主要调整这批数据均值的大小（是否处于中心），如果不通过γ和β进行调整，那么得到的数据是均值为0方差为1的数据分布规律。<strong>γ和β是通过反向传播去学习得到的，均值和方差是根据一批批的数据统计得到的</strong></p>
 <p>γ初始值为1，β初始值为0</p>
 <p>示例如下</p>
-<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/BN标准化原理示例.png" alt="BN标准化原理示例"></p>
+<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/BN%E6%A0%87%E5%87%86%E5%8C%96%E5%8E%9F%E7%90%86%E7%A4%BA%E4%BE%8B.png" alt="BN标准化原理示例"></p>
 <p>上图展示了一个batch size为2（两张图片）的Batch Normalization的计算过程。</p>
 <blockquote>
 <p>假设feature1、feature2分别是由image1、image2经过一系列卷积池化后得到的特征矩阵，feature的channel为2，那么$x^{(1)}$代表该batch的所有feature的channel1的数据，即$x^{(1)}$={1，1，1，2，0，-1，2，2}，$x^{(2)}$同理。</p>
 <p><strong>注意：最终所得到的均值和方差是一个向量，其向量的长度即为特征矩阵的深度</strong></p>
 </blockquote>
-<h3 id="使用BN需要注意的问题"><a href="#使用BN需要注意的问题" class="headerlink" title="使用BN需要注意的问题"></a>使用BN需要注意的问题</h3><ul>
-<li><p>训练时要将traning参数设置为True，在验证时将trainning参数设置为False。在pytorch中可通过创建模型的model.train()和model.eval()方法控制。</p>
+<h3 id="使用BN需要注意的问题">使用BN需要注意的问题</h3>
+<ul>
+<li>
+<p>训练时要将traning参数设置为True，在验证时将trainning参数设置为False。在pytorch中可通过创建模型的model.train()和model.eval()方法控制。</p>
 </li>
-<li><p>batch size尽可能设置大点，设置小后表现可能很糟糕，设置的越大求的均值和方差越接近整个训练集的均值和方差。</p>
+<li>
+<p>batch size尽可能设置大点，设置小后表现可能很糟糕，设置的越大求的均值和方差越接近整个训练集的均值和方差。</p>
 </li>
-<li><p>建议将bn层放在卷积层（Conv）和激活层（例如Relu）之间，且卷积层不要使用偏置bias，因为没有用，参考下图推理，即使使用了偏置bias求出的结果也是一样的$y^b_i=y_i$</p>
+<li>
+<p>建议将bn层放在卷积层（Conv）和激活层（例如Relu）之间，且卷积层不要使用偏置bias，因为没有用，参考下图推理，即使使用了偏置bias求出的结果也是一样的$y^b_i=y_i$</p>
 </li>
 </ul>
-<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/使用bias和不使用bias效果一致.png" alt="使用bias和不使用bias效果一致"></p>
-<h1 id="迁移学习简介"><a href="#迁移学习简介" class="headerlink" title="迁移学习简介"></a>迁移学习简介</h1><p>迁移学习是一个比较大的领域，我们这里说的迁移学习是指神经网络训练中使用到的迁移学习。</p>
+<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/%E4%BD%BF%E7%94%A8bias%E5%92%8C%E4%B8%8D%E4%BD%BF%E7%94%A8bias%E6%95%88%E6%9E%9C%E4%B8%80%E8%87%B4.png" alt="使用bias和不使用bias效果一致"></p>
+<h1>迁移学习简介</h1>
+<p>迁移学习是一个比较大的领域，我们这里说的迁移学习是指神经网络训练中使用到的迁移学习。</p>
 <p>如下图所示，神经网络逐层提取图像的深层信息，这样，预训练网络就相当于一个特征提取器。</p>
 <p>迁移学习，即将学习好了的浅层网络的一些参数，迁移到新的网络当中，这一新的网络中也具备识别底层通用特征的能力了。当新网络拥有了底层通用特征检测识别能力之后，就能更快速去学习新的数据集的高维特征。</p>
-<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/简单的网络模型.png" alt="简单的网络模型"></p>
+<p><img src="/2023/05/11/ResNet%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%EF%BC%8CBN%E4%BB%A5%E5%8F%8A%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/%E7%AE%80%E5%8D%95%E7%9A%84%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B.png" alt="简单的网络模型"></p>
 <p>使用迁移学习的优势</p>
 <ul>
 <li>能够快速的训练出一个理想的结果</li>
@@ -446,7 +486,8 @@ N = （ W-F+2P ）/S+1</script></blockquote>
 <li>载入权重后只训练最后几层参数</li>
 <li>载入权重后在原网络基础上再添加一层全连接层，仅训练最后一个全连接层</li>
 </ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本节课程讲解ResNet网络结构，针对残差结构做了详细讲解、讲解Batch Normalization标准化处理过程以及迁移学习内容介绍，下节课将会使用pytorch搭建ResNet网络结构。</p>
+<h1>总结</h1>
+<p>本节课程讲解ResNet网络结构，针对残差结构做了详细讲解、讲解Batch Normalization标准化处理过程以及迁移学习内容介绍，下节课将会使用pytorch搭建ResNet网络结构。</p>
 
     </div>
 
