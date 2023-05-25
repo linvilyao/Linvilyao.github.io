@@ -3232,7 +3232,9 @@ N = (W-F+2P)/S + 1<br>
   <entry>
     <title>深度学习模型之CNN（十六）使用Pytorch搭建ShuffleNetv2</title>
     <url>/2023/05/25/%E4%BD%BF%E7%94%A8Pytorch%E6%90%AD%E5%BB%BAShuffleNetv2/</url>
-    <content><![CDATA[<p><strong>tips:</strong></p>
+    <content><![CDATA[<h1>工程目录</h1>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">├── Test7_shufflenet</span><br><span class="line">	├── model.py（模型文件）  </span><br><span class="line">	├── my_dataset.py（数据处理文件）  </span><br><span class="line">	├── train.py（调用模型训练，自动生成class_indices.json,ShuffleNetV2.pth文件）</span><br><span class="line">	├── predict.py（调用模型进行预测）</span><br><span class="line">	├── utils.py（工具文件，用得上就对了）</span><br><span class="line">	├── tulip.jpg（用来根据前期的训练结果来predict图片类型）</span><br><span class="line">	└── shufflenetv2_x1.pth（用于迁移学习时，提前下载好官方的shufflenetv2_x1权重脚本）</span><br><span class="line">└── data_set</span><br><span class="line">	└── data数据集</span><br></pre></td></tr></table></figure>
+<p><strong>tips:</strong></p>
 <ol>
 <li>下载好数据集，代码中默认使用的是花分类数据集，下载地址: <a href="https://storage.googleapis.com/download.tensorflow.org/example_images/flower_photos.tgz">花分类数据集</a>, 如果下载不了的话可以通过百度云链接下载: <a href="https://pan.baidu.com/s/1QLCTA4sXnQAw_yvxPj9szg">花分类数据集</a> 提取码:58p0</li>
 <li>在<code>train.py</code>脚本中将<code>--data-path</code>设置成解压后的<code>flower_photos</code>文件夹绝对路径</li>
