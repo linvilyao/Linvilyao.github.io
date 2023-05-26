@@ -3334,7 +3334,7 @@ N = (W-F+2P)/S + 1<br>
 <h1>前言</h1>
 <p>在之前的学习的网络结构（例如AlexNet，VGG，ResNet等）中，都将输入图像分辨率固定为224，为什么卷积的个数要设置为这个值，为什么网络的深度设为这么深？这些问题你要问设计作者的话，估计回复就四个字——工程经验。</p>
 <p>而这篇论文<strong>同时探索输入分辨率、网络的深度、宽度对准确率的影响</strong>。在论文中提到，本文提出的EfficientNet-B7在Imagenet top-1上达到了当年最高准确率84.3%，与之前准确率最高的GPipe相比，参数数量（Params）仅为其1/8.4，推理速度提升了6.1倍（看上去又快又轻量，但个人实际使用起来发现很吃显存）。下图是EfficientNet与其他网络的对比（注意：<strong>参数数量少并不意味推理速度就快</strong>）。</p>
-<p><img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Users/86147/Desktop/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNet-B7%E5%8F%82%E6%95%B0%E5%87%86%E7%A1%AE%E7%8E%87%E5%AF%B9%E6%AF%94.png" alt="EfficientNet-B7参数准确率对比"></p>
+<img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNet-B7参数准确率对比.png" alt="EfficientNet-B7参数准确率对比" style="border-width: 1px; border-style: solid; border-color: rgb(224, 224, 224); ">
 <h1>论文思想</h1>
 <ul>
 <li>下图（a）是传统的卷积神经网络；</li>
@@ -3343,13 +3343,13 @@ N = (W-F+2P)/S + 1<br>
 <li>下图（d）是在（a）的基础上通过增加输入<code>网络的分辨率</code>来提升网络的性能；</li>
 <li>本篇论文中<strong>同时增加网络的<code>width</code>、<code>channel</code>以及输入网络的分辨率来提升网络的性能</strong>，如图（e）</li>
 </ul>
-<p><img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Users/86147/Desktop/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E4%B8%BA%E6%8F%90%E9%AB%98%E5%87%86%E7%A1%AE%E7%8E%87%E6%89%80%E9%87%87%E5%8F%96%E7%9A%84%E6%96%B9%E6%B3%95.png" alt="网络结构为提高准确率所采取的方法"></p>
+<img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/网络结构为提高准确率所采取的方法.png" alt="网络结构为提高准确率所采取的方法" style="border-width: 1px; border-style: solid; border-color: rgb(224, 224, 224); ">
 <ul>
 <li>增加网络的<code>width</code>，即增加卷积核的个数，能够获得更高细粒度的特征并且也更容易训练，但对于width很大而深度较浅的网络往往很难学习到更深层次的特征。</li>
 <li>根据以往的经验，增加网络的深度<code>depth</code>，即增加网络的层结构，能够得到更加丰富、复杂的特征并且能够很好的应用到其它任务中。但网络的深度过深会面临梯度消失，训练困难的问题。</li>
 <li>增加输入网络的图像分辨率能够潜在得获得更高细粒度的特征模板，但对于非常高的输入分辨率，准确率的增益也会减小。并且大分辨率图像会增加计算量。</li>
 </ul>
-<p>![分别增加width depth和分辨率的准确率](C:/Users/86147/Desktop/EfficientNet网络详解/分别增加width depth和分辨率的准确率.png)</p>
+<img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/分别增加width depth和分辨率的准确率.png" alt="分别增加width depth和分辨率的准确率" style="border-width: 1px; border-style: solid; border-color: rgb(224, 224, 224); ">
 <h1>EfficientNet的网络结构</h1>
 <p>通过网络搜索（<strong>Neural Architecture Search</strong>)技术得到的结构（B1-B7就是在B0的基础上修改<code>Resolution</code>，<code>Channels</code>以及<code>Layers</code>），整个网络框架由一系列Stage组成。<strong>表中的卷积层后都默认跟有BN以及Swish激活函数</strong>，MBConv为MobileNet Conv。</p>
 <ul>
@@ -3463,7 +3463,7 @@ N = (W-F+2P)/S + 1<br>
 </table>
 <h1>EfficientNet与当时主流网络的性能参数对比</h1>
 <p>虽然参数少，准确率高，但是超级占显存。</p>
-<p><img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNet%E4%B8%8E%E5%BD%93%E6%97%B6%E4%B8%BB%E6%B5%81%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%E5%8F%82%E6%95%B0%E5%AF%B9%E6%AF%94.png" alt="EfficientNet与当时主流网络的性能参数对比"></p>
+<img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNet与当时主流网络的性能参数对比.png" alt="EfficientNet与当时主流网络的性能参数对比" style="border-width: 1px; border-style: solid; border-color: rgb(224, 224, 224); ">
 ]]></content>
       <categories>
         <category>深度学习</category>
