@@ -3327,4 +3327,150 @@ N = (W-F+2P)/S + 1<br>
         <tag>Pytorch搭建CNN</tag>
       </tags>
   </entry>
+  <entry>
+    <title>深度学习模型之CNN（十七）EfficientNet网络详解</title>
+    <url>/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<p>原论文：<a href="https://arxiv.org/pdf/1905.11946v1.pdf">EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks</a></p>
+<h1>前言</h1>
+<p>在之前的学习的网络结构（例如AlexNet，VGG，ResNet等）中，都将输入图像分辨率固定为224，为什么卷积的个数要设置为这个值，为什么网络的深度设为这么深？这些问题你要问设计作者的话，估计回复就四个字——工程经验。</p>
+<p>而这篇论文<strong>同时探索输入分辨率、网络的深度、宽度对准确率的影响</strong>。在论文中提到，本文提出的EfficientNet-B7在Imagenet top-1上达到了当年最高准确率84.3%，与之前准确率最高的GPipe相比，参数数量（Params）仅为其1/8.4，推理速度提升了6.1倍（看上去又快又轻量，但个人实际使用起来发现很吃显存）。下图是EfficientNet与其他网络的对比（注意：<strong>参数数量少并不意味推理速度就快</strong>）。</p>
+<p><img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Users/86147/Desktop/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNet-B7%E5%8F%82%E6%95%B0%E5%87%86%E7%A1%AE%E7%8E%87%E5%AF%B9%E6%AF%94.png" alt="EfficientNet-B7参数准确率对比"></p>
+<h1>论文思想</h1>
+<ul>
+<li>下图（a）是传统的卷积神经网络；</li>
+<li>下图（b）是在（a）的基础上增大了网络的宽度width，实际上指的是特征矩阵的channel。即增加卷积核的个数（增加特征矩阵的<code>channels</code>）来提升网络的性能；</li>
+<li>下图（c）是在（a）的基础上增大了网络的深度channel，实际上指的是通过增加网络的深度<code>layers</code>。即使用更多的层结构来提升网络的性能；</li>
+<li>下图（d）是在（a）的基础上通过增加输入<code>网络的分辨率</code>来提升网络的性能；</li>
+<li>本篇论文中<strong>同时增加网络的<code>width</code>、<code>channel</code>以及输入网络的分辨率来提升网络的性能</strong>，如图（e）</li>
+</ul>
+<p><img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Users/86147/Desktop/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E4%B8%BA%E6%8F%90%E9%AB%98%E5%87%86%E7%A1%AE%E7%8E%87%E6%89%80%E9%87%87%E5%8F%96%E7%9A%84%E6%96%B9%E6%B3%95.png" alt="网络结构为提高准确率所采取的方法"></p>
+<ul>
+<li>增加网络的<code>width</code>，即增加卷积核的个数，能够获得更高细粒度的特征并且也更容易训练，但对于width很大而深度较浅的网络往往很难学习到更深层次的特征。</li>
+<li>根据以往的经验，增加网络的深度<code>depth</code>，即增加网络的层结构，能够得到更加丰富、复杂的特征并且能够很好的应用到其它任务中。但网络的深度过深会面临梯度消失，训练困难的问题。</li>
+<li>增加输入网络的图像分辨率能够潜在得获得更高细粒度的特征模板，但对于非常高的输入分辨率，准确率的增益也会减小。并且大分辨率图像会增加计算量。</li>
+</ul>
+<p>![分别增加width depth和分辨率的准确率](C:/Users/86147/Desktop/EfficientNet网络详解/分别增加width depth和分辨率的准确率.png)</p>
+<h1>EfficientNet的网络结构</h1>
+<p>通过网络搜索（<strong>Neural Architecture Search</strong>)技术得到的结构（B1-B7就是在B0的基础上修改<code>Resolution</code>，<code>Channels</code>以及<code>Layers</code>），整个网络框架由一系列Stage组成。<strong>表中的卷积层后都默认跟有BN以及Swish激活函数</strong>，MBConv为MobileNet Conv。</p>
+<ul>
+<li><code>Resolution</code>：每一层Stage输入特征矩阵的高和宽；</li>
+<li><code>Channels</code>：通过该Stage后输出特征矩阵的Channels；</li>
+<li><code>Layers</code>：指将Operator操作重复多少次</li>
+<li><code>stride</code>：指的是每一层Stage的第一个MBConv中卷积核的stride，其余默认stride = 1</li>
+</ul>
+<p>网络总共分成了9个Stage，第一个Stage是一个卷积核大小为3x3步距为2的普通卷积层（包含BN和激活函数Swish），Stage2～Stage8都是在重复堆叠MBConv结构，而Stage9由一个普通的1x1的卷积层（包含BN和激活函数Swish）、一个平均池化层和一个全连接层组成。</p>
+<p>表格中每个MBConv后会跟一个数字1或6，这里的1或6就是倍率因子n即MBConv中第一个1x1的卷积层会将输入特征矩阵的channels扩充为n倍，其中k3x3或k5x5表示MBConv中Depthwise Conv所采用的卷积核大小。</p>
+<img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNet-B0网络结构.png" alt="EfficientNet-B0网络结构" style="border-width: 1px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<h2 id="MBConv结构">MBConv结构</h2>
+<p>MBConv其实就是MobileNetV3网络中的InvertedResidualBlock，但也有些许区别。一个是采用的激活函数不一样（EfficientNet的MBConv中使用的都是<strong>Swish激活函数</strong>），另一个是在<strong>每个MBConv中都加入了SE（Squeeze-and-Excitation）模块</strong>。</p>
+<p>如下图所示，MBConv结构主要由一个1x1的普通卷积（升维作用，包含BN和Swish），一个kxk的Depthwise Conv卷积（包含BN和Swish）<strong>k的具体值可看EfficientNet-B0的网络框架主要有3x3和5x5两种情况</strong>，一个SE模块，一个1x1的普通卷积（降维作用，包含BN），一个Droupout层构成。搭建过程中还需要注意几点：</p>
+<blockquote>
+<ul>
+<li>第一个升维的1x1卷积层，它的卷积核个数是输入特征矩阵channel的n倍，n ∈ { 1 , 6 }。</li>
+<li>当n = 1时，不要第一个升维的1x1卷积层，即Stage2中的MBConv结构都没有第一个升维的1x1卷积层（这和MobileNetV3网络类似）。</li>
+<li>关于shortcut连接，仅当输入MBConv结构的特征矩阵与输出的特征矩阵shape相同时才存在（代码中可通过stride==1 and inputc_channels==output_channels条件来判断）。</li>
+</ul>
+<p>注意：<strong>在源码实现中只有使用shortcut的时候才有Dropout层</strong></p>
+</blockquote>
+<img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/MBConv结构.png" alt="MBConv结构" style="border-width: 1px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<p>SE模块如下图所示，由一个全局平均池化，两个全连接层组成。第一个全连接层的节点个数是输入该MBConv特征矩阵channels的1/4，且使用Swish激活函数。第二个全连接层的节点个数等于<code>Depthwise Conv</code>层输出的特征矩阵<code>channels</code>，且使用Sigmoid激活函数。</p>
+<img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/SE模块.png" alt="SE模块" style="border-width: 1px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<h2 id="EfficientNet-B0-B7参数">EfficientNet-B0-B7参数</h2>
+<ul>
+<li><code>input_size</code>代表训练网络时输入网络的图像大小</li>
+<li><code>width coeficient</code>：代表channel维度上的倍率因子，比如在 EfcientNetB0中Stagel的3x3卷积层所使用的卷积核个数是32，那么在B6中就是 32 X 18=57.6接着取整到离它最近的8的整数倍即56，其它Stage同理。</li>
+<li><code>depth coeficient</code>：代表depth维度上的倍率因子（仅针对Stage2到Stage8），比如在EcientNetB0中Stage7的L=4，那么在B6中就是 4 X 2.6=10.4，接着向上取整即11。</li>
+<li><code>drop_connect_rate</code>是在<code>MBConv</code>结构中dropout层使用的<code>drop_rate</code>，在官方keras模块的实现中<code>MBConv</code>结构的<code>drop_rate</code>是从0递增到<code>drop_connect_rate</code>的（<strong>在源码实现中只有使用shortcut的时候才有Dropout层</strong>）。还需要注意的是，这里的Dropout层是<code>Stochastic Depth</code>，即会随机丢掉整个block的主分支（只剩捷径分支，相当于直接跳过了这个block）也可以理解为减少了网络的深度。</li>
+<li><code>dropout_rate</code>是最后一个全连接层前的<code>dropout</code>层（在<code>stage9</code>的Pooling与FC之间）的<code>dropout_rate</code>。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Model</th>
+<th style="text-align:center">input_size</th>
+<th style="text-align:center">width_coefficient</th>
+<th style="text-align:center">depth_coefficient</th>
+<th style="text-align:center">connect_rate</th>
+<th style="text-align:center">dropout_rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">EfficientNetB0</td>
+<td style="text-align:center">224x224</td>
+<td style="text-align:center">1.0</td>
+<td style="text-align:center">1.0</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.2</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB1</td>
+<td style="text-align:center">240x240</td>
+<td style="text-align:center">1.0</td>
+<td style="text-align:center">1.1</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.2</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB2</td>
+<td style="text-align:center">260x260</td>
+<td style="text-align:center">1.1</td>
+<td style="text-align:center">1.2</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.3</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB3</td>
+<td style="text-align:center">300x300</td>
+<td style="text-align:center">1.2</td>
+<td style="text-align:center">1.4</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.3</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB4</td>
+<td style="text-align:center">380x380</td>
+<td style="text-align:center">1.4</td>
+<td style="text-align:center">1.8</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.4</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB5</td>
+<td style="text-align:center">456x456</td>
+<td style="text-align:center">1.6</td>
+<td style="text-align:center">2.2</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.4</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB6</td>
+<td style="text-align:center">528x528</td>
+<td style="text-align:center">1.8</td>
+<td style="text-align:center">2.6</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.5</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB7</td>
+<td style="text-align:center">600x600</td>
+<td style="text-align:center">2.0</td>
+<td style="text-align:center">3.1</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.5</td>
+</tr>
+</tbody>
+</table>
+<h1>EfficientNet与当时主流网络的性能参数对比</h1>
+<p>虽然参数少，准确率高，但是超级占显存。</p>
+<p><img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNet%E4%B8%8E%E5%BD%93%E6%97%B6%E4%B8%BB%E6%B5%81%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%E5%8F%82%E6%95%B0%E5%AF%B9%E6%AF%94.png" alt="EfficientNet与当时主流网络的性能参数对比"></p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>神经网络</tag>
+        <tag>CNN网络详解</tag>
+      </tags>
+  </entry>
 </search>

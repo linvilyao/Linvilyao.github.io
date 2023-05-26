@@ -20,38 +20,36 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","width":240,"display":"post","padding":14,"offset":10},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础5.1》，作为随堂笔记">
+    <meta name="description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础9.1》，作为随堂笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="深度学习模型之CNN（七）GoogLeNet网络详解">
-<meta property="og:url" content="http://linvilyao.github.io/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:title" content="深度学习模型之CNN（十七）EfficientNet网络详解">
+<meta property="og:url" content="http://linvilyao.github.io/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/index.html">
 <meta property="og:site_name" content="Linvil&#39;s Blog">
-<meta property="og:description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础5.1》，作为随堂笔记">
+<meta property="og:description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础9.1》，作为随堂笔记">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://linvilyao.github.io/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/VGG%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E5%9B%BE.png">
-<meta property="og:image" content="http://linvilyao.github.io/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Inception%E7%BB%93%E6%9E%84%E5%88%9D%E5%A7%8B%E7%89%88%E6%9C%AC.png">
-<meta property="og:image" content="http://linvilyao.github.io/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E5%8A%A0%E4%B8%8A%E9%99%8D%E7%BB%B4%E5%8A%9F%E8%83%BD%E7%9A%84Inception%E7%BB%93%E6%9E%84.png">
-<meta property="og:image" content="http://linvilyao.github.io/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E9%99%8D%E7%BB%B4%E5%9B%BE%E7%A4%BA.png">
-<meta property="og:image" content="http://linvilyao.github.io/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E8%BE%85%E5%8A%A9%E5%88%86%E7%B1%BB%E5%99%A8.png">
-<meta property="og:image" content="http://linvilyao.github.io/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/GoogLeNet%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84.png">
-<meta property="og:image" content="http://linvilyao.github.io/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/GoogLeNet%E7%BD%91%E7%BB%9C%E5%8F%82%E6%95%B0.png">
-<meta property="og:image" content="http://linvilyao.github.io/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/inception%E5%8D%B7%E7%A7%AF%E6%A0%B8%E4%B8%AA%E6%95%B0.png">
-<meta property="article:published_time" content="2023-05-09T13:07:21.000Z">
-<meta property="article:modified_time" content="2023-05-17T14:52:52.467Z">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Users/86147/Desktop/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNet-B7%E5%8F%82%E6%95%B0%E5%87%86%E7%A1%AE%E7%8E%87%E5%AF%B9%E6%AF%94.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Users/86147/Desktop/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E4%B8%BA%E6%8F%90%E9%AB%98%E5%87%86%E7%A1%AE%E7%8E%87%E6%89%80%E9%87%87%E5%8F%96%E7%9A%84%E6%96%B9%E6%B3%95.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNet-B0%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/MBConv%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/SE%E6%A8%A1%E5%9D%97.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNet%E4%B8%8E%E5%BD%93%E6%97%B6%E4%B8%BB%E6%B5%81%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%E5%8F%82%E6%95%B0%E5%AF%B9%E6%AF%94.png">
+<meta property="article:published_time" content="2023-05-26T15:24:37.000Z">
+<meta property="article:modified_time" content="2023-05-26T15:30:52.687Z">
 <meta property="article:author" content="Linvil Yao">
 <meta property="article:tag" content="神经网络">
 <meta property="article:tag" content="CNN网络详解">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://linvilyao.github.io/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/VGG%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E5%9B%BE.png">
+<meta name="twitter:image" content="http://linvilyao.github.io/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Users/86147/Desktop/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNet-B7%E5%8F%82%E6%95%B0%E5%87%86%E7%A1%AE%E7%8E%87%E5%AF%B9%E6%AF%94.png">
 
 
-<link rel="canonical" href="http://linvilyao.github.io/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/">
+<link rel="canonical" href="http://linvilyao.github.io/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/","path":"2023/05/09/GoogLeNet网络详解/","title":"深度学习模型之CNN（七）GoogLeNet网络详解"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/","path":"2023/05/26/EfficientNet网络详解/","title":"深度学习模型之CNN（十七）EfficientNet网络详解"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>深度学习模型之CNN（七）GoogLeNet网络详解 | Linvil's Blog</title>
+<title>深度学习模型之CNN（十七）EfficientNet网络详解 | Linvil's Blog</title>
   
 
 
@@ -151,7 +149,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">GoogLeNet详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Inception%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">Inception结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Inception%E5%8E%9F%E5%A7%8B%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.1.</span> <span class="nav-text">Inception原始结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inception%E7%BB%93%E6%9E%84%EF%BC%88%E9%99%8D%E7%BB%B4%E5%8A%9F%E8%83%BD%EF%BC%89"><span class="nav-number">1.1.2.</span> <span class="nav-text">Inception结构（降维功能）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1%E5%8D%B7%E7%A7%AF%E6%A0%B8%E7%9A%84%E9%99%8D%E7%BB%B4%E5%8A%9F%E8%83%BD"><span class="nav-number">1.1.3.</span> <span class="nav-text">1*1卷积核的降维功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%85%E5%8A%A9%E5%88%86%E7%B1%BB%E5%99%A8%EF%BC%88Auxiliary-Classifier%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">辅助分类器（Auxiliary Classifier）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GoogLeNet-%E7%BD%91%E7%BB%9C%E5%8F%82%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">GoogLeNet 网络参数</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">论文思想</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">EfficientNet的网络结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MBConv%E7%BB%93%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text">MBConv结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EfficientNet-B0-B7%E5%8F%82%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">EfficientNet-B0-B7参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">EfficientNet与当时主流网络的性能参数对比</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -238,7 +236,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -251,12 +249,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="深度学习模型之CNN（七）GoogLeNet网络详解 | Linvil's Blog">
-      <meta itemprop="description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础5.1》，作为随堂笔记">
+      <meta itemprop="name" content="深度学习模型之CNN（十七）EfficientNet网络详解 | Linvil's Blog">
+      <meta itemprop="description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础9.1》，作为随堂笔记">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          深度学习模型之CNN（七）GoogLeNet网络详解
+          深度学习模型之CNN（十七）EfficientNet网络详解
         </h1>
 
         <div class="post-meta-container">
@@ -266,15 +264,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2023-05-09 21:07:21" itemprop="dateCreated datePublished" datetime="2023-05-09T21:07:21+08:00">2023-05-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-05-17 22:52:52" itemprop="dateModified" datetime="2023-05-17T22:52:52+08:00">2023-05-17</time>
+      <time title="创建时间：2023-05-26 23:24:37 / 修改时间：23:30:52" itemprop="dateCreated datePublished" datetime="2023-05-26T23:24:37+08:00">2023-05-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -287,7 +279,7 @@
     </span>
 
   
-    <span id="/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" class="post-meta-item leancloud_visitors" data-flag-title="深度学习模型之CNN（七）GoogLeNet网络详解" title="阅读次数">
+    <span id="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" class="post-meta-item leancloud_visitors" data-flag-title="深度学习模型之CNN（十七）EfficientNet网络详解" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -302,8 +294,8 @@
     </span>
     <span class="post-meta-item-text">Valine：</span>
   
-    <a title="valine" href="/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" itemprop="commentCount"></span>
+    <a title="valine" href="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -314,18 +306,18 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
+      <span>3.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
-            <div class="post-description">本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础5.1》，作为随堂笔记</div>
+            <div class="post-description">本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础9.1》，作为随堂笔记</div>
         </div>
       </header>
 
@@ -333,57 +325,140 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1>GoogLeNet详解</h1>
-<p>GoogLeNet在2014年由Google团队提出，斩获当年ImageNet竞赛中Classification Task (分类任务) 第一名。原论文地址：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1409.4842">Going deeper with convolutions</a></p>
-<p>GoogLeNet 的创新点：</p>
+        <p>原论文：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1905.11946v1.pdf">EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks</a></p>
+<h1>前言</h1>
+<p>在之前的学习的网络结构（例如AlexNet，VGG，ResNet等）中，都将输入图像分辨率固定为224，为什么卷积的个数要设置为这个值，为什么网络的深度设为这么深？这些问题你要问设计作者的话，估计回复就四个字——工程经验。</p>
+<p>而这篇论文<strong>同时探索输入分辨率、网络的深度、宽度对准确率的影响</strong>。在论文中提到，本文提出的EfficientNet-B7在Imagenet top-1上达到了当年最高准确率84.3%，与之前准确率最高的GPipe相比，参数数量（Params）仅为其1/8.4，推理速度提升了6.1倍（看上去又快又轻量，但个人实际使用起来发现很吃显存）。下图是EfficientNet与其他网络的对比（注意：<strong>参数数量少并不意味推理速度就快</strong>）。</p>
+<p><img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Users/86147/Desktop/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNet-B7%E5%8F%82%E6%95%B0%E5%87%86%E7%A1%AE%E7%8E%87%E5%AF%B9%E6%AF%94.png" alt="EfficientNet-B7参数准确率对比"></p>
+<h1>论文思想</h1>
 <ul>
-<li>引入了<strong>Inception结构</strong>（融合不同尺度的特征信息）</li>
-<li>使用1x1的卷积核进行降维以及映射处理（虽然VGG网络中也有，但该论文介绍的更详细）</li>
-<li>添加两个辅助分类器帮助训练（<strong>AlexNet和VGG都只有一个输出层，GoogLeNet有三个输出层（其中两个辅助分类层）</strong>）</li>
-<li>丢弃全连接层，使用平均池化层（大大减少模型参数，除去两个辅助分类器，网络大小只有VGG的1/20）</li>
+<li>下图（a）是传统的卷积神经网络；</li>
+<li>下图（b）是在（a）的基础上增大了网络的宽度width，实际上指的是特征矩阵的channel。即增加卷积核的个数（增加特征矩阵的<code>channels</code>）来提升网络的性能；</li>
+<li>下图（c）是在（a）的基础上增大了网络的深度channel，实际上指的是通过增加网络的深度<code>layers</code>。即使用更多的层结构来提升网络的性能；</li>
+<li>下图（d）是在（a）的基础上通过增加输入<code>网络的分辨率</code>来提升网络的性能；</li>
+<li>本篇论文中<strong>同时增加网络的<code>width</code>、<code>channel</code>以及输入网络的分辨率来提升网络的性能</strong>，如图（e）</li>
 </ul>
-<h2 id="Inception结构">Inception结构</h2>
-<p>传统的CNN结构如AlexNet、VggNet（下图）都是<strong>串联的结构</strong>，即将一系列的卷积层和池化层进行串联得到的结构。</p>
-<p><img src="/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/VGG%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E5%9B%BE.png" alt="VGG网络架构图"></p>
-<h3 id="Inception原始结构">Inception原始结构</h3>
-<p>GoogLeNet 提出了一种并联结构，下图是论文中提出的Inception原始结构，将特征矩阵<strong>同时输入到多个分支</strong>进行处理，并将输出的特征矩阵<strong>按深度进行拼接</strong>，得到最终输出。</p>
-<p><img src="/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Inception%E7%BB%93%E6%9E%84%E5%88%9D%E5%A7%8B%E7%89%88%E6%9C%AC.png" alt="Inception结构初始版本"></p>
-<p>在之前所讲的网络中，例如AlexNet和VGG，网络都是串行结构，将一系列的卷积层和最大池化下采样层进行串联得到一个网络结构。而GoogLeNet中的Inception结构是一个并行的结构。</p>
-<p>也就是说，在上一层输入之后，将得到的特征矩阵同时输入到四个分支当中进行处理，处理之后将得到的四个分支的特征矩阵按深度进行拼接，得到输出特征矩阵。</p>
-<p>在特征分支中，分别为大小是1*1、3*3、5*5的卷积核和大小为3*3的池化核，通过这四个分支能得到不同尺度的特征矩阵。<strong>注意：每个分支所得的特征矩阵高和宽必须相同</strong>，否则无法延深度方向进行拼接。</p>
-<h3 id="Inception结构（降维功能）">Inception结构（降维功能）</h3>
-<p>在 Inception 的基础上，还可以加上降维功能的结构，如下图所示，在原始 Inception 结构的基础上，在分支2，3，4上加入了<strong>卷积核大小为1x1的卷积层</strong>，目的是为了降维（减小深度），减少模型训练参数，减少计算量。</p>
-<p><img src="/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E5%8A%A0%E4%B8%8A%E9%99%8D%E7%BB%B4%E5%8A%9F%E8%83%BD%E7%9A%84Inception%E7%BB%93%E6%9E%84.png" alt="加上降维功能的Inception结构"></p>
-<h3 id="1-1卷积核的降维功能">1*1卷积核的降维功能</h3>
-<p><img src="/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E9%99%8D%E7%BB%B4%E5%9B%BE%E7%A4%BA.png" alt="降维图示"></p>
-<p>假设有一个深度为512的特征矩阵</p>
-<p>当不使用1*1的卷积核降维，直接使用64个5*5的卷积核进行卷积的话，需要用到的参数个数：5*5*512*64 = 819200</p>
-<p>当先使用24个卷积核大小1*1的卷积核进行卷积时，得出的特征矩阵深度会由原先的512变为24（<strong>由输入的卷积核的个数决定的</strong>），之后再使用64个卷积核大小为5*5的卷积核进行卷积，需要用到的参数个数：1*1*512*24 + 5*5*24*64 = 12288+38400 = 50688。</p>
-<p>因此，在添加了3个卷积核大小为1*1的卷积核进行卷积之后，能对特征矩阵进行降维，减少特征矩阵的深度，从而减少所需的卷积参数，也就减少了计算量。</p>
-<p>注：<strong>CNN参数个数 = 卷积核尺寸×卷积核深度 × 卷积核组数 = 卷积核尺寸 × 输入特征矩阵深度 × 输出特征矩阵深度</strong></p>
-<h2 id="辅助分类器（Auxiliary-Classifier）">辅助分类器（Auxiliary Classifier）</h2>
-<p>AlexNet 和 VGG 都只有1个输出层，GoogLeNet 有3个输出层，其中的两个是辅助分类层。如下图所示，网络主干右边的两个分支 就是辅助分类器，其结构一模一样。</p>
-<p>网络中的两个辅助分类器分别来自于4a和4d，对照参数表中的数据，4a的特征矩阵输出尺寸为14*14*512，4d输出的特征矩阵的尺寸为14*14*528，这两个特征矩阵高度和宽度都一样，只有深度不同。</p>
-<p><img src="/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E8%BE%85%E5%8A%A9%E5%88%86%E7%B1%BB%E5%99%A8.png" alt="辅助分类器"></p>
-<p>在训练模型时，将两个辅助分类器的损失乘以权重（论文中是0.3）加到网络的整体损失上，再进行反向传播。</p>
-<p>辅助分类器的两个分支有什么用呢？</p>
+<p><img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Users/86147/Desktop/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E4%B8%BA%E6%8F%90%E9%AB%98%E5%87%86%E7%A1%AE%E7%8E%87%E6%89%80%E9%87%87%E5%8F%96%E7%9A%84%E6%96%B9%E6%B3%95.png" alt="网络结构为提高准确率所采取的方法"></p>
 <ul>
-<li>可以把他看做Inception网络中的一个小细节，它确保了即便是隐藏单元和中间层也参与了特征计算，他们也能预测图片的类别，他在Inception网络中起到一种调整的效果，并且能防止网络发生过拟合。</li>
-<li>给定深度相对较大的网络，有效传播梯度反向通过所有层的能力是一个问题。通过将辅助分类器添加到这些中间层，可以期望较低阶段分类器的判别力。在训练期间，它们的损失以折扣权重（辅助分类器损失的权重是0.3）加到网络的整个损失上。</li>
+<li>增加网络的<code>width</code>，即增加卷积核的个数，能够获得更高细粒度的特征并且也更容易训练，但对于width很大而深度较浅的网络往往很难学习到更深层次的特征。</li>
+<li>根据以往的经验，增加网络的深度<code>depth</code>，即增加网络的层结构，能够得到更加丰富、复杂的特征并且能够很好的应用到其它任务中。但网络的深度过深会面临梯度消失，训练困难的问题。</li>
+<li>增加输入网络的图像分辨率能够潜在得获得更高细粒度的特征模板，但对于非常高的输入分辨率，准确率的增益也会减小。并且大分辨率图像会增加计算量。</li>
 </ul>
-<p><img src="/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/GoogLeNet%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84.png" alt="GoogLeNet网络架构"></p>
-<h2 id="GoogLeNet-网络参数">GoogLeNet 网络参数</h2>
-<p><img src="/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/GoogLeNet%E7%BD%91%E7%BB%9C%E5%8F%82%E6%95%B0.png" alt="GoogLeNet网络参数"></p>
-<p>对于Inception模块，所需要使用到参数有<code>#1x1</code>, <code>#3x3reduce</code>, <code>#3x3</code>, <code>#5x5reduce</code>, <code>#5x5</code>, <code>poolproj</code>，这6个参数，分别对应着所使用的卷积核个数。</p>
-<p><img src="/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/inception%E5%8D%B7%E7%A7%AF%E6%A0%B8%E4%B8%AA%E6%95%B0.png" alt="Inception卷积核个数"></p>
+<p>![分别增加width depth和分辨率的准确率](C:/Users/86147/Desktop/EfficientNet网络详解/分别增加width depth和分辨率的准确率.png)</p>
+<h1>EfficientNet的网络结构</h1>
+<p>通过网络搜索（<strong>Neural Architecture Search</strong>)技术得到的结构（B1-B7就是在B0的基础上修改<code>Resolution</code>，<code>Channels</code>以及<code>Layers</code>），整个网络框架由一系列Stage组成。<strong>表中的卷积层后都默认跟有BN以及Swish激活函数</strong>，MBConv为MobileNet Conv。</p>
 <ul>
-<li><code>#1x1</code>对应着分支1上1x1的卷积核个数</li>
-<li><code>#3x3reduce</code>对应着分支2上1x1的卷积核个数</li>
-<li><code>#3x3</code>对应着分支2上3x3的卷积核个数</li>
-<li><code>#5x5reduce</code>对应着分支3上1x1的卷积核个数</li>
-<li><code>#5x5</code>对应着分支3上5x5的卷积核个数</li>
-<li><code>poolproj</code>对应着分支4上1x1的卷积核个数。</li>
+<li><code>Resolution</code>：每一层Stage输入特征矩阵的高和宽；</li>
+<li><code>Channels</code>：通过该Stage后输出特征矩阵的Channels；</li>
+<li><code>Layers</code>：指将Operator操作重复多少次</li>
+<li><code>stride</code>：指的是每一层Stage的第一个MBConv中卷积核的stride，其余默认stride = 1</li>
 </ul>
+<p>网络总共分成了9个Stage，第一个Stage是一个卷积核大小为3x3步距为2的普通卷积层（包含BN和激活函数Swish），Stage2～Stage8都是在重复堆叠MBConv结构，而Stage9由一个普通的1x1的卷积层（包含BN和激活函数Swish）、一个平均池化层和一个全连接层组成。</p>
+<p>表格中每个MBConv后会跟一个数字1或6，这里的1或6就是倍率因子n即MBConv中第一个1x1的卷积层会将输入特征矩阵的channels扩充为n倍，其中k3x3或k5x5表示MBConv中Depthwise Conv所采用的卷积核大小。</p>
+<img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNet-B0网络结构.png" alt="EfficientNet-B0网络结构" style="border-width: 1px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<h2 id="MBConv结构">MBConv结构</h2>
+<p>MBConv其实就是MobileNetV3网络中的InvertedResidualBlock，但也有些许区别。一个是采用的激活函数不一样（EfficientNet的MBConv中使用的都是<strong>Swish激活函数</strong>），另一个是在<strong>每个MBConv中都加入了SE（Squeeze-and-Excitation）模块</strong>。</p>
+<p>如下图所示，MBConv结构主要由一个1x1的普通卷积（升维作用，包含BN和Swish），一个kxk的Depthwise Conv卷积（包含BN和Swish）<strong>k的具体值可看EfficientNet-B0的网络框架主要有3x3和5x5两种情况</strong>，一个SE模块，一个1x1的普通卷积（降维作用，包含BN），一个Droupout层构成。搭建过程中还需要注意几点：</p>
+<blockquote>
+<ul>
+<li>第一个升维的1x1卷积层，它的卷积核个数是输入特征矩阵channel的n倍，n ∈ { 1 , 6 }。</li>
+<li>当n = 1时，不要第一个升维的1x1卷积层，即Stage2中的MBConv结构都没有第一个升维的1x1卷积层（这和MobileNetV3网络类似）。</li>
+<li>关于shortcut连接，仅当输入MBConv结构的特征矩阵与输出的特征矩阵shape相同时才存在（代码中可通过stride==1 and inputc_channels==output_channels条件来判断）。</li>
+</ul>
+<p>注意：<strong>在源码实现中只有使用shortcut的时候才有Dropout层</strong></p>
+</blockquote>
+<img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/MBConv结构.png" alt="MBConv结构" style="border-width: 1px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<p>SE模块如下图所示，由一个全局平均池化，两个全连接层组成。第一个全连接层的节点个数是输入该MBConv特征矩阵channels的1/4，且使用Swish激活函数。第二个全连接层的节点个数等于<code>Depthwise Conv</code>层输出的特征矩阵<code>channels</code>，且使用Sigmoid激活函数。</p>
+<img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/SE模块.png" alt="SE模块" style="border-width: 1px; border-style: solid; border-color: rgb(224, 224, 224); ">
+<h2 id="EfficientNet-B0-B7参数">EfficientNet-B0-B7参数</h2>
+<ul>
+<li><code>input_size</code>代表训练网络时输入网络的图像大小</li>
+<li><code>width coeficient</code>：代表channel维度上的倍率因子，比如在 EfcientNetB0中Stagel的3x3卷积层所使用的卷积核个数是32，那么在B6中就是 32 X 18=57.6接着取整到离它最近的8的整数倍即56，其它Stage同理。</li>
+<li><code>depth coeficient</code>：代表depth维度上的倍率因子（仅针对Stage2到Stage8），比如在EcientNetB0中Stage7的L=4，那么在B6中就是 4 X 2.6=10.4，接着向上取整即11。</li>
+<li><code>drop_connect_rate</code>是在<code>MBConv</code>结构中dropout层使用的<code>drop_rate</code>，在官方keras模块的实现中<code>MBConv</code>结构的<code>drop_rate</code>是从0递增到<code>drop_connect_rate</code>的（<strong>在源码实现中只有使用shortcut的时候才有Dropout层</strong>）。还需要注意的是，这里的Dropout层是<code>Stochastic Depth</code>，即会随机丢掉整个block的主分支（只剩捷径分支，相当于直接跳过了这个block）也可以理解为减少了网络的深度。</li>
+<li><code>dropout_rate</code>是最后一个全连接层前的<code>dropout</code>层（在<code>stage9</code>的Pooling与FC之间）的<code>dropout_rate</code>。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Model</th>
+<th style="text-align:center">input_size</th>
+<th style="text-align:center">width_coefficient</th>
+<th style="text-align:center">depth_coefficient</th>
+<th style="text-align:center">connect_rate</th>
+<th style="text-align:center">dropout_rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">EfficientNetB0</td>
+<td style="text-align:center">224x224</td>
+<td style="text-align:center">1.0</td>
+<td style="text-align:center">1.0</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.2</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB1</td>
+<td style="text-align:center">240x240</td>
+<td style="text-align:center">1.0</td>
+<td style="text-align:center">1.1</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.2</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB2</td>
+<td style="text-align:center">260x260</td>
+<td style="text-align:center">1.1</td>
+<td style="text-align:center">1.2</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.3</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB3</td>
+<td style="text-align:center">300x300</td>
+<td style="text-align:center">1.2</td>
+<td style="text-align:center">1.4</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.3</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB4</td>
+<td style="text-align:center">380x380</td>
+<td style="text-align:center">1.4</td>
+<td style="text-align:center">1.8</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.4</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB5</td>
+<td style="text-align:center">456x456</td>
+<td style="text-align:center">1.6</td>
+<td style="text-align:center">2.2</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.4</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB6</td>
+<td style="text-align:center">528x528</td>
+<td style="text-align:center">1.8</td>
+<td style="text-align:center">2.6</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.5</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB7</td>
+<td style="text-align:center">600x600</td>
+<td style="text-align:center">2.0</td>
+<td style="text-align:center">3.1</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.5</td>
+</tr>
+</tbody>
+</table>
+<h1>EfficientNet与当时主流网络的性能参数对比</h1>
+<p>虽然参数少，准确率高，但是超级占显存。</p>
+<p><img src="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNet%E4%B8%8E%E5%BD%93%E6%97%B6%E4%B8%BB%E6%B5%81%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%E5%8F%82%E6%95%B0%E5%AF%B9%E6%AF%94.png" alt="EfficientNet与当时主流网络的性能参数对比"></p>
 
     </div>
 
@@ -401,14 +476,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/05/07/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAVGG%E7%BD%91%E7%BB%9C/" rel="prev" title="深度学习模型之CNN（六）使用pytorch搭建VGG网络">
-                  <i class="fa fa-chevron-left"></i> 深度学习模型之CNN（六）使用pytorch搭建VGG网络
+                <a href="/2023/05/25/%E4%BD%BF%E7%94%A8Pytorch%E6%90%AD%E5%BB%BAShuffleNetv2/" rel="prev" title="深度学习模型之CNN（十六）使用Pytorch搭建ShuffleNetv2">
+                  <i class="fa fa-chevron-left"></i> 深度学习模型之CNN（十六）使用Pytorch搭建ShuffleNetv2
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/05/10/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAGoogLeNet%E7%BD%91%E7%BB%9C/" rel="next" title="深度学习模型之CNN（八）使用pytorch搭建GoogLeNet网络">
-                  深度学习模型之CNN（八）使用pytorch搭建GoogLeNet网络 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -545,7 +617,7 @@ darkmode.showWidget();
 </script>
 
 
-<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/05/09/GoogLeNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/"}</script>
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/"}</script>
 <script>
 document.addEventListener('page:loaded', () => {
   NexT.utils.loadComments(CONFIG.valine.el)
