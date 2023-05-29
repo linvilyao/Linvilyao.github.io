@@ -3679,4 +3679,204 @@ N = (W-F+2P)/S + 1<br>
         <tag>Pytorch搭建CNN</tag>
       </tags>
   </entry>
+  <entry>
+    <title>EfficientNetV2网络详解</title>
+    <url>/2023/05/29/EfficientNetV2%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<h1>前言</h1>
+<p>本节课讲的是EfficientNet网络的升级版EfficientNetV2，这篇论文发表在2021年的CVPR，原论文：<a href="https://arxiv.org/abs/2104.00298">EfficientNetV2: Smaller Models and Faster Training </a>。</p>
+<p>下图为EfficientNetV2网络和时下流行网络的性能对比，其中紫色的线对应着EfficientNetV2的S、M和L三个不同大小模型的准确率和训练速度，红色的线对应着EfficientNetV2首先在EfficientNet21K上的预训练，之后再ImageNet上进行迁移学习</p>
+<p><img src="/2023/05/29/EfficientNetV2%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNetV2%E5%92%8C%E6%97%B6%E4%B8%8B%E6%B5%81%E8%A1%8C%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94.png" alt="EfficientNetV2网络和时下流行网络的性能对比"></p>
+<p><strong>网络创新点</strong></p>
+<ul>
+<li>引入Fused-MBConv模块；</li>
+<li>引入渐进式学习策略（学习更快）</li>
+</ul>
+<p>在EfficientNetV1中作者关注的是准确率，参数数量以及FLOPS(理论计算量小不代表推理速度快)，在EfficientNetV2中作者进一步关注模型的训练速度。</p>
+<p><img src="/2023/05/29/EfficientNetV2%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNetV2%E4%B8%8EEfficientNetV1%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94.png" alt="EfficientNetV2与EfficientNetV1性能对比"></p>
+<h1>EfficientNetV1中存在的问题</h1>
+<p><strong>1、训练图像的尺寸很大时，训练速度非常慢</strong></p>
+<p>针对这个问题一个比较好想到的办法就是降低训练图像的尺寸，之前也有一些文章这么干过。降低训练图像的尺寸不仅能够加快训练速度，还能使用更大的batch_size。</p>
+<p><img src="/2023/05/29/EfficientNetV2%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNetV1%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98-%E5%9B%BE%E7%89%87%E5%B0%BA%E5%AF%B8.png" alt="EfficientNetV1存在问题-图片尺寸"></p>
+<p><strong>2、在网络浅层中使用Depthwise convolutions速度会很慢</strong></p>
+<p>无法充分利用现有的一些加速器(虽然理论上计算量很小，但实际使用起来并没有想象中那么快)。故引入Fused-MBConv结构。</p>
+<p>下图左边分别为MBConv和Fused-MBConv结构，下图右展示了不使用Fused-MBConv结构、仅将Stage2~4中的MBConv替换为Fused-MBConv结构、仅将Stage2~6中的MBConv替换为Fused-MBConv结构和将Stage2~8的MBConv替换为Fused-MBConv结构。</p>
+<p>在前二者替换效果来看，训练速度和准确率都有提高，但全部替换的形式导致准确率和训练速度都下降，由此可见，<strong>并不能无脑的将MBConv转化为Fused-MBConv</strong>。</p>
+<p><img src="/2023/05/29/EfficientNetV2%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Fused-MBConv%E7%BB%93%E6%9E%84.png" alt="Fused-MBConv结构"></p>
+<p><strong>3、同等的放大每个stage是次优的</strong></p>
+<p>在EfficientNetV1中每个stage的深度和宽度都是同等放大的。但<strong>每个stage对网络的训练速度以及参数数量的贡献并不相同</strong>，所以直接使用同等缩放的策略并不合理。在这篇文章中，作者<strong>采用了非均匀的缩放策略来缩放模型</strong>。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Model</th>
+<th style="text-align:center">input_size</th>
+<th style="text-align:center">width_coefficient</th>
+<th style="text-align:center">depth_coefficient</th>
+<th style="text-align:center">dropout_connect_rate</th>
+<th style="text-align:center">dropout_rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">EfficientNetB0</td>
+<td style="text-align:center">224x224</td>
+<td style="text-align:center">1.0</td>
+<td style="text-align:center">1.0</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.2</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB1</td>
+<td style="text-align:center">240x240</td>
+<td style="text-align:center">1.0</td>
+<td style="text-align:center">1.1</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.2</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB2</td>
+<td style="text-align:center">260x260</td>
+<td style="text-align:center">1.1</td>
+<td style="text-align:center">1.2</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.3</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB3</td>
+<td style="text-align:center">300x300</td>
+<td style="text-align:center">1.2</td>
+<td style="text-align:center">1.4</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.3</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB4</td>
+<td style="text-align:center">380x380</td>
+<td style="text-align:center">1.4</td>
+<td style="text-align:center">1.8</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.4</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB5</td>
+<td style="text-align:center">456x456</td>
+<td style="text-align:center">1.6</td>
+<td style="text-align:center">2.2</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.4</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB6</td>
+<td style="text-align:center">528x528</td>
+<td style="text-align:center">1.8</td>
+<td style="text-align:center">2.6</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.5</td>
+</tr>
+<tr>
+<td style="text-align:center">EfficientNetB7</td>
+<td style="text-align:center">600x600</td>
+<td style="text-align:center">2.0</td>
+<td style="text-align:center">3.1</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.5</td>
+</tr>
+</tbody>
+</table>
+<h1>EfficientNetV2中做出的贡献</h1>
+<p>在之前的一些研究中，主要关注的是准确率以及参数数量（注意，参数数量少并不代表推理速度更快)。但在近些年的研究中，开始关注网络的训练速度以及推理速度(可能是准确率刷不动了）。</p>
+<ul>
+<li>引入新的网络（EfficientNetV2），该网络在训练速度以及参数数量上都优于先前的一些网络；</li>
+<li>提出了改进的渐进学习方法，该方法会<strong>根据训练图像的尺寸动态调节正则方法</strong>（提升训练速度、准确率），其中方法有Dropout、Rand Augment、Mixup；</li>
+<li>通过实验与先前的一些网络相比，<strong>训练速度提升11倍</strong>，参数数量减少为1/6.8</li>
+</ul>
+<p><img src="/2023/05/29/EfficientNetV2%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNetV2%E8%AE%AD%E7%BB%83%E5%8F%82%E6%95%B0%E5%92%8C%E5%87%86%E7%A1%AE%E7%8E%87%E5%AF%B9%E6%AF%94.png" alt="EfficientNetV2训练参数和准确率对比"></p>
+<h1>EfficientNetV2网络框架</h1>
+<p><strong>注意，在源码中Stage6的输出Channels是等于256并不是表格中的272，Stage7的输出Channels是1280并不是表格中的1792</strong>，后续论文的版本会修正过来。</p>
+<p>相比与EfficientNetV1，主要有以下不同：</p>
+<ul>
+<li><strong>除了使用<code>MBConv</code>模块，还使用<code>Fused-MBConv</code>模块</strong>（主要是在网络浅层中使用）；</li>
+<li><strong>会使用较小的<code>expansion ratio</code></strong>（<code>MBConv</code>中第一个<code>expand conv1x1</code>或者<code>Fused-MBConv</code>中第一个<code>expand conv3x3</code>）比如<code>4</code>，在EfficientNetV1中基本都是<code>6</code>. 这样的好处是能够减少内存访问开销；</li>
+<li><strong>偏向使用更小的<code>kernel_size(3x3)</code></strong>，在EfficientNetV1中使用了很多<code>5x5</code>的kernel_size。通过下表可以看到使用的kernel_size全是<code>3x3</code>的，由于<code>3x3</code>的感受野是要比<code>5x5</code>小的，所以需要堆叠更多的层结构以增加感受野；</li>
+<li><strong>移除了EfficientNetV1中最后一个步距为1的stage (V1中的stage8)</strong></li>
+</ul>
+<p><code>Stride</code>就是步距，注意每个Stage中会重复堆叠Operator模块多次，只有第一个Opertator模块的步距是按照表格中Stride来设置的，其他的默认都是1。 <code>#Channels</code>表示该Stage输出的特征矩阵的Channels，<code>#Layers</code>表示该Stage重复堆叠Operator的次数。</p>
+<p><img src="/2023/05/29/EfficientNetV2%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNetV2-S%E6%A8%A1%E5%9E%8B%E6%A1%86%E6%9E%B6.png" alt="EfficientNetV2-S模型框架"></p>
+<h2 id="Fused-MBConv模块">Fused-MBConv模块</h2>
+<p>通过上表可以看到EfficientNetV2-S分为Stage0到Stage7（EfficientNetV1中是Stage1到Stage9）。Operator表示在当前Stage中使用的模块：</p>
+<ul>
+<li>
+<p>Conv3x3就是普通的3x3卷积 + 激活函数（SiLU）+ BN；</p>
+</li>
+<li>
+<p>Fused-MBConv模块名称后跟的1，4表示expansion ratio，k3x3表示kenel_size为3x3，下面是结构图。</p>
+</li>
+</ul>
+<p><strong>注意</strong>：</p>
+<ul>
+<li>当expansion ratio = 1时是没有expand conv的；</li>
+<li>这里没有使用到SE结构的（原论文图中有SE）；</li>
+<li>当stride = 1且输入输出Channels相等时才有shortcut连接；</li>
+<li>当有shortcut连接时才有Dropout层，而且这里的Dropout层是Stochastic Depth，即会随机丢掉整个block的主分支（只剩捷径分支，相当于直接跳过了这个block）也可以理解为减少了网络的深度。</li>
+</ul>
+<p><img src="/2023/05/29/EfficientNetV2%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Fused-MBConv%E6%A8%A1%E5%9D%97.png" alt="Fused-MBConv模块"></p>
+<h2 id="EfficientNet网络中的Dropout">EfficientNet网络中的Dropout</h2>
+<p>EfficientNet网络中的Dropout与前期所有网络结构的Dropout不全一样，例如原始的Dropout参数丢弃比例为0.2，但EfficientNet中给出Dropout = 0.2的参数表示该网络在0~0.2的丢弃比例下逐渐失活。引用论文为：<a href="https://arxiv.org/abs/1603.09382">Deep Networks with Stochastic Depth</a></p>
+<p>下图可以理解为正向传播过程中将输入的特征矩阵经历了一个又一个block，每一个block都可以认为是一个残差结构。例如主分支通过$f$函数进行输出，shortcut直接从输入引到输出，在此过程中，会以一定的概率来对主分支进行丢弃（直接放弃整个主分支，相当于直接将上一层的输出引入到下一层的输入，相当于没有这一层）。即Stochastic Depth（随即深度，指的是网络的depth，因为会随机丢弃任意一层block）。</p>
+<p>下图中表示存活概率从1.0至0.5，一个渐变的过程。但在EfficientNetV2中采用drop_prob是0~0.2的丢弃比例（提升训练速度，小幅提升准确率）。</p>
+<p>注意：<strong>这里的dropout层仅指Fused-MBConv模块以及MBConv模块中的dropout层，不包括最后全连接前的dropout层</strong></p>
+<p><img src="/2023/05/29/EfficientNetV2%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E6%AD%A3%E5%90%91%E4%BC%A0%E6%92%AD%E8%BF%87%E7%A8%8B-Dropout.png" alt="正向传播过程-Dropout"></p>
+<h2 id="MBConv模块">MBConv模块</h2>
+<p>MBConv模块和EfficientNetV1中是一样的，其中模块名称后跟的4、6表示expansion ratio，SE0.25表示使用了SE模块，0.25表示SE模块中第一个全连接层的节点个数是输入该MBConv模块特征矩阵channels的1/4</p>
+<p>下面是MBConv模块结构图。<strong>注意当stride=1且输入输出Channels相等时才有shortcut连接</strong>。同样这里的<strong>Dropout层是Stochastic Depth</strong>。</p>
+<p><img src="/2023/05/29/EfficientNetV2%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/MBConv%E6%A8%A1%E5%9D%97.png" alt="MBConv模块"></p>
+<h2 id="EfficientNetV2-S的详细参数">EfficientNetV2-S的详细参数</h2>
+<p>首先在官方的源码中有个baseline config注意这个不是V2-S的配置，在efficientnetv2 -&gt; effnetv2_configs.py文件中 。</p>
+<ul>
+<li><code>r</code>代表当前Stage中Operator重复堆叠的次数；</li>
+<li><code>k</code>代表kernel_size；</li>
+<li><code>s</code>代表步距stride；</li>
+<li><code>e</code>代表expansion ratio；</li>
+<li><code>i</code>代表input channels；</li>
+<li><code>o</code>代表output channels；</li>
+<li><code>c</code>代表conv_type，1代表Fused-MBConv，0代表MBConv（默认为MBConv）；</li>
+<li><code>se</code>代表使用SE模块，以及se_ratio</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#################### EfficientNet V2 configs ####################</span></span><br><span class="line">v2_base_block = [  <span class="comment"># The baseline config for v2 models.</span></span><br><span class="line">    <span class="string">&#x27;r1_k3_s1_e1_i32_o16_c1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r2_k3_s2_e4_i16_o32_c1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r2_k3_s2_e4_i32_o48_c1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r3_k3_s2_e4_i48_o96_se0.25&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r5_k3_s1_e6_i96_o112_se0.25&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r8_k3_s2_e6_i112_o192_se0.25&#x27;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>EfficientNetV2-S的配置是在baseline的基础上采用了width倍率因子1.4， depth倍率因子1.8得到的（这两个倍率因子是EfficientNetV1-B4中采用的）。</p>
+<p>注意：只针对存在MBConv模块或Fused-MBConv模块的Stage，例如<code>r2_k3_s1_e1_i24_o24_c1</code>对应<code>Stage1</code>，Operator重复堆叠2次，kernel_size等于3，stride等于1，expansion等于1，input_channels等于24，output_channels等于24，conv_type为<code>Fused-MBConv</code>。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">v2_s_block = [  <span class="comment"># about base * (width1.4, depth1.8)</span></span><br><span class="line">    <span class="string">&#x27;r2_k3_s1_e1_i24_o24_c1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r4_k3_s2_e4_i24_o48_c1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r4_k3_s2_e4_i48_o64_c1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r6_k3_s2_e4_i64_o128_se0.25&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r9_k3_s1_e6_i128_o160_se0.25&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r15_k3_s2_e6_i160_o256_se0.25&#x27;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/05/29/EfficientNetV2%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNetV2-S%E6%A8%A1%E5%9E%8B%E6%A1%86%E6%9E%B6.png" alt="EfficientNetV2-S模型框架"></p>
+<h2 id="EfficientNetV2-M的详细参数">EfficientNetV2-M的详细参数</h2>
+<p>EfficientNetV2-M的配置是在baseline的基础上采用了width倍率因子1.6， depth倍率因子2.2得到的（这两个倍率因子是EfficientNetV1-B5中采用的）。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">v2_m_block = [  <span class="comment"># about base * (width1.6, depth2.2)</span></span><br><span class="line">    <span class="string">&#x27;r3_k3_s1_e1_i24_o24_c1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r5_k3_s2_e4_i24_o48_c1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r5_k3_s2_e4_i48_o80_c1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r7_k3_s2_e4_i80_o160_se0.25&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r14_k3_s1_e6_i160_o176_se0.25&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r18_k3_s2_e6_i176_o304_se0.25&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r5_k3_s1_e6_i304_o512_se0.25&#x27;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>通过配置文件可知Stage0的卷积核个数是24（<code>i24</code>）</p>
+<h2 id="EfficientNetV2-L的详细参数">EfficientNetV2-L的详细参数</h2>
+<p>EfficientNetV2-L的配置是在baseline的基础上采用了width倍率因子2.0， depth倍率因子3.1得到的（这两个倍率因子是EfficientNetV1-B7中采用的）。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">v2_l_block = [  <span class="comment"># about base * (width2.0, depth3.1)</span></span><br><span class="line">    <span class="string">&#x27;r4_k3_s1_e1_i32_o32_c1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r7_k3_s2_e4_i32_o64_c1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r7_k3_s2_e4_i64_o96_c1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r10_k3_s2_e4_i96_o192_se0.25&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r19_k3_s1_e6_i192_o224_se0.25&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r25_k3_s2_e6_i224_o384_se0.25&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;r7_k3_s1_e6_i384_o640_se0.25&#x27;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>通过配置文件可知Stage0的卷积核个数是32（<code>i32</code>）</p>
+<p>注意：<strong>EfficientNetV2-M和EfficientNetV2-L比EfficientNetV2-S多出一个Stage</strong></p>
+<h2 id="EfficientNetV2其他训练参数">EfficientNetV2其他训练参数</h2>
+<p>下面是源码中给出的关于<code>efficientnetv2-s</code>，<code>efficientnetv2-m</code>和<code>efficientnetv2-l</code>三个参数的配置信息。</p>
+<p>其中的<code>v2_s_block</code>，<code>v2_m_block</code>以及<code>v2_l_block</code>就是上面刚刚讲到过的网络配置参数，剩下就关注下<code>train_size</code>, <code>eval_size</code>, <code>dropout</code>, <code>randaug</code>, <code>mixup</code>, <code>aug</code>即可。比如<code>efficientnetv2-s</code>的<code>train_size=300</code>（注意实际训练中train_size是会变化的，但最大不超过300，但在验证过程中默认为384x383，后面讲Progressive Learning中会细讲），<code>eval_size=384</code>，<code>dropout=0.2</code>（指的是最后一个Stage中池化层和全连接层之间的一个dropout_rate），<code>randaug=10，mixup=0，aug='randaug'</code>（针对迁移学习策略所使用到的参数）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">efficientnetv2_params = &#123;</span><br><span class="line">    <span class="comment"># (block, width, depth, train_size, eval_size, dropout, randaug, mixup, aug)</span></span><br><span class="line">    <span class="string">&#x27;efficientnetv2-s&#x27;</span>:  <span class="comment"># 83.9% @ 22M</span></span><br><span class="line">        (v2_s_block, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">300</span>, <span class="number">384</span>, <span class="number">0.2</span>, <span class="number">10</span>, <span class="number">0</span>, <span class="string">&#x27;randaug&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;efficientnetv2-m&#x27;</span>:  <span class="comment"># 85.2% @ 54M</span></span><br><span class="line">        (v2_m_block, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">384</span>, <span class="number">480</span>, <span class="number">0.3</span>, <span class="number">15</span>, <span class="number">0.2</span>, <span class="string">&#x27;randaug&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;efficientnetv2-l&#x27;</span>:  <span class="comment"># 85.7% @ 120M</span></span><br><span class="line">        (v2_l_block, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">384</span>, <span class="number">480</span>, <span class="number">0.4</span>, <span class="number">20</span>, <span class="number">0.5</span>, <span class="string">&#x27;randaug&#x27;</span>),</span><br></pre></td></tr></table></figure>
+<h1>Progressive Learning渐进学习策略</h1>
+<p>训练图像的尺寸对训练模型的效率有很大的影响。所以在之前的一些工作中很多人尝试使用动态的图像尺寸（比如一开始用很小的图像尺寸，后面再增大）来加速网络的训练，但通常会导致Accuracy降低。为什么会出现这种情况呢？</p>
+<p>作者提出了一个猜想：Accuracy的降低是不平衡的正则化<code>unbalanced regularization</code>导致的。在训练不同尺寸的图像时，应该使用动态的正则方法（之前都是使用固定的正则方法）。</p>
+<p>为了验证这个猜想，作者接着做了一些实验。训练模型过程中尝试使用不同的图像尺寸以及不同强度的数据增强<code>data augmentations</code>。当训练的图片尺寸较小时，使用较弱的数据增强<code>augmentation</code>能够达到更好的结果；当训练的图像尺寸较大时，使用更强的数据增强能够达到更好的接果。如下表所示，当<code>Size=128</code>，<code>RandAug magnitude=5</code>时效果最好；当<code>Size=300</code>，<code>RandAug magnitude=15</code>时效果最好：</p>
+<p>![Progressive Learning渐进学习策略效果](EfficientNetV2网络详解/Progressive Learning渐进学习策略效果.png)</p>
+<p>基于以上实验，作者就提出了渐进式训练策略<code>Progressive Learning</code>。如下图所示，<strong>在训练早期使用较小的训练尺寸以及较弱的正则方法<code>weak regularization</code>，这样网络能够快速的学习到一些简单的表达能力。接着逐渐提升图像尺寸，同时增强正则方法<code>adding stronger regularization</code></strong>。这里所说的<code>regularization</code>包括<code>dropout rate</code>，<code>RandAugment magnitude</code>以及<code>mixup ratio</code>。</p>
+<p>![Progressive Learning渐进学习策略实验](EfficientNetV2网络详解/Progressive Learning渐进学习策略实验.png)</p>
+<p>下表给出了EfficientNetV2（S，M，L）三个模型的渐进学习策略参数：</p>
+<p><img src="/2023/05/29/EfficientNetV2%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/EfficientNetV2%E4%B8%89%E4%B8%AA%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%B8%90%E8%BF%9B%E5%AD%A6%E4%B9%A0%E7%AD%96%E7%95%A5%E5%8F%82%E6%95%B0.png" alt="EfficientNetV2三个模型的渐进学习策略参数"></p>
+<p>通过对比可以看出使用渐进式学习策略确实能够有效提升训练速度。为了进一步验证渐进式学习策略的有效性，作者还在Resnet以及EfficientNetV1上进行了测试，如下表所示，使用了渐进式学习策略后确实能够有效提升训练速度并且能够小幅提升Accuracy。</p>
+<p><img src="/2023/05/29/EfficientNetV2%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E6%B8%90%E8%BF%9B%E5%AD%A6%E4%B9%A0%E7%AD%96%E7%95%A5%E5%9C%A8%E5%90%84%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94.png" alt="渐进学习策略在各网络模型中的性能对比"></p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>神经网络</tag>
+        <tag>CNN网络详解</tag>
+      </tags>
+  </entry>
 </search>
