@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_logosc/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_logosc/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","width":240,"display":"post","padding":14,"offset":10},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础11.1》，作为随堂笔记。本节课学习Vision Transformer(vit)网络详解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习模型之CNN（二十一）Transformer_vit网络详解">
+<meta property="og:url" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Linvil&#39;s Blog">
+<meta property="og:description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础11.1》，作为随堂笔记。本节课学习Vision Transformer(vit)网络详解">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Transformer-vit%E6%A8%A1%E5%9E%8B%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Embedding%E5%B1%82%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Embedding%E5%B1%82%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Patches%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E8%AE%BA%E6%96%87%E4%B8%AD%E5%90%8C%E4%BB%A5%E5%BE%80%E7%B3%BB%E5%88%97%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94.png">
+<meta property="article:published_time" content="2023-05-31T13:55:02.000Z">
+<meta property="article:modified_time" content="2023-06-01T14:40:00.484Z">
+<meta property="article:author" content="Linvil Yao">
+<meta property="article:tag" content="神经网络">
+<meta property="article:tag" content="CNN网络详解">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3.png">
+
+
+<link rel="canonical" href="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/","path":"2023/05/31/Transformer-vit网络详解/","title":"深度学习模型之CNN（二十一）Transformer_vit网络详解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>深度学习模型之CNN（二十一）Transformer_vit网络详解 | Linvil's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Linvil's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">这是一个用来记录的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">32</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">模型详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Vision-Transformer%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.1.</span> <span class="nav-text">Vision Transformer模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Embedding%E5%B1%82"><span class="nav-number">2.1.1.</span> <span class="nav-text">Embedding层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transformer-Encoder%E5%B1%82"><span class="nav-number">2.1.2.</span> <span class="nav-text">Transformer Encoder层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MLP-Head%E5%B1%82"><span class="nav-number">2.1.3.</span> <span class="nav-text">MLP Head层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vision-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.4.</span> <span class="nav-text">Vision Transformer网络结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hybrid%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">Hybrid混合模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">ViT模型搭建参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">论文中的网络性能对比</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Linvil Yao"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Linvil Yao</p>
+  <div class="site-description" itemprop="description">Welcome to Linvil's Blog!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+        </div>
+      </div>
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" title="2023&#x2F;05&#x2F;31&#x2F;Transformer-vit网络详解&#x2F;">深度学习模型之CNN（二十一）Transformer_vit网络详解</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/05/30/%E4%BD%BF%E7%94%A8Pytorch%E6%90%AD%E5%BB%BAEfficientNetV2%E7%BD%91%E7%BB%9C/" title="2023&#x2F;05&#x2F;30&#x2F;使用Pytorch搭建EfficientNetV2网络&#x2F;">深度学习模型之CNN（二十）使用Pytorch搭建EfficientNetV2网络</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/05/29/EfficientNetV2%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" title="2023&#x2F;05&#x2F;29&#x2F;EfficientNetV2网络详解&#x2F;">深度学习模型之CNN（十九）EfficientNetV2网络详解</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/05/27/%E4%BD%BF%E7%94%A8Pytorch%E6%90%AD%E5%BB%BAEfficientNet%E7%BD%91%E7%BB%9C/" title="2023&#x2F;05&#x2F;27&#x2F;使用Pytorch搭建EfficientNet网络&#x2F;">深度学习模型之CNN（十八）使用Pytorch搭建EfficientNet网络</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/05/26/EfficientNet%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" title="2023&#x2F;05&#x2F;26&#x2F;EfficientNet网络详解&#x2F;">深度学习模型之CNN（十七）EfficientNet网络详解</a>
+        </li>
+    </ul>
+  </div>
+    </div>
+
+
+    
+
+
+
+  </aside>
+
+
+
+
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Linvil Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linvil's Blog">
+      <meta itemprop="description" content="Welcome to Linvil's Blog!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="深度学习模型之CNN（二十一）Transformer_vit网络详解 | Linvil's Blog">
+      <meta itemprop="description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础11.1》，作为随堂笔记。本节课学习Vision Transformer(vit)网络详解">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深度学习模型之CNN（二十一）Transformer_vit网络详解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-05-31 21:55:02" itemprop="dateCreated datePublished" datetime="2023-05-31T21:55:02+08:00">2023-05-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-01 22:40:00" itemprop="dateModified" datetime="2023-06-01T22:40:00+08:00">2023-06-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" class="post-meta-item leancloud_visitors" data-flag-title="深度学习模型之CNN（二十一）Transformer_vit网络详解" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Valine：</span>
+  
+    <a title="valine" href="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础11.1》，作为随堂笔记。本节课学习Vision Transformer(vit)网络详解</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1>前言</h1>
+<p>原论文：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2010.11929">An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale</a></p>
+<p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3.png" alt="Transformer vit模型架构"></p>
+<p>Transformer最初提出是针对NLP领域的，并且在NLP领域大获成功。这篇论文也是受到其启发，尝试将Transformer应用到CV领域。通过这篇文章的实验，给出的最佳模型在ImageNet1K上能够达到88.55%的准确率（先在Google自家的JFT数据集上进行了预训练，之后再到ImageNet1K上进行迁移学习），说明Transformer在CV领域确实是有效的，而且效果还挺惊人。</p>
+<p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Transformer-vit%E6%A8%A1%E5%9E%8B%E6%95%88%E6%9E%9C.png" alt="Transformer-vit模型效果"></p>
+<h1>模型详解</h1>
+<p>在论文中作者主要拿ResNet、ViT（纯Transformer模型）以及Hybrid（传统CNN和Transformer混合模型）三个模型进行比较。本节课主要讲解ViT，也会简单了解Hybrid模型</p>
+<h2 id="Vision-Transformer模型">Vision Transformer模型</h2>
+<p>模型由三个模块组成</p>
+<ul>
+<li>Linear Projection of Flattened Patches(Embedding层)</li>
+<li>Transformer Encoder(图右侧有给出更加详细的结构)</li>
+<li>MLP Head（最终用于分类的层结构）</li>
+</ul>
+<p>![Vision Transformer模型架构](Transformer-vit网络详解/Vision Transformer模型架构.png)</p>
+<ul>
+<li>如上图所示，首先输入一张图片，之后将图片分成一个个Paches，例如性能表中表头的<strong>ViT-L16</strong>，指的是每一个Patches是16x16大小的。</li>
+<li>之后将每一个Patches输入到Embedding层，也就是Linear Projection of Flattened Patches。</li>
+<li>通过Embedding层之后会得到一个个向量，通常称为token。</li>
+<li>紧接着在一系列token的最前面加上新的token，专门用于分类的[class]token（这里增加一个[class]token是参考RERT网络）。那么这里的class所对应的token的维度和之前得到的token是一样的，都是一个向量，且向量长度相同。</li>
+<li>之后还需要加上位置的信息，如上图左所示，Patch+Position Embedding（对应表中0，1，2…9），因此此刻的一系列token已经加上[class]token以及叠加上位置信息的token。</li>
+<li>将一系列token输入到<strong>Transformer Encoder（对应上图右）</strong>，就是将Encoder Block重复堆叠L次（上图右中信息[灰色框框]重复L次）</li>
+<li>之后再将[class]token对应的输出（在Transformer Muti-Head Attention模块中，输入几个变量，那么就会输出几个输出的变量，都是一一对应的，<strong>但此刻仅用于分类，因此只提取针对[class]token所对应的输出</strong>）通过MLP Head得到最终分类结果。</li>
+</ul>
+<h3 id="Embedding层">Embedding层</h3>
+<p>对于标准的Transformer模块，要求输入的是token（向量）序列，即二维矩阵[num_token, token_dim]，如下图，token0-9对应的都是向量，以ViT-B/16为例，每个token向量长度为768（对应token_dim）。</p>
+<p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Embedding%E5%B1%82%E7%BB%93%E6%9E%84.png" alt="Embedding层结构"></p>
+<p>对于图像数据而言，其数据格式为[H, W, C]是三维矩阵明显不是Transformer想要的。所以需要先通过一个Embedding层来对数据做个变换。如下图所示，首先将一张图片按给定大小分成一堆Patches。以ViT-B/16为例，将输入图片(224x224)按照16x16大小的Patch进行划分，划分后会得到$( 224 / 16 )^2=196$个Patches。接着通过线性映射将每个Patch映射到一维向量中，以ViT-B/16为例，每个Patche数据shape为[16, 16, 3]通过映射得到一个长度为768的向量（后面都直接称为token）。<code>[16, 16, 3] -&gt; [768]</code></p>
+<p><strong>在代码实现中，直接通过一个卷积层来实现</strong>。 以ViT-B/16为例，直接使用一个卷积核大小为16x16，步距为16，卷积核个数为768的卷积来实现。通过卷积[224, 224, 3] -&gt; [14, 14, 768]，然后把H以及W两个维度展平即可[14, 14, 768] -&gt; [196, 768]，此时正好变成了一个二维矩阵，正是Transformer想要的。</p>
+<blockquote>
+<p>[224,224,3]-&gt;[14,14, 768] -&gt;[196,768]</p>
+</blockquote>
+<p><strong>在输入Transformer Encoder之前注意需要加上[class]token以及Position Embedding</strong>。 在原论文中，作者说参考BERT，在刚刚得到的一堆tokens中插入一个专门用于分类的[class]token，这个[class]token是一个可训练的参数，数据格式和其他token一样都是一个向量，以ViT-B/16为例，就是一个长度为768的向量，与之前从图片中生成的tokens拼接在一起，Cat([1, 768], [196, 768]) -&gt; [197, 768]。然后关于Position Embedding就是之前Transformer中讲到的Positional Encoding，这里的Position Embedding采用的是一个可训练的参数（1D Pos. Emb.），是直接叠加在tokens上的（add），所以shape要一样。以ViT-B/16为例，刚刚拼接[class]token后shape是[197, 768]，那么这里的Position Embedding的shape也是[197, 768]。</p>
+<blockquote>
+<p>拼接[class]token: Cat([1, 768]，[196, 768]) -&gt;[197, 768]</p>
+<p>叠加Position Embedding: [197, 768]-&gt;[197, 768]</p>
+</blockquote>
+<p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Embedding%E5%B1%82%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3.png" alt="Embedding层结构详解"></p>
+<p>对于<strong>是否使用</strong>Position Embedding作者也有做一系列对比试验，<strong>在源码中默认使用的是<code>1D Pos. Emb.</code></strong>，对比不使用Position Embedding准确率提升了大概3个点，和<code>2D Pos. Emb.</code>比起来没太大差别。</p>
+<p>![Position Embedding对比试验](Transformer-vit网络详解/Position Embedding对比试验.png)</p>
+<p>前文说到，会为每一个Patches增加一个位置编码，其实就是一个向量，我们可以针对每一个位置上的位置编码和其他位置上的位置编码求训练相似度，即能得到下图。如下图所示（关于训练得到的位置编码，<strong>在每个位置上和其他位置的余弦相似度</strong>），这里的Patches大小是32x32的，224/32 = 7，所以大小为7x7。</p>
+<p>理解：会在每一个token上叠加一个位置编码，那么针对每一个patches的位置编码其实就是一个向量，那么可以针对每一个位置上的位置编码和其他位置上的位置编码去求一个余弦相似度，即能得到如下图。（<strong>就是每个小小格子和其他小小各自计算相速度，所有的大格子其实都是同一张图</strong>）</p>
+<p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Patches%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81.png" alt="Patches位置编码"></p>
+<h3 id="Transformer-Encoder层">Transformer Encoder层</h3>
+<p>Transformer Encoder其实就是重复堆叠Encoder Block L次，下图是Encoder Block，主要由以下几部分组成：</p>
+<ul>
+<li>Layer Norm，这种Normalization方法主要是针对NLP领域提出的，这里是对每个token进行Norm处理</li>
+<li>Multi-Head Attention</li>
+<li>Dropout/DropPath，在原论文的代码中是直接使用的Dropout层，在但rwightman（大神）实现的代码中使用的是DropPath（stochastic depth），可能后者会更好一点。</li>
+<li>MLP Block，如图右侧所示，就是全连接+GELU激活函数+Dropout组成，需要注意的是<strong>第一个全连接层会把输入节点个数翻4倍[197, 768] -&gt; [197, 3072]，第二个全连接层会还原回原节点个数[197, 3072] -&gt; [197, 768]</strong></li>
+</ul>
+<p>![Transformer Encoder层](Transformer-vit网络详解/Transformer Encoder层.png)</p>
+<h3 id="MLP-Head层">MLP Head层</h3>
+<p>注意，在Transformer Encoder前有个Dropout层，后有一个LayerNorm（细节都在源码中）</p>
+<p>训练ImageNet21K或者是更大数据集时是由Linear+tanh激活函数+Linear，但是迁移到ImageNet1K上或者自己的数据上时，只有一个Linear。因此<strong>可以将MLP Head简单理解为一个全连接层</strong>。如果需要最终输出一个类别的话，需要接上softmax函数。</p>
+<p>![MLP Head层](Transformer-vit网络详解/MLP Head层.png)</p>
+<h3 id="Vision-Transformer网络结构">Vision Transformer网络结构</h3>
+<p>以ViT-B/16为例，讲解网络过程。假设输入图片为一张RGB彩色图片（224x224x3）</p>
+<ul>
+<li>首先经过<strong>Patch Embedding</strong>层（Conv2d+Flatten）</li>
+</ul>
+<blockquote>
+<p>Conv2d：卷积层的卷积核大小为16x16，stride = 16，卷积核个数为768。通过卷积层之后，输入特征矩阵的shape由<code>[224，224，3]-&gt;[14，14，768]</code>；</p>
+<p>Flatten：通过展平处理，将<code>[14，14，768]-&gt;[196，768]</code>。</p>
+</blockquote>
+<ul>
+<li>紧接着进行<strong>Concat</strong>处理，[class]token的shape是[1，768]（可训练的参数），与[196，768]进行concat拼接（<strong>拼接操作</strong>），得到[197，768]。再加上（<strong>相加操作</strong>）<strong>Position Embedding</strong>（可训练的参数），因此shape依旧为[197，768]；</li>
+<li>通过Dropout层；</li>
+<li>通过<strong>Transformer Encoder</strong>，就是将Encoder Block重复L次（12次）；</li>
+<li>通过Layer Norm得到的输出shape是[197，768]；</li>
+<li>再提取[class]token所对应的输出，直接对[197，768]数据进行切片，只需要提取出[class]token所对应的输出即可，切片之后得到输出[1，768];</li>
+<li>之后通过<strong>MLP Head</strong>得到最终的输出（如果ImageNet21K上进行预训练的话，Pre-Logits其实就是一个全连接层+tanh激活函数；但是在ImageNet1K上或者自己的数据上时，Pre-Logits可以不要它，即MLP Head只有一个全连接层）。</li>
+</ul>
+<p>![Vision Transformer网络结构](Transformer-vit网络详解/Vision Transformer网络结构.png)</p>
+<h2 id="Hybrid混合模型">Hybrid混合模型</h2>
+<p>将传统CNN特征提取和Transformer进行结合。</p>
+<p>下图是以ResNet50作为特征提取器的混合模型，但这里的Resnet与之前讲的Resnet有些不同。</p>
+<ul>
+<li>这里的R50的卷积层<strong>采用的StdConv2d不是传统的Conv2d</strong>；</li>
+<li>将所有的<strong>BatchNorm层替换成GroupNorm层</strong>；</li>
+<li>在原Resnet50网络中，stage1重复堆叠3次，stage2重复堆叠4次，stage3重复堆叠6次，stage4重复堆叠3次，但在这里的R50中，<strong>把stage4中的3个Block移至stage3中</strong>，所以stage3中共重复堆叠9次。</li>
+</ul>
+<p><strong>流程概述：</strong></p>
+<ul>
+<li>将[224，224，3]的RGB彩色图像输入进StdConv2d卷积层中，卷积核大小为7x7，stride = 2，卷积核个数为64（<code>[224，224，3]-&gt;[112，112，64]</code>）；</li>
+<li>通过GroupNorm、ReLU、MaxPool，数据的shape变为<code>[56，56，64]</code>；</li>
+<li>再依次通过Stage1、Stage2、Stage3，数据shape变为<code>[14，14，1024]</code>，刚好由<code>[224，224，3]-&gt;[14，14，1024]</code>下采样16倍，刚好同ViT网络中直接通过一个卷积核大小为16x16，步距为16的下采样率一样</li>
+</ul>
+<blockquote>
+<p>注意：在原来的ResNet50网络中Stage3为重复6次，但<strong>因为把stage4中的3个Block移至stage3中</strong>，所以stage3中共重复堆叠6+3=9次。</p>
+</blockquote>
+<ul>
+<li>之后通过Patch Embedding层，这里的Conv2d和刚刚的不一样，刚刚的是16x16，stride = 16，这里为<strong>1x1，stride = 1</strong>（目的是调节特征矩阵的channel）<code>[14，14，1024]-&gt;[14，14，768]</code>；</li>
+<li>之后同前面ViT中讲的完全一样，就不在赘述。</li>
+</ul>
+<p>![ResNet-50+ViT-B/16 hybrid model](Transformer-vit网络详解/ResNet-50+ViT-B16 hybrid model.png)</p>
+<h1>ViT模型搭建参数</h1>
+<ul>
+<li><code>Layers</code>是<strong>Transformer Encoder中重复堆叠Encoder Block的次数</strong>；</li>
+<li><code>Hidden Size</code>是<strong>通过Embedding层后每个token的dim</strong> (向量的长度)；</li>
+<li><code>MLP size</code>是Transformer Encoder中<strong>MLP Block第一个全连接的节点个数(是Hidden Size的四倍)</strong>；</li>
+<li><code>Heads</code>代表Transformer中<strong>Multi-Head Attention的heads数</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Model</th>
+<th style="text-align:center">Patch Size</th>
+<th style="text-align:center">Layers</th>
+<th style="text-align:center">Hidden Size D</th>
+<th style="text-align:center">MLP size</th>
+<th style="text-align:center">Heads</th>
+<th style="text-align:center">Params</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ViT-Base</td>
+<td style="text-align:center">16x16</td>
+<td style="text-align:center">12</td>
+<td style="text-align:center">768</td>
+<td style="text-align:center">3072</td>
+<td style="text-align:center">12</td>
+<td style="text-align:center">86M</td>
+</tr>
+<tr>
+<td style="text-align:center">ViT-Large</td>
+<td style="text-align:center">16x16</td>
+<td style="text-align:center">24</td>
+<td style="text-align:center">1024</td>
+<td style="text-align:center">4096</td>
+<td style="text-align:center">16</td>
+<td style="text-align:center">307M</td>
+</tr>
+<tr>
+<td style="text-align:center">ViT-Huge</td>
+<td style="text-align:center">14x14</td>
+<td style="text-align:center">32</td>
+<td style="text-align:center">1280</td>
+<td style="text-align:center">5120</td>
+<td style="text-align:center">16</td>
+<td style="text-align:center">632M</td>
+</tr>
+</tbody>
+</table>
+<h1>论文中的网络性能对比</h1>
+<p>下表是论文用来对比ViT，Resnet（和刚刚讲的一样，使用的卷积层和Norm层都进行了修改）以及Hybrid模型的效果。通过对比发现，<strong>在训练epoch较少时Hybrid优于ViT，但当epoch增大后ViT优于Hybrid</strong>。</p>
+<p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E8%AE%BA%E6%96%87%E4%B8%AD%E5%90%8C%E4%BB%A5%E5%BE%80%E7%B3%BB%E5%88%97%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94.png" alt="论文中的网络性能对比"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag"><i class="fa fa-tag"></i> 神经网络</a>
+              <a href="/tags/CNN%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> CNN网络详解</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/05/30/%E4%BD%BF%E7%94%A8Pytorch%E6%90%AD%E5%BB%BAEfficientNetV2%E7%BD%91%E7%BB%9C/" rel="prev" title="深度学习模型之CNN（二十）使用Pytorch搭建EfficientNetV2网络">
+                  <i class="fa fa-chevron-left"></i> 深度学习模型之CNN（二十）使用Pytorch搭建EfficientNetV2网络
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Linvil Yao</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("04/21/2023 22:22:22");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "已运行 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","app_key":"iNfyeaWVmA11Duj7fzr0B1r1","server_url":"https://16p3s6fl.lc-cn-n1-shared.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '32px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
+</script>
+
+</body>
+</html>
