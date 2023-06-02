@@ -4104,4 +4104,16 @@ N = (W-F+2P)/S + 1<br>
         <tag>CNN网络详解</tag>
       </tags>
   </entry>
+  <entry>
+    <title>深度学习模型之CNN（二十二）使用pytorch搭建VisionTransformer_vit模型</title>
+    <url>/2023/06/01/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAVisionTransformer-vit%E6%A8%A1%E5%9E%8B/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>神经网络</tag>
+        <tag>Pytorch搭建CNN</tag>
+      </tags>
+  </entry>
 </search>
