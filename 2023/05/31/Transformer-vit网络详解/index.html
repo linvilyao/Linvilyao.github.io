@@ -40,7 +40,7 @@
 <meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/ResNet-50+ViT-B16-hybrid-model.png">
 <meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E8%AE%BA%E6%96%87%E4%B8%AD%E5%90%8C%E4%BB%A5%E5%BE%80%E7%B3%BB%E5%88%97%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94.png">
 <meta property="article:published_time" content="2023-05-31T13:55:02.000Z">
-<meta property="article:modified_time" content="2023-06-02T11:01:55.621Z">
+<meta property="article:modified_time" content="2023-06-02T11:59:53.982Z">
 <meta property="article:author" content="Linvil Yao">
 <meta property="article:tag" content="神经网络">
 <meta property="article:tag" content="CNN网络详解">
@@ -278,7 +278,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-02 19:01:55" itemprop="dateModified" datetime="2023-06-02T19:01:55+08:00">2023-06-02</time>
+      <time title="修改时间：2023-06-02 19:59:53" itemprop="dateModified" datetime="2023-06-02T19:59:53+08:00">2023-06-02</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -378,7 +378,7 @@
 <p>对于<strong>是否使用</strong>Position Embedding作者也有做一系列对比试验，<strong>在源码中默认使用的是<code>1D Pos. Emb.</code></strong>，对比不使用Position Embedding准确率提升了大概3个点，和<code>2D Pos. Emb.</code>比起来没太大差别。</p>
 <p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Position-Embedding%E5%AF%B9%E6%AF%94%E8%AF%95%E9%AA%8C.png" alt="Position Embedding对比试验"></p>
 <p>前文说到，会为每一个Patches增加一个位置编码，其实就是一个向量，我们可以针对每一个位置上的位置编码和其他位置上的位置编码求训练相似度，即能得到下图。如下图所示（关于训练得到的位置编码，<strong>在每个位置上和其他位置的余弦相似度</strong>），这里的Patches大小是32x32的，224/32 = 7，所以大小为7x7。</p>
-<p>理解：会在每一个token上叠加一个位置编码，那么针对每一个patches的位置编码其实就是一个向量，那么可以针对每一个位置上的位置编码和其他位置上的位置编码去求一个余弦相似度，即能得到如下图。（<strong>就是每个小小格子和其他小小各自计算相速度，所有的大格子其实都是同一张图</strong>）</p>
+<p>理解：会在每一个token上叠加一个位置编码，那么针对每一个patches的位置编码其实就是一个向量，那么可以针对每一个位置上的位置编码和其他位置上的位置编码去求一个余弦相似度，即能得到如下图。（<strong>就是每个小小格子和其他小小格子计算相似度，所有的大格子其实都是同一张图</strong>）</p>
 <p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Patches%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81.png" alt="Patches位置编码"></p>
 <h3 id="Transformer-Encoder层">Transformer Encoder层</h3>
 <p>Transformer Encoder其实就是重复堆叠Encoder Block L次，下图是Encoder Block，主要由以下几部分组成：</p>
