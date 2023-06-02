@@ -29,12 +29,18 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3.png">
 <meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Transformer-vit%E6%A8%A1%E5%9E%8B%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Vision-Transformer%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84.png">
 <meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Embedding%E5%B1%82%E7%BB%93%E6%9E%84.png">
 <meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Embedding%E5%B1%82%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Position-Embedding%E5%AF%B9%E6%AF%94%E8%AF%95%E9%AA%8C.png">
 <meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Patches%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Transformer-Encoder%E5%B1%82.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/MLP-Head%E5%B1%82.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Vision-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/ResNet-50+ViT-B16-hybrid-model.png">
 <meta property="og:image" content="http://linvilyao.github.io/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/%E8%AE%BA%E6%96%87%E4%B8%AD%E5%90%8C%E4%BB%A5%E5%BE%80%E7%B3%BB%E5%88%97%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94.png">
 <meta property="article:published_time" content="2023-05-31T13:55:02.000Z">
-<meta property="article:modified_time" content="2023-06-01T14:40:00.484Z">
+<meta property="article:modified_time" content="2023-06-02T11:01:55.621Z">
 <meta property="article:author" content="Linvil Yao">
 <meta property="article:tag" content="神经网络">
 <meta property="article:tag" content="CNN网络详解">
@@ -272,7 +278,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-01 22:40:00" itemprop="dateModified" datetime="2023-06-01T22:40:00+08:00">2023-06-01</time>
+      <time title="修改时间：2023-06-02 19:01:55" itemprop="dateModified" datetime="2023-06-02T19:01:55+08:00">2023-06-02</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -312,7 +318,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>5.6k</span>
+      <span>5.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -345,7 +351,7 @@
 <li>Transformer Encoder(图右侧有给出更加详细的结构)</li>
 <li>MLP Head（最终用于分类的层结构）</li>
 </ul>
-<p>![Vision Transformer模型架构](Transformer-vit网络详解/Vision Transformer模型架构.png)</p>
+<p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Vision-Transformer%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84.png" alt="Vision Transformer模型架构"></p>
 <ul>
 <li>如上图所示，首先输入一张图片，之后将图片分成一个个Paches，例如性能表中表头的<strong>ViT-L16</strong>，指的是每一个Patches是16x16大小的。</li>
 <li>之后将每一个Patches输入到Embedding层，也就是Linear Projection of Flattened Patches。</li>
@@ -370,7 +376,7 @@
 </blockquote>
 <p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Embedding%E5%B1%82%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3.png" alt="Embedding层结构详解"></p>
 <p>对于<strong>是否使用</strong>Position Embedding作者也有做一系列对比试验，<strong>在源码中默认使用的是<code>1D Pos. Emb.</code></strong>，对比不使用Position Embedding准确率提升了大概3个点，和<code>2D Pos. Emb.</code>比起来没太大差别。</p>
-<p>![Position Embedding对比试验](Transformer-vit网络详解/Position Embedding对比试验.png)</p>
+<p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Position-Embedding%E5%AF%B9%E6%AF%94%E8%AF%95%E9%AA%8C.png" alt="Position Embedding对比试验"></p>
 <p>前文说到，会为每一个Patches增加一个位置编码，其实就是一个向量，我们可以针对每一个位置上的位置编码和其他位置上的位置编码求训练相似度，即能得到下图。如下图所示（关于训练得到的位置编码，<strong>在每个位置上和其他位置的余弦相似度</strong>），这里的Patches大小是32x32的，224/32 = 7，所以大小为7x7。</p>
 <p>理解：会在每一个token上叠加一个位置编码，那么针对每一个patches的位置编码其实就是一个向量，那么可以针对每一个位置上的位置编码和其他位置上的位置编码去求一个余弦相似度，即能得到如下图。（<strong>就是每个小小格子和其他小小各自计算相速度，所有的大格子其实都是同一张图</strong>）</p>
 <p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Patches%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81.png" alt="Patches位置编码"></p>
@@ -382,11 +388,11 @@
 <li>Dropout/DropPath，在原论文的代码中是直接使用的Dropout层，在但rwightman（大神）实现的代码中使用的是DropPath（stochastic depth），可能后者会更好一点。</li>
 <li>MLP Block，如图右侧所示，就是全连接+GELU激活函数+Dropout组成，需要注意的是<strong>第一个全连接层会把输入节点个数翻4倍[197, 768] -&gt; [197, 3072]，第二个全连接层会还原回原节点个数[197, 3072] -&gt; [197, 768]</strong></li>
 </ul>
-<p>![Transformer Encoder层](Transformer-vit网络详解/Transformer Encoder层.png)</p>
+<p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Transformer-Encoder%E5%B1%82.png" alt="Transformer Encoder层"></p>
 <h3 id="MLP-Head层">MLP Head层</h3>
 <p>注意，在Transformer Encoder前有个Dropout层，后有一个LayerNorm（细节都在源码中）</p>
 <p>训练ImageNet21K或者是更大数据集时是由Linear+tanh激活函数+Linear，但是迁移到ImageNet1K上或者自己的数据上时，只有一个Linear。因此<strong>可以将MLP Head简单理解为一个全连接层</strong>。如果需要最终输出一个类别的话，需要接上softmax函数。</p>
-<p>![MLP Head层](Transformer-vit网络详解/MLP Head层.png)</p>
+<p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/MLP-Head%E5%B1%82.png" alt="MLP Head层"></p>
 <h3 id="Vision-Transformer网络结构">Vision Transformer网络结构</h3>
 <p>以ViT-B/16为例，讲解网络过程。假设输入图片为一张RGB彩色图片（224x224x3）</p>
 <ul>
@@ -404,7 +410,7 @@
 <li>再提取[class]token所对应的输出，直接对[197，768]数据进行切片，只需要提取出[class]token所对应的输出即可，切片之后得到输出[1，768];</li>
 <li>之后通过<strong>MLP Head</strong>得到最终的输出（如果ImageNet21K上进行预训练的话，Pre-Logits其实就是一个全连接层+tanh激活函数；但是在ImageNet1K上或者自己的数据上时，Pre-Logits可以不要它，即MLP Head只有一个全连接层）。</li>
 </ul>
-<p>![Vision Transformer网络结构](Transformer-vit网络详解/Vision Transformer网络结构.png)</p>
+<p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/Vision-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png" alt="Vision Transformer网络结构"></p>
 <h2 id="Hybrid混合模型">Hybrid混合模型</h2>
 <p>将传统CNN特征提取和Transformer进行结合。</p>
 <p>下图是以ResNet50作为特征提取器的混合模型，但这里的Resnet与之前讲的Resnet有些不同。</p>
@@ -426,7 +432,7 @@
 <li>之后通过Patch Embedding层，这里的Conv2d和刚刚的不一样，刚刚的是16x16，stride = 16，这里为<strong>1x1，stride = 1</strong>（目的是调节特征矩阵的channel）<code>[14，14，1024]-&gt;[14，14，768]</code>；</li>
 <li>之后同前面ViT中讲的完全一样，就不在赘述。</li>
 </ul>
-<p>![ResNet-50+ViT-B/16 hybrid model](Transformer-vit网络详解/ResNet-50+ViT-B16 hybrid model.png)</p>
+<p><img src="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/ResNet-50+ViT-B16-hybrid-model.png" alt="ResNet-50+ViT-B/16 hybrid model"></p>
 <h1>ViT模型搭建参数</h1>
 <ul>
 <li><code>Layers</code>是<strong>Transformer Encoder中重复堆叠Encoder Block的次数</strong>；</li>
