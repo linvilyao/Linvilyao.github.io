@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_logosc/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_logosc/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","width":240,"display":"post","padding":14,"offset":10},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础12.1》，作为随堂笔记。本节课学习Swin-Transformer网络的具体结构，包括Patch partition，Windows Multi-head Self-Attention（W-MSA）, Shifted Windows Multi-head Self-Attention（SW-MSA）, 相对位置偏执（relative posit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习模型之CNN（二十三）Swin-Transformer网络结构详解">
+<meta property="og:url" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Linvil&#39;s Blog">
+<meta property="og:description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础12.1》，作为随堂笔记。本节课学习Swin-Transformer网络的具体结构，包括Patch partition，Windows Multi-head Self-Attention（W-MSA）, Shifted Windows Multi-head Self-Attention（SW-MSA）, 相对位置偏执（relative posit">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Swin-Transformer%E5%B1%A0%E6%A6%9C.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Swin-Transformer%E5%92%8CVision-Transformer%E7%9A%84%E5%AF%B9%E6%AF%94.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Patch-Patition.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Swin-Transformer%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E5%9B%BE.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Patch-Merging.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/W-MSA.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/MSA%E5%92%8CW-SMA%E5%88%86%E5%88%AB%E7%9A%84%E8%AE%A1%E7%AE%97%E9%87%8F%E5%85%AC%E5%BC%8F.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Attention%E5%85%AC%E5%BC%8F.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E5%AF%B9%E5%BA%94%E6%89%80%E6%9C%89%E5%83%8F%E7%B4%A0%E7%94%9F%E6%88%90Q%E7%9A%84%E5%85%AC%E5%BC%8F.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/MSA%E8%AE%A1%E7%AE%97%E9%87%8F2.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/MSA%E8%AE%A1%E7%AE%97%E9%87%8F3.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/MSA%E8%AE%A1%E7%AE%97%E9%87%8F4.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/W-SMA%E8%AE%A1%E7%AE%97%E9%87%8F1.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/W-SMA%E8%AE%A1%E7%AE%97%E9%87%8F2.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/W-SMA%E8%AE%A1%E7%AE%97%E9%87%8F3.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E8%BF%9B%E8%A1%8C%E5%81%8F%E7%A7%BB%E7%9A%84W-SMA.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Efficient-batch-computation-for-shifted-configuration.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Shifted-Window-1.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Shifted-Window-2.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Shifted-Window-3.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E5%B8%A6%E8%92%99%E6%9D%BFmask%E7%9A%84MSA.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E4%B8%BE%E4%BE%8BSW-MSA-%E5%8E%9F%E6%95%B0%E6%8D%AE.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E4%B8%BE%E4%BE%8BSW-MSA-%E5%81%8F%E7%A7%BB%E5%88%86%E5%89%B2%E4%B9%8B%E5%90%8E%E7%9A%84%E6%95%B0%E6%8D%AE.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB-%E5%85%AC%E5%BC%8F.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB-1.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB-2.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB-3.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB-4.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB%E5%8F%82%E6%95%B0.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB-%E5%85%AC%E5%BC%8F.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Swin-Transformer%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E5%9B%BE.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E6%A8%A1%E5%9E%8B%E8%AF%A6%E7%BB%86%E5%8F%82%E6%95%B0.png">
+<meta property="article:published_time" content="2023-06-03T04:54:04.000Z">
+<meta property="article:modified_time" content="2023-06-03T14:10:10.329Z">
+<meta property="article:author" content="Linvil Yao">
+<meta property="article:tag" content="神经网络">
+<meta property="article:tag" content="CNN网络详解">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Swin-Transformer%E5%B1%A0%E6%A6%9C.png">
+
+
+<link rel="canonical" href="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/","path":"2023/06/03/Swin-Transformer网络结构详解/","title":"深度学习模型之CNN（二十三）Swin-Transformer网络结构详解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>深度学习模型之CNN（二十三）Swin-Transformer网络结构详解 | Linvil's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Linvil's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">这是一个用来记录的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">34</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">网络整体框架</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">Patch Merging详解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">W-MSA详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MSA%E6%A8%A1%E5%9D%97%E8%AE%A1%E7%AE%97%E9%87%8F"><span class="nav-number">4.1.</span> <span class="nav-text">MSA模块计算量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#W-MSA%E6%A8%A1%E5%9D%97%E8%AE%A1%E7%AE%97%E9%87%8F"><span class="nav-number">4.2.</span> <span class="nav-text">W-MSA模块计算量</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">5.</span> <span class="nav-text">SW-MSA详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B%E5%AE%9E%E6%93%8DSW-MSA"><span class="nav-number">5.1.</span> <span class="nav-text">举例实操SW-MSA</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">6.</span> <span class="nav-text">Relative Position Bias详解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">7.</span> <span class="nav-text">模型详细配置参数</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Linvil Yao"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Linvil Yao</p>
+  <div class="site-description" itemprop="description">Welcome to Linvil's Blog!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+        </div>
+      </div>
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/" title="2023&#x2F;06&#x2F;03&#x2F;Swin-Transformer网络结构详解&#x2F;">深度学习模型之CNN（二十三）Swin-Transformer网络结构详解</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/01/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAVisionTransformer-vit%E6%A8%A1%E5%9E%8B/" title="2023&#x2F;06&#x2F;01&#x2F;使用pytorch搭建VisionTransformer-vit模型&#x2F;">深度学习模型之CNN（二十二）使用pytorch搭建VisionTransformer_vit模型</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/05/31/Transformer-vit%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" title="2023&#x2F;05&#x2F;31&#x2F;Transformer-vit网络详解&#x2F;">深度学习模型之CNN（二十一）Transformer_vit网络详解</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/05/30/%E4%BD%BF%E7%94%A8Pytorch%E6%90%AD%E5%BB%BAEfficientNetV2%E7%BD%91%E7%BB%9C/" title="2023&#x2F;05&#x2F;30&#x2F;使用Pytorch搭建EfficientNetV2网络&#x2F;">深度学习模型之CNN（二十）使用Pytorch搭建EfficientNetV2网络</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/05/29/EfficientNetV2%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" title="2023&#x2F;05&#x2F;29&#x2F;EfficientNetV2网络详解&#x2F;">深度学习模型之CNN（十九）EfficientNetV2网络详解</a>
+        </li>
+    </ul>
+  </div>
+    </div>
+
+
+    
+
+
+
+  </aside>
+
+
+
+
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Linvil Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linvil's Blog">
+      <meta itemprop="description" content="Welcome to Linvil's Blog!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="深度学习模型之CNN（二十三）Swin-Transformer网络结构详解 | Linvil's Blog">
+      <meta itemprop="description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础12.1》，作为随堂笔记。本节课学习Swin-Transformer网络的具体结构，包括Patch partition，Windows Multi-head Self-Attention（W-MSA）, Shifted Windows Multi-head Self-Attention（SW-MSA）, 相对位置偏执（relative position bias）等。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深度学习模型之CNN（二十三）Swin-Transformer网络结构详解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-06-03 12:54:04 / 修改时间：22:10:10" itemprop="dateCreated datePublished" datetime="2023-06-03T12:54:04+08:00">2023-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/" class="post-meta-item leancloud_visitors" data-flag-title="深度学习模型之CNN（二十三）Swin-Transformer网络结构详解" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Valine：</span>
+  
+    <a title="valine" href="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础12.1》，作为随堂笔记。本节课学习Swin-Transformer网络的具体结构，包括Patch partition，Windows Multi-head Self-Attention（W-MSA）, Shifted Windows Multi-head Self-Attention（SW-MSA）, 相对位置偏执（relative position bias）等。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1>前言</h1>
+<p>Swin Transformer是2021年微软研究院发表在ICCV上的一篇文章，并且已经获得<code>ICCV 2021 best paper</code>的荣誉称号。Swin Transformer网络是Transformer模型在视觉领域的又一次碰撞。该论文一经发表就已在多项视觉任务中霸榜（下图<code>State of the Art</code>表示第一）。原论文：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2103.14030">Swin Transformer: Hierarchical Vision Transformer using Shifted Windows</a></p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Swin-Transformer%E5%B1%A0%E6%A6%9C.png" alt="Swin Transformer屠榜"></p>
+<h1>网络整体框架</h1>
+<p>下图（左）是Swin Transformer，下图（右）是之前讲的Vision Transformer。通过对比至少可以看出两点不同：</p>
+<ul>
+<li>Swin Transformer使用了<strong>类似卷积神经网络中的层次化构建方法（Hierarchical feature maps）</strong>，比如特征图尺寸中有对图像下采样4倍的，8倍的以及16倍的，这样的<strong>backbone有助于在此基础上构建目标检测、实例分割等任务</strong>。而在之前的Vision Transformer中是一开始就直接下采样16倍，后面的特征图也是维持这个下采样率不变。</li>
+<li>在Swin Transformer中使用一个个窗口的形式将图片分隔开，窗口和窗口之间没有重叠，即Windows Multi-Head Self-Attention(W-MSA)的概念，比如在下图的4倍下采样和8倍下采样中，将特征图划分成了多个不相交的区域（Window），并且Multi-Head Self-Attention只在每个窗口（Window）内进行。相对于Vision Transformer中直接对整个（Global）特征图进行分割，即Multi-Head Self-Attention，这样做的目的<strong>是能够减少计算量的，尤其是在浅层特征图很大的时候</strong>。这样做<strong>虽然减少了计算量但也会隔绝不同窗口之间的信息传递，所以在论文中作者又提出了 Shifted Windows Multi-Head Self-Attention(SW-MSA)的概念，通过此方法能够让信息在相邻的窗口中进行传递</strong>。</li>
+</ul>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Swin-Transformer%E5%92%8CVision-Transformer%E7%9A%84%E5%AF%B9%E6%AF%94.png" alt="Swin Transformer和Vision Transformer的对比"></p>
+<p>原论文中给出的关于<strong>Swin Transformer（Swin-T）网络的架构图</strong>。通过图(a)可以看出<strong>整个框架的基本流程</strong>如下：</p>
+<ul>
+<li>首先<strong>将图片输入到Patch Partition模块中进行分块，即每4x4相邻的像素为一个Patch，然后在channel方向展平（flatten）</strong>。假设输入的是RGB三通道图片，那么每个patch就有4x4=16个像素，然后每个像素有R、G、B三个值所以展平后是16x3=48，所以通过Patch Partition后图像shape由<code> [H, W, 3]</code>变成了 <code>[H/4, W/4, 48]</code>。然后在通过Linear Embedding层对每个像素的channel数据做线性变换，由48变成C，即图像shape再由 <code>[H/4, W/4, 48]</code>变成了<code> [H/4, W/4, C]</code>。其实在源码中Patch Partition和Linear Embedding就是直接通过一个卷积层实现的，和之前Vision Transformer中讲的 Embedding层结构一模一样。</li>
+</ul>
+<blockquote>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Patch-Patition.png" alt="Patch Partition和Linear Embedding"></p>
+</blockquote>
+<ul>
+<li>
+<p>然后就是<strong>通过四个Stage构建不同大小的特征图，除了Stage1中先通过一个Linear Embeding层外，剩下三个stage都是先通过一个Patch Merging层进行下采样</strong>，然后都是重复堆叠Swin Transformer Block注意这里的Block其实有两种结构，如图(b)中所示，这两种结构的不同之处仅在于一个使用了W-MSA结构，一个使用了SW-MSA结构。而且这两个结构是成对使用的，先使用一个W-MSA结构再使用一个SW-MSA结构。所以会发现<strong>堆叠Swin Transformer Block的次数都是偶数（因为成对使用下图b）</strong>。</p>
+</li>
+<li>
+<p>最后对于分类网络，在Stage4之后还会接上一个Layer Norm层、全局池化层以及全连接层得到最终输出。</p>
+</li>
+</ul>
+<p>接下来，在分别对Patch Merging、W-MSA、SW-MSA以及使用到的相对位置偏执（relative position bias）进行详解。关于Swin Transformer Block中的MLP结构和Vision Transformer中的结构是一样的，所以这里也不在赘述。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Swin-Transformer%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E5%9B%BE.png" alt="Swin-Transformer网络架构图"></p>
+<h1>Patch Merging详解</h1>
+<p>即上图的Stage2、3、4。在每个Stage中首先要通过一个Patch Merging层进行下采样（Stage1除外）。如下图所示，假设输入Patch Merging的是一个4x4大小的单通道特征图（feature map），Patch Merging会将每个2x2的相邻像素划分为一个patch，然后将每个patch中相同位置（同一颜色）<code>像素</code>给拼在一起就得到了4个feature map。接着将这四个feature map在深度方向进行concat拼接，然后在通过一个LayerNorm层。最后通过一个全连接层在feature map的深度方向做线性变化，将feature map的深度由C变成C/2。通过这个简单的例子可以看出，<strong>通过Patch Merging层后，feature map的高和宽会减半，深度会翻倍</strong>。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Patch-Merging.png" alt="Patch Merging"></p>
+<h1>W-MSA详解</h1>
+<ul>
+<li>目的：减少计算量；</li>
+<li>缺点：窗口之间无法进行信息交互；</li>
+</ul>
+<p>引入Windows Multi-head Self-Attention（W-MSA）模块是<strong>为了减少计算量</strong>。如下图所示，左侧使用的是普通的Multi-head Self-Attention（MSA）模块，对于feature map中的每个像素（或称作token，patch）在Self-Attention计算过程中需要和所有的像素去计算。但在图右侧，在<strong>使用Windows Multi-head Self-Attention（W-MSA）模块时，首先将feature map按照MxM（例子中的M=2）大小划分成一个个Windows，然后单独对每个Windows内部进行Self-Attention</strong>。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/W-MSA.png" alt="W-MSA"></p>
+<p>两者的计算量具体差多少呢？原论文中有给出下面两个公式，这里忽略了Softmax的计算复杂度。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/MSA%E5%92%8CW-SMA%E5%88%86%E5%88%AB%E7%9A%84%E8%AE%A1%E7%AE%97%E9%87%8F%E5%85%AC%E5%BC%8F.png" alt="MSA和W-MSA分别的计算量公式"></p>
+<ul>
+<li>h代表feature map的高度</li>
+<li>w代表feature map的宽度</li>
+<li>C代表feature map的深度</li>
+<li>M代表每个窗口（Windows）的大小</li>
+</ul>
+<p>h = w = 112，M= 7，C = 128，节省40124743680 FLOPS</p>
+<p><strong>Self-Attention公式</strong></p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Attention%E5%85%AC%E5%BC%8F.png" alt="Self-Attention公式"></p>
+<h2 id="MSA模块计算量">MSA模块计算量</h2>
+<p>对于feature map中的每个像素（或称作token，patch），都要通过$W_q$，$W_k$，$W_v$生成对应的query(q)，key(k)以及value(v)。这里假设q, k, v的向量长度与feature map的深度C保持一致。那么对应所有像素生成Q的过程如下式：</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E5%AF%B9%E5%BA%94%E6%89%80%E6%9C%89%E5%83%8F%E7%B4%A0%E7%94%9F%E6%88%90Q%E7%9A%84%E5%85%AC%E5%BC%8F.png" alt="MSA计算量-1"></p>
+<ul>
+<li>$A^{hw*C}$：将所有像素（token）拼接在一起得到的矩阵（一共有hw个像素，每个像素的深度为C）；</li>
+<li>$W_q^{C*C}$：生成query的变换矩阵；</li>
+<li>$Q^{hw<em>C}$：所有像素通过$W_q^{C</em>C}$得到的query拼接后的矩阵</li>
+</ul>
+<blockquote>
+<p>矩阵乘法当中，<strong>$A^{a<em>b}·B^{b</em>c}$的FLOPs为a x b x c</strong></p>
+</blockquote>
+<p>根据矩阵运算的计算量公式可以得到生成Q的计算量为hw x C x C，，生成K和V同理都是$hwC^2$，那么总共是$3hwC^2$。接下来$Q$和$K$相乘，对应计算量为$(hw)^2C$：</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/MSA%E8%AE%A1%E7%AE%97%E9%87%8F2.png" alt="MSA计算量-2"></p>
+<p>接下来忽略除以$\sqrt{d}$以及softmax的计算量，假设得到$Λ^{hw * hw}$（通过softmax之后得到的输出），最后还要乘以V，对应的计算量为$(hw)^2C$：</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/MSA%E8%AE%A1%E7%AE%97%E9%87%8F3.png" alt="MSA计算量-3"></p>
+<p>那么对应单头的Self-Attention模块，总共需要$3hwC^2+(hw)^2C+(hw)^2C=3hwC^2+2(hw)^2C$。而在实际使用过程中，使用的是多头的Multi-head Self-Attention模块，<strong>多头注意力模块相比单头注意力模块的计算量仅多了最后一个融合矩阵$W^o$的计算量$(hw)^2C$</strong>。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/MSA%E8%AE%A1%E7%AE%97%E9%87%8F4.png" alt="MSA计算量-4"></p>
+<p><strong>所以总共加起来是</strong>：$4hwC^2+2(hw)^2C$</p>
+<h2 id="W-MSA模块计算量">W-MSA模块计算量</h2>
+<p>对于W-MSA模块首先要将feature map划分到一个个窗口（Windows）中，假设每个窗口的宽高都是M，那么总共会得到$\frac{h}{M}✖\frac{w}{M}$个窗口，然后对每个窗口内使用多头注意力模块。刚刚计算高为h，宽为w，深度为C的feature map的计算量为$4hwC^2+2(hw)^2C$，这里每个窗口的高为M宽为M，带入公式得：</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/W-SMA%E8%AE%A1%E7%AE%97%E9%87%8F1.png" alt="W-SMA计算量-1"></p>
+<p>又因为有$\frac{h}{M}✖\frac{w}{M}$个窗口，则：：</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/W-SMA%E8%AE%A1%E7%AE%97%E9%87%8F2.png" alt="W-SMA计算量-2"></p>
+<p>故使用W-MSA模块的计算量为：</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/W-SMA%E8%AE%A1%E7%AE%97%E9%87%8F3.png" alt="W-SMA计算量-3"></p>
+<p>假设feature map的h、w都为112，M=7，C=128，采用W-MSA模块相比MSA模块能够节省约40124743680 FLOPs：$4(hw)^2C-2M^2hwC = 2✖112^4✖128-2✖7^2✖112^2✖128 = 40124743680$</p>
+<h1>SW-MSA详解</h1>
+<p>采用W-MSA模块时，只会在每个窗口内进行自注意力计算，所以窗口与窗口之间是无法进行信息传递的。为了解决这个问题，作者引入了<strong>Shifted Windows Multi-Head Self-Attention（SW-MSA）模块，即进行偏移的W-MSA</strong>。</p>
+<p>如下图所示，左侧使用的是刚刚讲的W-MSA（假设是第L层），那么根据之前介绍的W-MSA和SW-MSA是成对使用的，那么第L+1层使用的就是SW-MSA（右侧图）。根据左右两幅图对比能够发现窗口（Windows）发生了偏移（可以理解成<strong>窗口从左上角分别向右侧和下方各偏移了$\lfloor\frac{M}{2}\rfloor$个像素</strong>，up的视频有动图，十分清晰明了）。看下偏移后的窗口（右侧图），比如对于第一行第2列的2x4的窗口，它能够使第L层的第一排的两个窗口信息进行交流。再比如，第二行第二列的4x4的窗口，他能够使第L层的四个窗口信息进行交流，其他的同理。那么这就解决了不同窗口之间无法进行信息交流的问题。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E8%BF%9B%E8%A1%8C%E5%81%8F%E7%A7%BB%E7%9A%84W-SMA.png" alt="进行偏移的W-MSA"></p>
+<p>根据上图，可以发现通过将窗口进行偏移后，<strong>由原来的4个窗口变成9个窗口了。后面又要对每个窗口内部进行MSA，这样做感觉又变麻烦了</strong>。为了解决这个麻烦，作者又提出而了<code>Efficient batch computation for shifted configuration</code>，一种更加高效的计算方法。下面是原论文给的示意图。<br>
+<img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Efficient-batch-computation-for-shifted-configuration.png" alt="Efficient batch computation for shifted configuration"></p>
+<p><strong>为描述上图Efficient batch computation for shifted configuration的过程</strong>，up画了下面几幅图来更清晰的讲解。</p>
+<p>下图左侧是刚刚通过偏移窗口后得到的新窗口，右侧是为了方便大家理解，对每个窗口加上了一个标识。然后0对应的窗口标记为区域A，3和6对应的窗口标记为区域B，1和2对应的窗口标记为区域C。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Shifted-Window-1.png" alt="Shifted Window-1"></p>
+<p>然后先将区域A和C移到最下方。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Shifted-Window-2.png" alt="Shifted Window-2"></p>
+<p>接着，再将区域A和B移至最右侧。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Shifted-Window-3.png" alt="Shifted Window-3"></p>
+<p>移动完后，4是一个单独的窗口；将3和5合并成一个窗口；7和1合并成一个窗口；8、6、2和0合并成一个窗口。这样又和原来一样是4个4x4的窗口了，<strong>所以能够保证计算量是一样的</strong>。这里肯定有人会想，把不同的区域合并在一起（比如5和3）进行MSA，这信息不就乱窜了吗？是的，为了防止这个问题，在实际计算中使用的是<code>masked MSA即带蒙板mask的MSA</code>，这样就<strong>能够通过设置蒙板来隔绝不同区域的信息了</strong>。关于mask如何使用，可以看下图，下图是以上面的区域5和区域3为例。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E5%B8%A6%E8%92%99%E6%9D%BFmask%E7%9A%84MSA.png" alt="带蒙板mask的MSA"></p>
+<p><strong>对于该窗口内的每一个像素（或称token，patch）在进行MSA计算时，都要先生成对应的query(q)，key(k)，value(v)</strong>。假设对于上图的像素0而言，得到$q^0$后要与每一个像素的k进行匹配（match），假设$\alpha_{0,0}$代表$q^0$与像素0对应的$k^0$进行匹配的结果，那么同理可以得到$\alpha_{0,0}$至$\alpha_{0,15}$。按照普通的MSA计算，接下来就是SoftMax操作了。</p>
+<p>但对于这里的<code>masked MSA</code>，像素0是属于区域5的，<strong>我们只想让它和区域5内的像素进行匹配</strong>（只想计算区域5内部的MSA计算，不希望引入区域3的信息）。<strong>那么我们可以将像素0与区域3中的所有像素匹配结果都减去100（例如$\alpha_{0,2}$，$\alpha_{0,3}$，$\alpha_{0,6}$，$\alpha_{0,7}$，由于$\alpha$的值都很小，一般都是零点几的数，将其中一些数减去100后在通过SoftMax得到对应的权重都等于0了。所以对于像素0而言实际上还是只和区域5内的像素进行了MSA</strong>。对于其他像素也是同理。</p>
+<p><strong>注意，在计算完后还要把数据给挪回到原来的位置上（例如上上图的A，B，C区域）。</strong></p>
+<h2 id="举例实操SW-MSA">举例实操SW-MSA</h2>
+<p>偏移量为M/2向下取整，下图中M = 3，所以偏移量为1，因此需要改动下图（左）的第一行和第一列，改动完之后是下图（右），将第一行补到最后一行，第一列补到最后一列。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E4%B8%BE%E4%BE%8BSW-MSA-%E5%8E%9F%E6%95%B0%E6%8D%AE.png" alt="举例SW-MSA-原数据"></p>
+<p>对于上图（右）黑色的分割线对应的是上一层的分割线（即还没有使用偏移量的分割线），此时在挪动了feature map上使用3x3的window（窗口）来进行分割，即如下图所示。</p>
+<p>对于4个橙色的window区域，可以直接进行MSA操作，因为每个window内部数据本身是连续的，且通过window分割之后会发现每个window都能和融合上一层4个window的信息。</p>
+<p>对于紫色的window区域，因为并不是连续的，所以需要用到具有masked的MSA</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E4%B8%BE%E4%BE%8BSW-MSA-%E5%81%8F%E7%A7%BB%E5%88%86%E5%89%B2%E4%B9%8B%E5%90%8E%E7%9A%84%E6%95%B0%E6%8D%AE.png" alt="举例SW-MSA-偏移分割之后的数据"></p>
+<h1>Relative Position Bias详解</h1>
+<p>关于相对位置偏执，使用了相对位置偏执后给够带来明显的提升。根据原论文中的表4可以看出，在Imagenet数据集上如果不使用任何位置偏执，top-1为80.1，但使用了相对位置偏执（rel. pos.）后top-1为83.3，提升还是很明显的。（w/o：without）</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB.png" alt="相对位置偏移-性能对比"></p>
+<p>那这个相对位置偏执是加在哪的呢，根据论文中提供的公式可知是在Q和K进行匹配并除以$\sqrt d $后加上了相对位置偏执B。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB-%E5%85%AC%E5%BC%8F.png" alt="相对位置偏移-公式"></p>
+<p>如下图，假设输入的feature map高宽都为2，那么首先可以构建出每个像素的绝对位置（左下方的矩阵），<strong>对于每个像素的绝对位置是使用行号和列号表示的</strong>。比如蓝色的像素对应的是第0行第0列所以<strong>绝对位置索引是( 0 , 0 )</strong> 。接下来再看看相对位置索引，首先看下蓝色的像素，在蓝色像素使用q与所有像素k进行匹配过程中，是以蓝色像素为参考点。然后<strong>用蓝色像素的绝对位置索引与其他位置索引进行相减，就得到其他位置相对蓝色像素的<code>相对位置索引</code></strong>。例如黄色像素的绝对位置索引是( 0 , 1 )，则它相对蓝色像素的相对位置索引为<code>（0，0）-（0，1）=（0，-1）</code>。那么同理可以得到其他位置相对蓝色像素的<code>相对位置索引矩阵</code>。同样，也能得到相对黄色，红色以及绿色像素的相对位置索引矩阵。接下来将每个相对位置索引矩阵<code>按行展平</code>，并拼接在一起可以得到下面的4x4矩阵 。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB-1.png" alt="相对位置偏移-1"></p>
+<p>请注意，<strong>这里描述的一直是相对位置索引，并不是相对位置偏执参数</strong>。因为后面会根据相对位置索引去取对应的参数。比如说黄色像素是在蓝色像素的右边，所以相对蓝色像素的相对位置索引为( 0 , − 1 ) 。绿色像素是在红色像素的右边，所以相对红色像素的相对位置索引为( 0 , − 1 ) 。可以发现这两者的相对位置索引都是( 0 , − 1 ) ，所以他们使用的相对位置偏执参数都是一样的。</p>
+<p>但在源码中<strong>作者为了方便把二维索引给转成了一维索引</strong>。<strong>首先在原始的相对位置索引上加上M-1(M为窗口的大小，在本示例中M=2)，加上之后索引中就不会有负数了</strong>。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB-2.png" alt="相对位置偏移-2"></p>
+<p>接着将所有的行标都乘上2M-1。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB-3.png" alt="相对位置偏移-3"></p>
+<p>最后将行标和列标进行相加。这样即保证了相对位置关系，而且不会出现仅仅将相对位置信息左简单相加而导致0 + ( − 1 ) = ( − 1 ) + 0的问题了。</p>
+<blockquote>
+<p>这是一种从向量化索引角度出发的计算方式，不理解的用二维方式来理解：</p>
+<ul>
+<li>二维的相对偏移不过就是上下、左右两类，这两类的偏移距离范围都是**[-M+1，M-1]**；</li>
+<li>那么我们可以构建一个（2M-1）x（2M-1）大小的矩阵，其中的值表示position bias；</li>
+<li>以上述构建的矩阵为table，针对不同相对位置，直接以（上下偏移距离，左右偏移距离）为索引去这个table里取值，就是我们要的relative position bias。</li>
+</ul>
+<p>当把上述3步都理解之后，再用向量化的方式理解，就清晰为什么作者这么做了。</p>
+</blockquote>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB-4.png" alt="相对位置偏移-4"></p>
+<p>之前计算的是<strong>相对位置索引</strong>，并不是<strong>相对位置偏执参数</strong>。真正使用到的可训练参数$\widehat B$是保存在relative position bias table表里的，这个表的长度是等于（2M-1）x（2M-1）的。那么上述公式中的相对位置偏执参数B是根据上面的相对位置索引表根据查<code>relative position bias table</code>表得到的，如下图所示。</p>
+<p><code>（2M-1）x（2M-1）</code>：行和列的范围都是[-M+1，M-1]，以M = 2为例，范围都是[-1，1]，可以取到的值为-1，0，1三种，所以进行行和列的排列组合之后一共会有3x3=9中可能，即对应（2M-1）x（2M-1），也就是下图中relative position bias table的个数。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB%E5%8F%82%E6%95%B0.png" alt="相对位置偏移参数"></p>
+<p><strong>注意：上图中得到的relative position bias才是最终要带入下图公式的B</strong>，也就是说最终训练过程中用到的参数实际上是relative position bias table对应的参数。而relative position index只要窗口大小是固定的，那么它本身也会是固定的。</p>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB-%E5%85%AC%E5%BC%8F.png" alt="相对位置偏移-公式"></p>
+<h1>模型详细配置参数</h1>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/Swin-Transformer%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E5%9B%BE.png" alt="Swin Transformer网络架构图"></p>
+<p>下图（表7）是原论文中给出的关于不同Swin Transformer的配置，T(Tiny)，S(Small)，B(Base)，L(Large)，其中：</p>
+<ul>
+<li>concat 4x4，96-d，LN<code>：Patch Partition+Linear Embedding，相当于Stage2、3、4中的Patch Partition，都是对输入特征矩阵进行下采样以及调整特征矩阵的channel，再通过一个Linear Norm进行输出，</code>4x4<code>即将高和宽下采样4倍，</code>96`即通过Linear Embedding之后特征矩阵channel变为96；</li>
+<li><code>win. sz. 7x7</code>：使用的窗口（Windows）的大小；</li>
+<li><code>dim</code>：feature map的channel深度（或者说token的向量长度），例如<code>dim 96</code>即通过swin transformer block之后输出的特征矩阵的channel是96；</li>
+<li><code>head</code>：多头注意力模块中head的个数。</li>
+</ul>
+<p><img src="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/%E6%A8%A1%E5%9E%8B%E8%AF%A6%E7%BB%86%E5%8F%82%E6%95%B0.png" alt="模型详细参数"></p>
+<p>注意：<strong>Swin Transformer Block在堆叠过程当中是两两一组，即W-MSA和SW-MSA，所以堆叠Block都是偶数倍</strong>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag"><i class="fa fa-tag"></i> 神经网络</a>
+              <a href="/tags/CNN%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> CNN网络详解</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/01/%E4%BD%BF%E7%94%A8pytorch%E6%90%AD%E5%BB%BAVisionTransformer-vit%E6%A8%A1%E5%9E%8B/" rel="prev" title="深度学习模型之CNN（二十二）使用pytorch搭建VisionTransformer_vit模型">
+                  <i class="fa fa-chevron-left"></i> 深度学习模型之CNN（二十二）使用pytorch搭建VisionTransformer_vit模型
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Linvil Yao</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("04/21/2023 22:22:22");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "已运行 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","app_key":"iNfyeaWVmA11Duj7fzr0B1r1","server_url":"https://16p3s6fl.lc-cn-n1-shared.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '32px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
+</script>
+
+</body>
+</html>
