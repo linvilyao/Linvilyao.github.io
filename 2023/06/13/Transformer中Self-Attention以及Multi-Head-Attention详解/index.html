@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_logosc/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_logosc/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","width":240,"display":"post","padding":14,"offset":10},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础》，作为随堂笔记。学习Transformer中的Self-Attention以及Multi-Head Attention。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Transformer中Self-Attention以及Multi-Head Attention详解">
+<meta property="og:url" content="http://linvilyao.github.io/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Linvil&#39;s Blog">
+<meta property="og:description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础》，作为随堂笔记。学习Transformer中的Self-Attention以及Multi-Head Attention。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Self-Attention.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Self-Attention%E8%A7%A3%E9%87%8A1.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Self-Attention%E8%A7%A3%E9%87%8A2.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Self-Attention%E8%A7%A3%E9%87%8A3.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Muti-Head-Self-Attention%E8%A7%A3%E9%87%8A1.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Muti-Head-Self-Attention%E8%A7%A3%E9%87%8A2.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Muti-Head-Self-Attention%E8%A7%A3%E9%87%8A3.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Muti-Head-Self-Attention%E8%A7%A3%E9%87%8A4.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Muti-Head-Self-Attention%E8%A7%A3%E9%87%8A5.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Position-Endoding.png">
+<meta property="article:published_time" content="2023-06-13T00:14:22.000Z">
+<meta property="article:modified_time" content="2023-06-13T02:08:26.403Z">
+<meta property="article:author" content="Linvil Yao">
+<meta property="article:tag" content="神经网络">
+<meta property="article:tag" content="CNN网络详解">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://linvilyao.github.io/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Self-Attention.png">
+
+
+<link rel="canonical" href="http://linvilyao.github.io/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/","path":"2023/06/13/Transformer中Self-Attention以及Multi-Head-Attention详解/","title":"Transformer中Self-Attention以及Multi-Head Attention详解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Transformer中Self-Attention以及Multi-Head Attention详解 | Linvil's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Linvil's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">这是一个用来记录的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">38</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">Self-Attention</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">Multi-Head Attention</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">Positional Encoding</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Linvil Yao"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Linvil Yao</p>
+  <div class="site-description" itemprop="description">Welcome to Linvil's Blog!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+        </div>
+      </div>
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/" title="2023&#x2F;06&#x2F;13&#x2F;Transformer中Self-Attention以及Multi-Head-Attention详解&#x2F;">Transformer中Self-Attention以及Multi-Head Attention详解</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/10/MobileViT%E7%BD%91%E7%BB%9C%E8%AE%B2%E8%A7%A3%E5%8F%8A%E9%80%9A%E8%BF%87Pytorch%E6%90%AD%E5%BB%BAMobileViT%E7%BD%91%E7%BB%9C/" title="2023&#x2F;06&#x2F;10&#x2F;MobileViT网络讲解及通过Pytorch搭建MobileViT网络&#x2F;">深度学习模型之CNN（二十六）MobileViT网络讲解及通过Pytorch搭建MobileViT网络</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/05/ConvNeXt%E7%BD%91%E7%BB%9C%E8%AE%B2%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8Pytorch%E6%90%AD%E5%BB%BA/" title="2023&#x2F;06&#x2F;05&#x2F;ConvNeXt网络讲解及使用Pytorch搭建&#x2F;">深度学习模型之CNN（二十五）ConvNeXt网络讲解及使用Pytorch搭建</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/04/%E4%BD%BF%E7%94%A8Pytorch%E6%90%AD%E5%BB%BASwin-Transformer%E7%BD%91%E7%BB%9C/" title="2023&#x2F;06&#x2F;04&#x2F;使用Pytorch搭建Swin-Transformer网络&#x2F;">深度学习模型之CNN（二十四）使用Pytorch搭建Swin-Transformer网络</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/" title="2023&#x2F;06&#x2F;03&#x2F;Swin-Transformer网络结构详解&#x2F;">深度学习模型之CNN（二十三）Swin-Transformer网络结构详解</a>
+        </li>
+    </ul>
+  </div>
+    </div>
+
+
+    
+
+
+
+  </aside>
+
+
+
+
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Linvil Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linvil's Blog">
+      <meta itemprop="description" content="Welcome to Linvil's Blog!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Transformer中Self-Attention以及Multi-Head Attention详解 | Linvil's Blog">
+      <meta itemprop="description" content="本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础》，作为随堂笔记。学习Transformer中的Self-Attention以及Multi-Head Attention。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Transformer中Self-Attention以及Multi-Head Attention详解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-06-13 08:14:22 / 修改时间：10:08:26" itemprop="dateCreated datePublished" datetime="2023-06-13T08:14:22+08:00">2023-06-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/" class="post-meta-item leancloud_visitors" data-flag-title="Transformer中Self-Attention以及Multi-Head Attention详解" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Valine：</span>
+  
+    <a title="valine" href="/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础》，作为随堂笔记。学习Transformer中的Self-Attention以及Multi-Head Attention。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1>前言</h1>
+<p>Transformer是2017年Google在<code>Computation and Language</code>上发表的，当时主要是针对<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86&amp;spm=1001.2101.3001.7020">自然语言处理</a>领域提出的（之前的RNN模型记忆长度有限且无法并行化，只有计算完$t_i$时刻后的数据才能计算$t_{i+1}$时刻的数据，但Transformer都可以做到）。在这篇文章中作者提出了Self-Attention的概念，然后在此基础上提出Multi-Head Attention，所以本文对Self-Attention以及Multi-Head Attention的理论进行详细的讲解。原论文：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a></p>
+<p><img src="/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Self-Attention.png" alt="Self-Attention"></p>
+<h1>Self-Attention</h1>
+<p>假设输入的序列长度为2，输入就两个节点$x_1$，$x_2$，然后通过Input Embedding也就是图中的f(x)将输入映射到$a_1$，$a_2$。紧接着分别将$a_1$，$a_2$分别通过三个变换矩阵$W_q$，$W_k$，$W_v$（这三个参数是可训练的，是共享的）得到对应的$q^i$，$k^i$，$v^i$（这里在源码中是直接使用全连接层实现的，这里为了方便理解，忽略偏执）。</p>
+<p><img src="/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Self-Attention%E8%A7%A3%E9%87%8A1.png" alt="Self-Attention解释-1"></p>
+<ul>
+<li>$q$代表query，后续会去和每一个$k$进行匹配</li>
+<li>$k$代表key，后续会被每个$q$匹配</li>
+<li>$v$代表从$a$中提取得到的信息</li>
+<li>后续$q$和$k$匹配的过程可以理解成计算两者的相关性，相关性越大对应$v$的权重也就越大</li>
+</ul>
+<p>假设$a_1=(1，2)$，$a_2=(1，0)$，$W_q=\left(\begin{matrix} 1 &amp; 1\\ 0 &amp; 1\end{matrix}\right)$，那么：$$q^1=(1，1)\left(\begin{matrix} 1 &amp; 1\\ 0 &amp; 1\end{matrix}\right)=(1，2),\quad q^2=(1，0)\left(\begin{matrix} 1 &amp; 1\\ 0 &amp; 1\end{matrix}\right)=(1，1)$$</p>
+<p>前面有说Transformer是可以并行化的，所以可以直接写成：$$\left(\begin{matrix} q^1\\ q^2\end{matrix}\right)=\left(\begin{matrix} 1 &amp; 1\\ 1 &amp; 0\end{matrix}\right)\left(\begin{matrix} 1 &amp; 1\\ 0 &amp; 1\end{matrix}\right)=\left(\begin{matrix} 1 &amp; 2\\ 1 &amp; 1\end{matrix}\right)$$</p>
+<p>同理我们可以得到$\left(\begin{matrix} k^1\\ k^2\end{matrix}\right)$和$\left(\begin{matrix} v^1\\ v^2\end{matrix}\right)$，那么求得的$\left(\begin{matrix} q^1\\ q^2\end{matrix}\right)$就是原论文中的$Q$，$\left(\begin{matrix} k^1\\ k^2\end{matrix}\right)$就是$K$，$\left(\begin{matrix} v^1\\ v^2\end{matrix}\right)$就是$V$。接着先拿$q^1$和每个$k$进行match，点乘操作，接着除以$\sqrt d$得到对应的$\alpha$，其中$d$代表向量$k^i$的长度，在本示例中等于2，除以$\sqrt d$的原因在论文中的解释是“进行点乘后的数值很大，导致通过softmax后梯度变的很小”，所以通过除以$\sqrt d$来进行缩放。比如计算$\alpha_{1,i}$：</p>
+<p>$$\alpha_{1,1}=\frac{q^1\cdot k^1}{\sqrt d} =\frac{1 \times 1 + 2 \times 0}{\sqrt 2}=0.71$$</p>
+<p>$$\alpha_{1,2}=\frac{q^1\cdot k^2}{\sqrt d} =\frac{1 \times 0 + 2 \times 1}{\sqrt 2}=1.41$$</p>
+<p>同理拿$q^2$去匹配所有的$k$能得到$\alpha_{2,i}$，统一写成矩阵乘法形式：</p>
+<p>$$\left(\begin{matrix} \alpha_{1,1} &amp; \alpha_{1,2} \\ \alpha_{2,1} &amp; \alpha_{2,2}\end{matrix}\right)=\frac{\left(\begin{matrix} q^1\\ q^2\end{matrix}\right) \left(\begin{matrix} k^1\\ k^2\end{matrix}\right)^T}{\sqrt d}$$</p>
+<p>接着对每一行即$\left(\begin{matrix} \alpha_{1,1},\alpha_{1,2}\end{matrix}\right)$和$\left(\begin{matrix} \alpha_{2,1},\alpha_{2,2}\end{matrix}\right)$分别进行softmax处理得到$(\hat{\alpha}_{1,1},\hat{\alpha}_{1,2})$和$(\hat{\alpha}_{2,1},\hat{\alpha}_{2,2})$，这里的$\hat{\alpha}$相当于计算得到针对每个$v$的权重。到这我们就完成了$Attention(Q,K,V)$公式中$softmax(\frac{QK^T}{\sqrt d_k})$部分。</p>
+<p><img src="/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Self-Attention%E8%A7%A3%E9%87%8A2.png" alt="Self-Attention解释-2"></p>
+<p>上面已经计算得到$\alpha$，即针对每个$v$的权重，接着进行加权得到最终结果：</p>
+<p>$$b_1=\hat{\alpha}_{1,1} \times v^1 + \hat{\alpha}_{1,2}\times v^2=(0.33,0.67)$$</p>
+<p>$$b_2=\hat{\alpha}_{2,1} \times v^1 + \hat{\alpha}_{2,2}\times v^2=(0.50,0.50)$$</p>
+<p>统一写成矩阵乘法形式：$$\left(\begin{matrix} b^1\\ b^2\end{matrix}\right)=\left(\begin{matrix} \hat{\alpha}_{1,1} &amp; \hat{\alpha}_{1,2}\\ \hat{\alpha}_{2,1} &amp; \hat{\alpha}_{2,2}\end{matrix}\right)\left(\begin{matrix} v^1\\ v^2\end{matrix}\right)$$</p>
+<p><img src="/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Self-Attention%E8%A7%A3%E9%87%8A3.png" alt="Self-Attention解释-3"></p>
+<p>到这，<code>Self-Attention</code>的内容就讲完了。总结下来就是论文中的一个公式：$$Attention(Q,K,V)=softmax(\frac{QK^T}{\sqrt d_k})V$$</p>
+<h1>Multi-Head Attention</h1>
+<p>实际使用中基本使用的还是Multi-Head Attention模块。原论文中说使用多头注意力机制能够联合来自不同head部分学习到的信息。<code>Multi-head attention allows the model to jointly attend to information from different representation subspaces at different positions</code>。其实只要懂了Self-Attention模块Multi-Head Attention模块就非常简单了。</p>
+<p>首先还是和Self-Attention模块一样将$a_i$分别通过$W_q$，$W_k$，$W_v$得到对应的$q^i$，$k^i$，$v^i$，然后再根据使用的head的数目$h$进一步把得到的$q^i$，$k^i$，$v^i$均分成$h$份。比如下图中假设$h=2$然后$q^1$拆分成$q^{1,1}$和$q^{1,2}$，那么$q^{1,1}$就属于head1，$q^{1,2}$就属于head2。</p>
+<p><img src="/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Muti-Head-Self-Attention%E8%A7%A3%E9%87%8A1.png" alt="Muti-Head Self-Attention解释-1"></p>
+<p>论文中是写的通过$W_i^Q$，$W_i^K$，$W_i^V$映射得到每个head的$Q_i$，$K_i$，$V_i$：$head_i=Attention(QW_i^Q,KW_i^K,VW_i^V)$。但在github上看的一些源码中就是简单的进行均分，其实也可以将$W_i^Q$，$W_i^K$，$W_i^V$设置成对应值来实现均分，比如下图中的$Q$通过$W_1^Q$就能得到均分后的$Q_1$。</p>
+<p><img src="/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Muti-Head-Self-Attention%E8%A7%A3%E9%87%8A2.png" alt="Muti-Head Self-Attention解释-2"></p>
+<p>通过上述方法就能得到每个$head_i$对应的$Q^i$，$K^i$，$V^i$参数，接下来针对每个head使用和Self-Attention中相同的方法即可得到对应的结果。$$Attention(Q_i,K_i,V_i)=softmax(\frac{Q_iK_i^T}{\sqrt d_k})V_i$$</p>
+<p><img src="/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Muti-Head-Self-Attention%E8%A7%A3%E9%87%8A3.png" alt="Muti-Head Self-Attention解释-3"></p>
+<p>接着将每个head得到的结果进行concat拼接，比如下图中$b_{1,1}$（$head_1$得到的$b_1$）和$b_{1,2}$（$head_2$得到的$b_1$）拼接在一起，$b_{2,1}$（$head_1$得到的$b_2$）和$b_{2,2}$（$head_2$得到的$b_2$）拼接在一起。</p>
+<p><img src="/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Muti-Head-Self-Attention%E8%A7%A3%E9%87%8A4.png" alt="Muti-Head Self-Attention解释-4"></p>
+<p>接着将拼接后的结果通过$W^O$（可学习的参数）进行融合，如下图所示，融合后得到最终的结果$b_1$，$b_2$。</p>
+<p><img src="/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Muti-Head-Self-Attention%E8%A7%A3%E9%87%8A5.png" alt="Muti-Head Self-Attention解释-5"></p>
+<p>到这，<code>Multi-Head Attention</code>的内容就讲完了。总结下来就是论文中的两个公式：</p>
+<p>$$MultHead(Q,K,V)=Concat(head_1,…,head_h)W^O $$</p>
+<p>$$ where \space head_i =Attenttion(QW_i^Q,KW_i^K,VW_i^V)$$</p>
+<h1>Positional Encoding</h1>
+<p>刚刚讲的Self-Attention和Multi-Head Attention模块，在计算中是没有考虑到位置信息的。假设在Self-Attention模块中，输入$a_1$，$a_2$，$a_3$得到$b_1$，$b_2$，$b_3$。对于$a_1$而言$a_2$和$a_3$ 离它都是一样近的而且没有先后顺序。假设将输入的顺序改为$a_1$，$a_3$，$a_2$ ，对结果$b_1$是没有任何影响的。</p>
+<p>为了引入位置信息，在原论文中引入了位置编码<code>positional encodings</code>。<code>To this end, we add &quot;positional encodings&quot; to the input embeddings at the bottoms of the encoder and decoder stacks</code>.如下图所示，位置编码是直接加在输入的$a={a_1,…a_n}$中的，即$pe={pe_1,…pe_n}$和$a={a_1,…a_n}$拥有相同的维度大小。关于位置编码在原论文中有提出两种方案，一种是原论文中使用的固定编码，即论文中给出的<code>sine and cosine functions</code>方法，按照该方法可计算出位置编码；另一种是可训练的位置编码，作者说尝试了两种方法发现结果差不多（但在ViT论文中使用的是可训练的位置编码）。</p>
+<p><img src="/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/Position-Endoding.png" alt="Position Endoding"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag"><i class="fa fa-tag"></i> 神经网络</a>
+              <a href="/tags/CNN%E7%BD%91%E7%BB%9C%E8%AF%A6%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> CNN网络详解</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/10/MobileViT%E7%BD%91%E7%BB%9C%E8%AE%B2%E8%A7%A3%E5%8F%8A%E9%80%9A%E8%BF%87Pytorch%E6%90%AD%E5%BB%BAMobileViT%E7%BD%91%E7%BB%9C/" rel="prev" title="深度学习模型之CNN（二十六）MobileViT网络讲解及通过Pytorch搭建MobileViT网络">
+                  <i class="fa fa-chevron-left"></i> 深度学习模型之CNN（二十六）MobileViT网络讲解及通过Pytorch搭建MobileViT网络
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Linvil Yao</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("04/21/2023 22:22:22");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "已运行 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","app_key":"iNfyeaWVmA11Duj7fzr0B1r1","server_url":"https://16p3s6fl.lc-cn-n1-shared.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '32px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
+</script>
+
+</body>
+</html>
