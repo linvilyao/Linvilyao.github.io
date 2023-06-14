@@ -5094,4 +5094,89 @@ N = (W-F+2P)/S + 1<br>
         <tag>CNN网络详解</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Tensor的维度变换</title>
+    <url>/2023/06/14/%E8%A1%A5%E5%85%85%E4%B9%8BTensor%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%8F%98%E6%8D%A2/</url>
+    <content><![CDATA[<p>Tensor通道排列顺序： <strong>[ batch, channel, height, width ]</strong></p>
+<h1>view和reshape</h1>
+<p>从功能上来看，它们的作用是相同的，都是用来重塑 Tensor 的 shape 的。view 只适合对满足<strong>连续性条件</strong> (contiguous) 的 Tensor进行操作，而reshape 同时还可以对<strong>不满足连续性条件</strong>的 Tensor 进行操作，具有更好的鲁棒性。view 能干的 reshape都能干，如果 view 不能干就可以用 reshape 来处理。</p>
+<p>简单来说就是<strong>reshape是view的大哥，大哥都能干（满足或不满足连续性条件），小弟只能干一部分（只满足连续性条件）</strong>，如果想简单了事，就直接用reshape，但个人觉得最好还是通过contiguous()之后在同view。</p>
+<p>因为当不满足连续条件时，需要先使用 <code>contiguous() </code>方法将原始 Tensor 转换为满足连续条件的 Tensor，然后就可以使用 view 方法进行 shape 变换了。或者直接使用 <code>reshape</code> 方法进行维度变换，但这种方法变换后的 Tensor 就<strong>不是与原始 Tensor共享内存了，而是被重新开辟了一个空间</strong>。</p>
+<blockquote>
+<p><strong>a.reshape = a.view() + a.contiguous().view()</strong></p>
+</blockquote>
+<p>view 的存在可以显示地表示对这个 Tensor 的操作**只能是视图操作而非拷贝操作，只能是浅拷贝而非深拷贝操作。**这对于代码的可读性以及后续可能的 bug 的查找比较友好，可以避免不必要的显存开销。</p>
+<ul>
+<li><strong>例子1：height × width</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = torch.rand(<span class="number">2</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">4</span>)</span><br><span class="line">a.view(<span class="number">2</span>,<span class="number">4</span>*<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+<p>解读：将图片的通道数、图片的像素行列值都拼接在一起，成为[4，784]，适合全连接层的输入</p>
+<p><img src="/2023/06/14/%E8%A1%A5%E5%85%85%E4%B9%8BTensor%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%8F%98%E6%8D%A2/view-1.png" alt="view-1"></p>
+<ul>
+<li><strong>例子2：batch × channel</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = torch.rand(<span class="number">2</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">4</span>)</span><br><span class="line">a.view(<span class="number">2</span>*<span class="number">1</span>,<span class="number">4</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+<p>解读：表示我们现在只关注<code>feature map</code>这个属性，而不关注它来自哪个图片的哪个通道</p>
+<p><img src="/2023/06/14/%E8%A1%A5%E5%85%85%E4%B9%8BTensor%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%8F%98%E6%8D%A2/view-2.png" alt="view-2"></p>
+<p><strong>注意：在view之后如果想恢复到原来的维数是要进行记录的，否则直接恢复是不行的</strong>。</p>
+<h1>squeeze和unsqueeze</h1>
+<h2 id="squeeze">squeeze</h2>
+<p>进行维度压缩，去掉 tensor 中维数为1的维度（如果设置dim=a，就是去掉指定维度中维数为1的）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">x = torch.tensor([[[<span class="number">1</span>],[<span class="number">2</span>]],[[<span class="number">3</span>],[<span class="number">4</span>]]])</span><br><span class="line"><span class="comment"># x: tensor([[[1],</span></span><br><span class="line"><span class="comment">#         [2]],</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#         [[3],</span></span><br><span class="line"><span class="comment">#         [4]]])</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;x:&#x27;</span>,x)</span><br><span class="line">x1 = x.squeeze()</span><br><span class="line"><span class="comment"># x1: tensor([[1, 2],</span></span><br><span class="line"><span class="comment">#         [3, 4]])</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;x1:&#x27;</span>,x1)</span><br><span class="line">x2 = x.squeeze(<span class="number">2</span>)</span><br><span class="line"><span class="comment"># x2: tensor([[1, 2],</span></span><br><span class="line"><span class="comment">#         [3, 4]])</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;x2:&#x27;</span>,x2)</span><br></pre></td></tr></table></figure>
+<h2 id="unsqueeze">unsqueeze</h2>
+<p>进行维度扩充，在指定位置加上维数为1的维度（如果设置dim=a，就是在维度为a的位置进行扩充）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">x = torch.tensor([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>])</span><br><span class="line"><span class="comment"># x: tensor([1, 2, 3, 4])</span></span><br><span class="line"><span class="built_in">print</span>(x)</span><br><span class="line">x1 = x.unsqueeze(dim=<span class="number">0</span>)</span><br><span class="line"><span class="comment"># x1: tensor([[1, 2, 3, 4]]) 深度增加</span></span><br><span class="line"><span class="built_in">print</span>(x1)</span><br><span class="line">x2 = x.unsqueeze(dim=<span class="number">1</span>)</span><br><span class="line"><span class="comment"># x2: tensor([[1],</span></span><br><span class="line"><span class="comment">#        [2],</span></span><br><span class="line"><span class="comment">#        [3],</span></span><br><span class="line"><span class="comment">#        [4]]) </span></span><br><span class="line"><span class="built_in">print</span>(x2)</span><br><span class="line"> </span><br><span class="line">y = torch.tensor([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">9</span>,<span class="number">8</span>,<span class="number">7</span>,<span class="number">6</span>]])</span><br><span class="line"><span class="comment"># y: tensor([[1, 2, 3, 4],</span></span><br><span class="line"><span class="comment">#        [9, 8, 7, 6]])</span></span><br><span class="line"><span class="built_in">print</span>(y)</span><br><span class="line">y1 = y.unsqueeze(dim=<span class="number">0</span>)</span><br><span class="line"><span class="comment"># y1: tensor([[[1, 2, 3, 4],</span></span><br><span class="line"><span class="comment">#         [9, 8, 7, 6]]])</span></span><br><span class="line"><span class="built_in">print</span>(y1)</span><br><span class="line">y2 = y.unsqueeze(dim=<span class="number">1</span>)</span><br><span class="line"><span class="comment"># y2: tensor([[[1, 2, 3, 4]],</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#        [[9, 8, 7, 6]]])</span></span><br><span class="line"><span class="built_in">print</span>(y2)</span><br></pre></td></tr></table></figure>
+<p>例子：f表示2张4*4的拥有3个通道的图片，而b表示给图片的每个channel上的所有的像素添加一个偏置，我们的目标就是把b叠加在f上面，所以要将b的维度变换与f相同才可以进行，然后再进行b的扩张。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">b = torch.rand(<span class="number">2</span>)</span><br><span class="line">f = torch.rand(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">4</span>)</span><br><span class="line">b = b.unsqueeze(<span class="number">1</span>).unsqueeze(<span class="number">2</span>).unsqueeze(<span class="number">0</span>)</span><br><span class="line"><span class="comment"># [3]      [3,1]      [3,1,1]       [1,3,1,1]</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/14/%E8%A1%A5%E5%85%85%E4%B9%8BTensor%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%8F%98%E6%8D%A2/unsqueeze.png" alt="unsqueeze"></p>
+<h1>expand和repeat</h1>
+<p>进行维度的扩展，就像前面的b [1，3，4，4]，要想与 f [2，3，4，4]进行相加的话，b就要进行维度的扩展。</p>
+<p>区别：两种方法在效果方面是等效的，但是<code>expand只在需要的时候进行数据的复制，而repeat会直接复制数据</code>。所以推荐使用expand</p>
+<h2 id="expand">expand</h2>
+<p><strong>例子1</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">b = torch.randn(<span class="number">1</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">b.expand(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">4</span>)</span><br><span class="line"><span class="comment"># [2,3,4,4]</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/14/%E8%A1%A5%E5%85%85%E4%B9%8BTensor%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%8F%98%E6%8D%A2/expand.png" alt="expand-1"></p>
+<p>局限性：</p>
+<ul>
+<li>要求expand之前之后的dimension必须一样。</li>
+<li>只能在之前<strong>维数为1</strong>的地方进行expand，而如果之前的维数为3是没有办法扩张到m的。</li>
+</ul>
+<p>[ 3，3，4，4 ]——b.expand(4,3,4,4)报错</p>
+<p><strong>例子2：不想进行变动的地方使用-1代替就可以</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">b = torch.rand(<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">b.expand(<span class="number">2</span>,-<span class="number">1</span>,-<span class="number">1</span>,-<span class="number">1</span>)</span><br><span class="line"><span class="comment"># [2,1,2,2]</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/14/%E8%A1%A5%E5%85%85%E4%B9%8BTensor%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%8F%98%E6%8D%A2/expand-2.png" alt="expand-2"></p>
+<h2 id="repeat">repeat</h2>
+<p>repeat的参数表示你要在该维数位置进行多少次复制</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">b = torch.randn(<span class="number">1</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">b.repeat(<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line"><span class="comment">#[ 2 , 6 , 1 , 1 ]</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>表示：1复制4次变为4，32复制32次变为1024，其它没变</strong></p>
+</blockquote>
+<p><img src="/2023/06/14/%E8%A1%A5%E5%85%85%E4%B9%8BTensor%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%8F%98%E6%8D%A2/repeat.png" alt="repeat"></p>
+<h1>.t()转置</h1>
+<p>进行tensor的转置，但是要注意：<strong>只能进行2D tensor的转置，即矩阵的转置</strong>。</p>
+<h2 id="transpose转置">transpose转置</h2>
+<p>进行某几维之间的相互交换</p>
+<p><strong>例子1</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">b = torch.randn(<span class="number">1</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">b = b.transpose(<span class="number">1</span>,<span class="number">3</span>)</span><br><span class="line"><span class="comment"># [1,2,2,3]</span></span><br><span class="line"><span class="comment"># 0  1  2  3</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/14/%E8%A1%A5%E5%85%85%E4%B9%8BTensor%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%8F%98%E6%8D%A2/transpose-1.png" alt="transpose-1"></p>
+<p><strong>例子2：这样变换前后的二者是一样的(contiguous()表示进行transpose之后数据不再是按顺序存放的，使用该方法进行顺序的调整)</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a2 = b.transpose(<span class="number">1</span>,<span class="number">3</span>).contiguous().view(<span class="number">2</span>,<span class="number">3</span>*<span class="number">2</span>*<span class="number">2</span>).view(<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">2</span>).transpose(<span class="number">1</span>,<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/14/%E8%A1%A5%E5%85%85%E4%B9%8BTensor%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%8F%98%E6%8D%A2/transpose-2.png" alt="transpose-2"></p>
+<p>注意：<strong>[ B C H W ] → [ B W H C] → [ B W * H * C ] →[ B C W H ]这样的变换是不行的 W与H的顺序变换了，图像也会处出现变换</strong></p>
+<p><strong>例子3</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = torch.rand(<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">2</span>)<span class="comment">#[B C H W]</span></span><br><span class="line">a.transpose(<span class="number">1</span>,<span class="number">3</span>)<span class="comment">#[B W H C]</span></span><br><span class="line">a.transpose(<span class="number">1</span>,<span class="number">2</span>)<span class="comment">#[B H W C]</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/14/%E8%A1%A5%E5%85%85%E4%B9%8BTensor%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%8F%98%E6%8D%A2/transpose-3.png" alt="transpose-3"></p>
+<p><strong>由于[B H W C]是numpy中储存图片的方式，所以这样变换以后才能导出numpy</strong></p>
+<h2 id="permute函数">permute函数</h2>
+<p>transpose中的例子3使用permute函数进行简单的一步变换：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># a.transpose(1,3).transpose(1,2) = a.permute(0,2,3,1)</span></span><br><span class="line">a = torch.rand(<span class="number">4</span>,<span class="number">3</span>,<span class="number">28</span>,<span class="number">28</span>)<span class="comment">#[B C H W]</span></span><br><span class="line">a.permute(<span class="number">0</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>)<span class="comment">#[B H W C]</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/14/%E8%A1%A5%E5%85%85%E4%B9%8BTensor%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%8F%98%E6%8D%A2/permute.png" alt="permute"></p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>知识补充</tag>
+      </tags>
+  </entry>
 </search>
