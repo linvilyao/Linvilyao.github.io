@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_logosc/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_logosc/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","width":240,"display":"post","padding":14,"offset":10},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="补充对于assert、torch.nn.Parameter() 、.item()函数的知识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="补充之一些函数解释（更新ing）">
+<meta property="og:url" content="http://linvilyao.github.io/2023/06/15/%E8%A1%A5%E5%85%85%E4%B9%8B%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E8%A7%A3%E9%87%8A/index.html">
+<meta property="og:site_name" content="Linvil&#39;s Blog">
+<meta property="og:description" content="补充对于assert、torch.nn.Parameter() 、.item()函数的知识。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/15/%E8%A1%A5%E5%85%85%E4%B9%8B%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E8%A7%A3%E9%87%8A/item%E5%87%BD%E6%95%B0.png">
+<meta property="article:published_time" content="2023-06-15T07:14:28.000Z">
+<meta property="article:modified_time" content="2023-06-15T08:05:29.434Z">
+<meta property="article:author" content="Linvil Yao">
+<meta property="article:tag" content="知识补充">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://linvilyao.github.io/2023/06/15/%E8%A1%A5%E5%85%85%E4%B9%8B%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E8%A7%A3%E9%87%8A/item%E5%87%BD%E6%95%B0.png">
+
+
+<link rel="canonical" href="http://linvilyao.github.io/2023/06/15/%E8%A1%A5%E5%85%85%E4%B9%8B%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E8%A7%A3%E9%87%8A/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/06/15/%E8%A1%A5%E5%85%85%E4%B9%8B%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E8%A7%A3%E9%87%8A/","path":"2023/06/15/补充之一些函数解释/","title":"补充之一些函数解释（更新ing）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>补充之一些函数解释（更新ing） | Linvil's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Linvil's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">这是一个用来记录的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">23</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">40</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">assert</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">nn.Parameter()</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ViT%E4%B8%ADnn-Parameter"><span class="nav-number">2.1.</span> <span class="nav-text">ViT中nn.Parameter()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">.item()</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Linvil Yao"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Linvil Yao</p>
+  <div class="site-description" itemprop="description">Welcome to Linvil's Blog!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+        </div>
+      </div>
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/15/%E8%A1%A5%E5%85%85%E4%B9%8B%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E8%A7%A3%E9%87%8A/" title="2023&#x2F;06&#x2F;15&#x2F;补充之一些函数解释&#x2F;">补充之一些函数解释（更新ing）</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/14/%E8%A1%A5%E5%85%85%E4%B9%8BTensor%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%8F%98%E6%8D%A2/" title="2023&#x2F;06&#x2F;14&#x2F;补充之Tensor的维度变换&#x2F;">Tensor的维度变换</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/13/Transformer%E4%B8%ADSelf-Attention%E4%BB%A5%E5%8F%8AMulti-Head-Attention%E8%AF%A6%E8%A7%A3/" title="2023&#x2F;06&#x2F;13&#x2F;Transformer中Self-Attention以及Multi-Head-Attention详解&#x2F;">Transformer中Self-Attention以及Multi-Head Attention详解</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/10/MobileViT%E7%BD%91%E7%BB%9C%E8%AE%B2%E8%A7%A3%E5%8F%8A%E9%80%9A%E8%BF%87Pytorch%E6%90%AD%E5%BB%BAMobileViT%E7%BD%91%E7%BB%9C/" title="2023&#x2F;06&#x2F;10&#x2F;MobileViT网络讲解及通过Pytorch搭建MobileViT网络&#x2F;">深度学习模型之CNN（二十六）MobileViT网络讲解及通过Pytorch搭建</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/05/ConvNeXt%E7%BD%91%E7%BB%9C%E8%AE%B2%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8Pytorch%E6%90%AD%E5%BB%BA/" title="2023&#x2F;06&#x2F;05&#x2F;ConvNeXt网络讲解及使用Pytorch搭建&#x2F;">深度学习模型之CNN（二十五）ConvNeXt网络讲解及使用Pytorch搭建</a>
+        </li>
+    </ul>
+  </div>
+    </div>
+
+
+    
+
+
+
+  </aside>
+
+
+
+
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/06/15/%E8%A1%A5%E5%85%85%E4%B9%8B%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E8%A7%A3%E9%87%8A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Linvil Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linvil's Blog">
+      <meta itemprop="description" content="Welcome to Linvil's Blog!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="补充之一些函数解释（更新ing） | Linvil's Blog">
+      <meta itemprop="description" content="补充对于assert、torch.nn.Parameter() 、.item()函数的知识。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          补充之一些函数解释（更新ing）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-06-15 15:14:28 / 修改时间：16:05:29" itemprop="dateCreated datePublished" datetime="2023-06-15T15:14:28+08:00">2023-06-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/06/15/%E8%A1%A5%E5%85%85%E4%B9%8B%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E8%A7%A3%E9%87%8A/" class="post-meta-item leancloud_visitors" data-flag-title="补充之一些函数解释（更新ing）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Valine：</span>
+  
+    <a title="valine" href="/2023/06/15/%E8%A1%A5%E5%85%85%E4%B9%8B%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E8%A7%A3%E9%87%8A/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/06/15/%E8%A1%A5%E5%85%85%E4%B9%8B%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E8%A7%A3%E9%87%8A/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">补充对于assert、torch.nn.Parameter() 、.item()函数的知识。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1>assert</h1>
+<p>用于程序调试</p>
+<p>使用assert断言语句是一个非常好的习惯，python assert断言句语格式及用法很简单。<strong>在没完善一个程序之前，我们不知道程序在哪里会出错，与其让它在运行到最后崩溃，不如在出现错误条件时就崩溃</strong>，这样在跑大规模程序的时候不会过多的浪费时间和计算资源，这时候就需要assert断言的帮助。</p>
+<p><strong>例子1</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span> expression</span><br></pre></td></tr></table></figure>
+<p>该形式用来测试断言的expression语句，如果expression是True，那么什么反应都没有。但是如果expression是False，那么会报错AssertionError。</p>
+<p>如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 出错时</span></span><br><span class="line"><span class="keyword">assert</span> <span class="number">1</span>==<span class="number">0</span></span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">AssertionError                            Traceback (most recent call last)</span><br><span class="line">&lt;ipython-<span class="built_in">input</span>-<span class="number">4</span>-b09d6b060198&gt; <span class="keyword">in</span> &lt;module&gt;()</span><br><span class="line">----&gt; <span class="number">1</span> <span class="keyword">assert</span> <span class="number">1</span>==<span class="number">0</span>,</span><br><span class="line"></span><br><span class="line">AssertionError:</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line"><span class="comment"># 没有出错时什么也不反应</span></span><br><span class="line"><span class="keyword">assert</span> <span class="number">1</span>==<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p><strong>例子2</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span> expression1, expression2</span><br></pre></td></tr></table></figure>
+<p>assert断言语句可以添加异常参数，也就是在断言表达式后添加字符串信息，用来解释断言并更好的知道是哪里出了问题。格式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span> expression [, arguments]</span><br><span class="line"><span class="keyword">assert</span> 表达式 [, 参数]</span><br></pre></td></tr></table></figure>
+<p>如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 出错时</span></span><br><span class="line"><span class="keyword">assert</span> <span class="number">1</span>==<span class="number">0</span>, <span class="string">&quot;出错了&quot;</span></span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">AssertionError                            Traceback (most recent call last)</span><br><span class="line">&lt;ipython-<span class="built_in">input</span>-<span class="number">4</span>-b09d6b060198&gt; <span class="keyword">in</span> &lt;module&gt;()</span><br><span class="line">----&gt; <span class="number">1</span> <span class="keyword">assert</span> <span class="number">1</span>==<span class="number">0</span>, <span class="string">&quot;出错了&quot;</span></span><br><span class="line"></span><br><span class="line">AssertionError: 出错了</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line"><span class="comment"># 没有出错时依旧什么也不反应</span></span><br><span class="line"><span class="keyword">assert</span> <span class="number">1</span>==<span class="number">1</span>, <span class="string">&quot;出错了&quot;</span></span><br></pre></td></tr></table></figure>
+<h1>nn.Parameter()</h1>
+<p>parameter，中文意为参数。我们知道，使用PyTorch训练神经网络时，本质上就是训练一个函数，这个函数输入一个数据（如CV中输入一张图像），输出一个预测（如输出这张图像中的物体是属于什么类别）。而在我们给定这个函数的结构（如卷积、全连接等）之后，能学习的就是这个函数的参数了，我们设计一个损失函数，配合梯度下降法，使得我们学习到的函数（神经网络）能够尽量准确地完成预测任务。</p>
+<p>通常，我们的参数都是一些常见的结构（卷积、全连接等）里面的计算参数。而当我们的网络有一些其他的设计时，会需要一些额外的参数同样很着整个网络的训练进行学习更新，最后得到最优的值，经典的例子有注意力机制中的权重参数、Vision Transformer中的class token和positional embedding等。</p>
+<blockquote>
+<p>首先可以把这个函数理解为类型转换函数，将一个不可训练的类型<code>Tensor</code>转换成可以训练的类型<code>parameter</code>并将这个<code>parameter</code>绑定到这个<code>module</code>里面(<code>net.parameter()</code>中就有这个绑定的<code>parameter</code>，所以在参数优化的时候可以进行优化的)，所以经过类型转换这个<code>self.v</code>变成了模型的一部分，成为了模型中根据训练可以改动的参数了。使用这个函数的目的也是想让某些变量在学习的过程中不断的修改其值以达到最优化。</p>
+</blockquote>
+<h2 id="ViT中nn-Parameter">ViT中nn.Parameter()</h2>
+<p>在ViT中，positonal embedding和class token是两个需要随着网络训练学习的参数，但是它们又不属于FC、MLP、MSA等运算的参数，在这时，就可以用nn.Parameter()来将这个随机初始化的Tensor注册为可学习的参数Parameter。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">self.pos_embedding = nn.Parameter(torch.randn(<span class="number">1</span>, num_patches+<span class="number">1</span>, dim))</span><br><span class="line">self.cls_token = nn.Parameter(torch.randn(<span class="number">1</span>, <span class="number">1</span>, dim))</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p><strong>举个栗子</strong></p>
+<p>指定这两个参数的初始数值为0.98，并打印迭代器net.Parameters()。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">self.pos_embedding = nn.Parameter(torch.ones(<span class="number">1</span>, num_patches+<span class="number">1</span>, dim) * <span class="number">0.98</span>)</span><br><span class="line">self.cls_token = nn.Parameter(torch.ones(<span class="number">1</span>, <span class="number">1</span>, dim) * <span class="number">0.98</span>)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>实例化一个ViT模型并打印net.Parameters()：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">net_vit = ViT(</span><br><span class="line">        image_size = <span class="number">256</span>,</span><br><span class="line">        patch_size = <span class="number">32</span>,</span><br><span class="line">        num_classes = <span class="number">1000</span>,</span><br><span class="line">        dim = <span class="number">1024</span>,</span><br><span class="line">        depth = <span class="number">6</span>,</span><br><span class="line">        heads = <span class="number">16</span>,</span><br><span class="line">        mlp_dim = <span class="number">2048</span>,</span><br><span class="line">        dropout = <span class="number">0.1</span>,</span><br><span class="line">        emb_dropout = <span class="number">0.1</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> para <span class="keyword">in</span> net_vit.parameters():</span><br><span class="line">        <span class="built_in">print</span>(para.data)</span><br></pre></td></tr></table></figure>
+<p>输出结果中可以看到，最前两行就是我们显式指定为0.98的两个参数pos_embedding和cls_token：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">tensor([[[<span class="number">0.9800</span>, <span class="number">0.9800</span>, <span class="number">0.9800</span>,  ..., <span class="number">0.9800</span>, <span class="number">0.9800</span>, <span class="number">0.9800</span>],</span><br><span class="line">         [<span class="number">0.9800</span>, <span class="number">0.9800</span>, <span class="number">0.9800</span>,  ..., <span class="number">0.9800</span>, <span class="number">0.9800</span>, <span class="number">0.9800</span>],</span><br><span class="line">         [<span class="number">0.9800</span>, <span class="number">0.9800</span>, <span class="number">0.9800</span>,  ..., <span class="number">0.9800</span>, <span class="number">0.9800</span>, <span class="number">0.9800</span>],</span><br><span class="line">         ...,</span><br><span class="line">         [<span class="number">0.9800</span>, <span class="number">0.9800</span>, <span class="number">0.9800</span>,  ..., <span class="number">0.9800</span>, <span class="number">0.9800</span>, <span class="number">0.9800</span>],</span><br><span class="line">         [<span class="number">0.9800</span>, <span class="number">0.9800</span>, <span class="number">0.9800</span>,  ..., <span class="number">0.9800</span>, <span class="number">0.9800</span>, <span class="number">0.9800</span>],</span><br><span class="line">         [<span class="number">0.9800</span>, <span class="number">0.9800</span>, <span class="number">0.9800</span>,  ..., <span class="number">0.9800</span>, <span class="number">0.9800</span>, <span class="number">0.9800</span>]]])</span><br><span class="line">tensor([[[<span class="number">0.9800</span>, <span class="number">0.9800</span>, <span class="number">0.9800</span>,  ..., <span class="number">0.9800</span>, <span class="number">0.9800</span>, <span class="number">0.9800</span>]]])</span><br><span class="line">tensor([[-<span class="number">0.0026</span>, -<span class="number">0.0064</span>,  <span class="number">0.0111</span>,  ...,  <span class="number">0.0091</span>, -<span class="number">0.0041</span>, -<span class="number">0.0060</span>],</span><br><span class="line">        [ <span class="number">0.0003</span>,  <span class="number">0.0115</span>,  <span class="number">0.0059</span>,  ..., -<span class="number">0.0052</span>, -<span class="number">0.0056</span>,  <span class="number">0.0010</span>],</span><br><span class="line">        [ <span class="number">0.0079</span>,  <span class="number">0.0016</span>, -<span class="number">0.0094</span>,  ...,  <span class="number">0.0174</span>,  <span class="number">0.0065</span>,  <span class="number">0.0001</span>],</span><br><span class="line">        ...,</span><br><span class="line">        [-<span class="number">0.0110</span>, -<span class="number">0.0137</span>,  <span class="number">0.0102</span>,  ...,  <span class="number">0.0145</span>, -<span class="number">0.0105</span>, -<span class="number">0.0167</span>],</span><br><span class="line">        [-<span class="number">0.0116</span>, -<span class="number">0.0147</span>,  <span class="number">0.0030</span>,  ...,  <span class="number">0.0087</span>,  <span class="number">0.0022</span>,  <span class="number">0.0108</span>],</span><br><span class="line">        [-<span class="number">0.0079</span>,  <span class="number">0.0033</span>, -<span class="number">0.0087</span>,  ..., -<span class="number">0.0174</span>,  <span class="number">0.0103</span>,  <span class="number">0.0021</span>]])</span><br><span class="line">...</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>这就可以确定nn.Parameter()添加的参数确实是被添加到了Parameters列表中，会被送入优化器中随训练一起学习更新。</p>
+<h1>.item()</h1>
+<p>取出单元素张量的元素值并返回该值，保持原元素类型不变。,即：原张量元素为整形，则返回整形，原张量元素为浮点型则返回浮点型，etc</p>
+<p><strong>x[1,1] VS x.item()</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">x = torch.randn(<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(x)</span><br><span class="line"><span class="comment"># x[1,1]</span></span><br><span class="line"><span class="built_in">print</span>(x[<span class="number">1</span>,<span class="number">1</span>])</span><br><span class="line"><span class="comment"># x[1,1].item()</span></span><br><span class="line"><span class="built_in">print</span>(x[<span class="number">1</span>,<span class="number">1</span>].item())</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/15/%E8%A1%A5%E5%85%85%E4%B9%8B%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E8%A7%A3%E9%87%8A/item%E5%87%BD%E6%95%B0.png" alt=".item()的作用"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E8%A1%A5%E5%85%85/" rel="tag"><i class="fa fa-tag"></i> 知识补充</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/14/%E8%A1%A5%E5%85%85%E4%B9%8BTensor%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%8F%98%E6%8D%A2/" rel="prev" title="Tensor的维度变换">
+                  <i class="fa fa-chevron-left"></i> Tensor的维度变换
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Linvil Yao</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("04/21/2023 22:22:22");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "已运行 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","app_key":"iNfyeaWVmA11Duj7fzr0B1r1","server_url":"https://16p3s6fl.lc-cn-n1-shared.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '32px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/06/15/%E8%A1%A5%E5%85%85%E4%B9%8B%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E8%A7%A3%E9%87%8A/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
+</script>
+
+</body>
+</html>
