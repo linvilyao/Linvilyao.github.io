@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_logosc/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_logosc/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","width":240,"display":"post","padding":14,"offset":10},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本笔记跟随字母站UP主我是土堆《PyTorch深度学习快速入门教程》，作为随堂笔记。本节课学习Dataset类代码实战，包括但不限于数据处理以及工具的使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch入门学习（一）Dataset类代码实战">
+<meta property="og:url" content="http://linvilyao.github.io/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/index.html">
+<meta property="og:site_name" content="Linvil&#39;s Blog">
+<meta property="og:description" content="本笔记跟随字母站UP主我是土堆《PyTorch深度学习快速入门教程》，作为随堂笔记。本节课学习Dataset类代码实战，包括但不限于数据处理以及工具的使用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/Dataset%E5%92%8CDataloader.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/cv2%E5%92%8CPIL%E8%AF%BB%E5%8F%96%E5%9B%BE%E7%89%87%E7%9A%84%E7%B1%BB%E5%9E%8B%E5%B1%9E%E6%80%A7.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/cv2%E5%92%8CPIL%E8%BD%AC%E6%8D%A2%E4%B8%BATensor%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/pycharm%E7%BB%88%E7%AB%AF%E4%BD%BF%E7%94%A8PIL.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/%E4%BD%BF%E7%94%A8os%E8%AF%BB%E5%8F%96%E5%9B%BE%E7%89%87%E8%B7%AF%E5%BE%84%E5%AD%98%E5%82%A8%E5%9C%A8%E5%88%97%E8%A1%A8%E4%B8%AD.png">
+<meta property="article:published_time" content="2023-06-27T01:45:16.000Z">
+<meta property="article:modified_time" content="2023-06-27T12:58:39.168Z">
+<meta property="article:author" content="Linvil Yao">
+<meta property="article:tag" content="数据集实战">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://linvilyao.github.io/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/Dataset%E5%92%8CDataloader.png">
+
+
+<link rel="canonical" href="http://linvilyao.github.io/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/","path":"2023/06/27/PyTorch入门学习（一）Dataset类代码实战/","title":"PyTorch入门学习（一）Dataset类代码实战"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>PyTorch入门学习（一）Dataset类代码实战 | Linvil's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Linvil's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">这是一个用来记录的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">27</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">43</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">加载数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#cv2%E5%92%8CPIL%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.1.</span> <span class="nav-text">cv2和PIL的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pycharm%E4%B8%AD%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="nav-number">2.2.</span> <span class="nav-text">pycharm中读取数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">数据可视化</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Linvil Yao"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Linvil Yao</p>
+  <div class="site-description" itemprop="description">Welcome to Linvil's Blog!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+        </div>
+      </div>
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/07/18/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" title="2023&#x2F;07&#x2F;18&#x2F;开学篇之图像分类评价指标&#x2F;">开学篇之图像分类评价指标</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/" title="2023&#x2F;06&#x2F;27&#x2F;PyTorch入门学习（一）Dataset类代码实战&#x2F;">PyTorch入门学习（一）Dataset类代码实战</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/17/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0v2-%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/" title="2023&#x2F;06&#x2F;17&#x2F;动手学深度学习v2-数据操作及数据预处理&#x2F;">动手学深度学习v2（一）数据操作及数据预处理</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/15/%E8%A1%A5%E5%85%85%E4%B9%8B%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E8%A7%A3%E9%87%8A/" title="2023&#x2F;06&#x2F;15&#x2F;补充之一些函数解释&#x2F;">一些函数解释（更新ing）</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/14/%E8%A1%A5%E5%85%85%E4%B9%8BTensor%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%8F%98%E6%8D%A2/" title="2023&#x2F;06&#x2F;14&#x2F;补充之Tensor的维度变换&#x2F;">Tensor的维度变换</a>
+        </li>
+    </ul>
+  </div>
+    </div>
+
+
+    
+
+
+
+  </aside>
+
+
+
+
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Linvil Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linvil's Blog">
+      <meta itemprop="description" content="Welcome to Linvil's Blog!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="PyTorch入门学习（一）Dataset类代码实战 | Linvil's Blog">
+      <meta itemprop="description" content="本笔记跟随字母站UP主我是土堆《PyTorch深度学习快速入门教程》，作为随堂笔记。本节课学习Dataset类代码实战，包括但不限于数据处理以及工具的使用。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PyTorch入门学习（一）Dataset类代码实战
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-06-27 09:45:16 / 修改时间：20:58:39" itemprop="dateCreated datePublished" datetime="2023-06-27T09:45:16+08:00">2023-06-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Pytorch/" itemprop="url" rel="index"><span itemprop="name">Pytorch</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/" class="post-meta-item leancloud_visitors" data-flag-title="PyTorch入门学习（一）Dataset类代码实战" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Valine：</span>
+  
+    <a title="valine" href="/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">本笔记跟随字母站UP主我是土堆《PyTorch深度学习快速入门教程》，作为随堂笔记。本节课学习Dataset类代码实战，包括但不限于数据处理以及工具的使用。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1>前言</h1>
+<p>因为在写代码的过程中发现对整体的框架使用十分不熟，所以恶补一下pytorch的入门知识。</p>
+<p>运行jupyter需要在cmd上，power shell上会出错（因为不久前我将默认终端应用程序改为Windows终端，可能前期的windows powershell没有装好，导致打开cmd出错，实际上平常用的是powershell），改过去之后直接用cmd进如pytorch虚拟环境运行jupyter</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda activate pytorch</span><br><span class="line">jupyter notebook</span><br></pre></td></tr></table></figure>
+<h1>加载数据</h1>
+<p>在pytorch中如何读取数据主要涉及到两个类，分别是Dataset和Dataloader</p>
+<p><img src="/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/Dataset%E5%92%8CDataloader.png" alt="Dataset和Dataloader"></p>
+<h2 id="cv2和PIL的区别">cv2和PIL的区别</h2>
+<p>顺便一提（在准备MICCAI中遇到读取图片用的是cv2，但之前跟着写的代码都是用PIL）<strong>cv2和PIL的区别</strong>：</p>
+<ul>
+<li>
+<p>读取的通道不同：cv2读取图像为BGR顺序通道，PIL读取图像为RGB顺序通道；</p>
+</li>
+<li>
+<p>读取代码不同：</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cv2读取方式</span></span><br><span class="line">input1 = <span class="string">r&#x27;E:\DRPL\data\blur\1_ILSVRC2012_val_00004507_3_183.jpg&#x27;</span></span><br><span class="line">cv2img = cv2.imread(input1, flags=cv2.IMREAD_COLOR)  <span class="comment"># 默认以BGR形式打开</span></span><br><span class="line">cv2.imshow(<span class="string">&quot;cv2img&quot;</span>, cv2img)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br><span class="line"><span class="comment"># PIL读取方式</span></span><br><span class="line">input2 = <span class="string">r&#x27;E:\DRPL\data\blur\1_ILSVRC2012_val_00004507_3_re183.jpg&#x27;</span></span><br><span class="line">pilimg = Image.<span class="built_in">open</span>(input2)</span><br><span class="line">pilimg.show()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>读取出的图像类型以及尺度属性不同：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(cv2img.shape, cv2img.size, <span class="built_in">type</span>(cv2img))</span><br><span class="line"><span class="built_in">print</span>(pilimg.size, <span class="built_in">type</span>(pilimg))</span><br><span class="line"><span class="comment"># cv2读取出图像的类型为ndarray类型，pil读取的为PIL类型。</span></span><br><span class="line"><span class="comment"># cv2读取的图像同时拥有shape()和size()方法，pil只有size()方法。</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/cv2%E5%92%8CPIL%E8%AF%BB%E5%8F%96%E5%9B%BE%E7%89%87%E7%9A%84%E7%B1%BB%E5%9E%8B%E5%B1%9E%E6%80%A7.png" alt="cv2和PIL读取图片的类型属性"></p>
+<ul>
+<li>将cv2和PIL转换为tensor数据类型代码对比</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">trans = transforms.ToTensor()</span><br><span class="line">tensor_cv2 = trans(cv2img)</span><br><span class="line">tensor_pil = trans(pilimg)</span><br><span class="line"><span class="built_in">print</span>(tensor_cv2.shape, tensor_cv2.size(), <span class="built_in">type</span>(tensor_cv2))</span><br><span class="line"><span class="built_in">print</span>(tensor_pil.shape, tensor_pil.size(), <span class="built_in">type</span>(tensor_pil))</span><br><span class="line"><span class="comment"># 两者都可以转换为tensor数据类型</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/cv2%E5%92%8CPIL%E8%BD%AC%E6%8D%A2%E4%B8%BATensor%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.png" alt="cv2和PIL转换为Tensor数据类型"></p>
+<ul>
+<li>cv2图像和PIL图像相互转换</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将PIL转换为cv2# 方法1：用numpy.asarray()函数转化类型，再用cv2.cvtColor转化RGB为BGR通道.</span></span><br><span class="line">trans_cv2img = cv2.cvtColor(numpy.asarray(pilimg), cv2.COLOR_RGB2BGR)</span><br><span class="line">cv2.imshow(<span class="string">&quot;trans_cv2img&quot;</span>, trans_cv2img)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)<span class="comment"># 方法2：可以不使用cv2.cvtColor，但是show出来的图像会发蓝，因为没有变换通道</span></span><br><span class="line">trans_tocv2 = numpy.array(pilimg)</span><br><span class="line">cv2.imshow(<span class="string">&quot;transtocv2&quot;</span>, transtocv2)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其他知识引申：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 转换RGB的方法对比cv2img1 = cv2.cvtColor(cv2img, cv2.COLOR_BGR2RGB)</span></span><br><span class="line">pilimg1 = pilimg.convert(<span class="string">&#x27;RGB&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>将PILimg转换为cv2时可以使用numpy.array()，也可以使用numpy.asarray()，这两者的区别在于array会copy出一个副本，占用新的内存，但asarray不会；</p>
+<p>就是说将数据源用asarray转换后赋值给新的变量，再对原始数据源进行操作修改，会影响到新的变量数据.而如果用array来转换并赋值给新变量，修改原始数据后不会对新变量造成影响。</p>
+<h2 id="pycharm中读取数据">pycharm中读取数据</h2>
+<p>pycharm终端可以详细显示数据类型，下图为使用PIL读取数据过程</p>
+<p><img src="/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/pycharm%E7%BB%88%E7%AB%AF%E4%BD%BF%E7%94%A8PIL.png" alt="pycharm终端使用PIL"></p>
+<p>使用os读取图片路径存进列表中</p>
+<p><img src="/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/%E4%BD%BF%E7%94%A8os%E8%AF%BB%E5%8F%96%E5%9B%BE%E7%89%87%E8%B7%AF%E5%BE%84%E5%AD%98%E5%82%A8%E5%9C%A8%E5%88%97%E8%A1%A8%E4%B8%AD.png" alt="使用os读取图片路径存储在列表中"></p>
+<h1>数据可视化</h1>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E9%9B%86%E5%AE%9E%E6%88%98/" rel="tag"><i class="fa fa-tag"></i> 数据集实战</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/17/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0v2-%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/" rel="prev" title="动手学深度学习v2（一）数据操作及数据预处理">
+                  <i class="fa fa-chevron-left"></i> 动手学深度学习v2（一）数据操作及数据预处理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/07/18/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" rel="next" title="开学篇之图像分类评价指标">
+                  开学篇之图像分类评价指标 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Linvil Yao</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("04/21/2023 22:22:22");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "已运行 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","app_key":"iNfyeaWVmA11Duj7fzr0B1r1","server_url":"https://16p3s6fl.lc-cn-n1-shared.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '32px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
+</script>
+
+</body>
+</html>
