@@ -5443,7 +5443,7 @@ N = (W-F+2P)/S + 1<br>
 <p>缺陷：假设有一样本（正例10，负例990），但是模型分类将所有样本都分为正例，即TP=10，FN=990，即此刻Recall = 100%，实际上目前模型依旧什么鬼用也没有。</p>
 <h2 id="F1-Score">F1-Score</h2>
 <p>为正确率和召回率的调和平均值，当数据集的类别个数不均衡时，或许是一个比单纯的Accuracy更好的指标。</p>
-<p>$$F1-Score=\frac{2}{\frac{1}{Precision}+\frac{1}{Recall}}=\frac{2<em>Precision</em>Recall}{Precision+Recall}$$</p>
+<p>$$F1-Score=\frac{2}{\frac{1}{Precision}+\frac{1}{Recall}}=2·\frac{Precision·Recall}{Precision+Recall}$$</p>
 <h2 id="ROC-Receiver-Operating-Characteristic">ROC(Receiver Operating Characteristic)</h2>
 <p>准确率、精准率、召回率和F1-Score都是单一的数值指标，如果想观察分类算法在不同的参数下的表现，可以使用ROC曲线。ROC曲线可以用评价一个分类器在不同阈值下的表现。横纵坐标均基于真实值为分母。</p>
 <ul>
