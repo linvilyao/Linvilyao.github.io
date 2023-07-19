@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_logosc/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_logosc/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","width":240,"display":"post","padding":14,"offset":10},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="主要学习目标中的评价指标，因与图像分类中指标存在重合，所以只重点关注图像分类中未学习到的指标。。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开学篇之目标检测评价指标">
+<meta property="og:url" content="http://linvilyao.github.io/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/index.html">
+<meta property="og:site_name" content="Linvil&#39;s Blog">
+<meta property="og:description" content="主要学习目标中的评价指标，因与图像分类中指标存在重合，所以只重点关注图像分类中未学习到的指标。。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://linvilyao.github.io/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/Recall.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/IoU.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/P-R%E6%9B%B2%E7%BA%BF.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/AP-%E4%B8%BE%E4%BE%8B1.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/AP-%E4%B8%BE%E4%BE%8B2.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/AP-%E4%B8%BE%E4%BE%8B3.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/AP-%E4%B8%BE%E4%BE%8B4.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/fppi%E6%9B%B2%E7%BA%BF.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/NMS.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/%E5%A4%9A%E4%B8%AA%E7%9B%AE%E6%A0%87%E6%9E%81%E5%A4%A7%E5%80%BC%E6%8A%91%E5%88%B6.png">
+<meta property="article:published_time" content="2023-07-19T13:27:02.000Z">
+<meta property="article:modified_time" content="2023-07-19T13:34:33.744Z">
+<meta property="article:author" content="Linvil Yao">
+<meta property="article:tag" content="目标检测指标">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://linvilyao.github.io/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/Recall.png">
+
+
+<link rel="canonical" href="http://linvilyao.github.io/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/","path":"2023/07/19/开学篇之目标检测评价指标/","title":"开学篇之目标检测评价指标"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>开学篇之目标检测评价指标 | Linvil's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Linvil's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">这是一个用来记录的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">28</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">44</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">精度评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Precision%EF%BC%88%E7%B2%BE%E7%A1%AE%E7%8E%87-%E6%9F%A5%E5%87%86%E7%8E%87%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">Precision（精确率&#x2F;查准率）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Recall%EF%BC%88%E5%8F%AC%E5%9B%9E%E7%8E%87-%E6%9F%A5%E5%85%A8%E7%8E%87%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">Recall（召回率&#x2F;查全率）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IoU%EF%BC%88Intersection-over-Union%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">IoU（Intersection over Union）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AP%EF%BC%88Average-Precision%EF%BC%89"><span class="nav-number">1.4.</span> <span class="nav-text">AP（Average Precision）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mAP%EF%BC%88mean-Average-Precision%EF%BC%89"><span class="nav-number">1.5.</span> <span class="nav-text">mAP（mean Average Precision）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fppi-fppw"><span class="nav-number">1.6.</span> <span class="nav-text">fppi&#x2F;fppw</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9E%E6%9E%81%E5%A4%A7%E5%80%BC%E6%8A%91%E5%88%B6%EF%BC%88NMS%EF%BC%89"><span class="nav-number">1.7.</span> <span class="nav-text">非极大值抑制（NMS）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E4%B8%AA%E9%A2%84%E6%B5%8B%E7%9B%AE%E6%A0%87"><span class="nav-number">1.7.0.1.</span> <span class="nav-text">单个预测目标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E4%B8%AA%E9%A2%84%E6%B5%8B%E7%9B%AE%E6%A0%87"><span class="nav-number">1.7.0.2.</span> <span class="nav-text">多个预测目标</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">速度评价指标</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Linvil Yao"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Linvil Yao</p>
+  <div class="site-description" itemprop="description">Welcome to Linvil's Blog!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+        </div>
+      </div>
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" title="2023&#x2F;07&#x2F;19&#x2F;开学篇之目标检测评价指标&#x2F;">开学篇之目标检测评价指标</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/07/18/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" title="2023&#x2F;07&#x2F;18&#x2F;开学篇之图像分类评价指标&#x2F;">开学篇之图像分类评价指标</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/" title="2023&#x2F;06&#x2F;27&#x2F;PyTorch入门学习（一）Dataset类代码实战&#x2F;">PyTorch入门学习（一）Dataset类代码实战</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/17/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0v2-%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/" title="2023&#x2F;06&#x2F;17&#x2F;动手学深度学习v2-数据操作及数据预处理&#x2F;">动手学深度学习v2（一）数据操作及数据预处理</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/06/15/%E8%A1%A5%E5%85%85%E4%B9%8B%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E8%A7%A3%E9%87%8A/" title="2023&#x2F;06&#x2F;15&#x2F;补充之一些函数解释&#x2F;">一些函数解释（更新ing）</a>
+        </li>
+    </ul>
+  </div>
+    </div>
+
+
+    
+
+
+
+  </aside>
+
+
+
+
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Linvil Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linvil's Blog">
+      <meta itemprop="description" content="Welcome to Linvil's Blog!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="开学篇之目标检测评价指标 | Linvil's Blog">
+      <meta itemprop="description" content="主要学习目标中的评价指标，因与图像分类中指标存在重合，所以只重点关注图像分类中未学习到的指标。。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          开学篇之目标检测评价指标
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-07-19 21:27:02 / 修改时间：21:34:33" itemprop="dateCreated datePublished" datetime="2023-07-19T21:27:02+08:00">2023-07-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" itemprop="url" rel="index"><span itemprop="name">性能指标</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" class="post-meta-item leancloud_visitors" data-flag-title="开学篇之目标检测评价指标" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Valine：</span>
+  
+    <a title="valine" href="/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">主要学习目标中的评价指标，因与图像分类中指标存在重合，所以只重点关注图像分类中未学习到的指标。。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>参考理解：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1624811">【必备】目标检测中的评价指标有哪些？-腾讯云开发者社区-腾讯云 (tencent.com)</a></p>
+<p>对于评价一个目标检测模型的好坏，可以从以下三个方面来评估：</p>
+<ul>
+<li><strong>精度评价指标</strong>：准确率（Accuracy）、精准度（Precision），召回率（Recall）、R-R曲线、AP（Average Precision）、mAP（mean Average Precision）、混淆矩阵 （Confusion Matrix）、ROC + AUC，非极大值抑制（NMS）、交除病（IoU）；</li>
+<li><strong>速度评价指标</strong>：FPS（即每秒处理的图片数量或者处理每张图片所需的时间，当然必须在同一硬件条件下进行比较）。</li>
+</ul>
+<p>严格说某些场合也会很在意模型的大小，这也是一个研究方向，比如 efficient net, mobile net, shuffle net 等。所以除了上面三个维度，模型的大小也可以是一个评价维度。</p>
+<p>与图像分类中的混淆矩阵类似，分为两种错误情况的检测：</p>
+<ul>
+<li>第一，原假设是正确的，而判断出来是错误的，对应下表的FN；</li>
+<li>第二，原假设是错误的，而判断出来是正确的，对应下表的FP。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">检测真实值</th>
+<th style="text-align:center">预测-正例</th>
+<th style="text-align:center">预测-负例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>正例</strong></td>
+<td style="text-align:center">真正例（A） TP</td>
+<td style="text-align:center">假负例（C） FN</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>负例</strong></td>
+<td style="text-align:center">假正例（B） FP</td>
+<td style="text-align:center">真正例（D） TN</td>
+</tr>
+</tbody>
+</table>
+<p>$$TPR = \frac{TP}{TP+FN}，FNR=\frac{FN}{FN+TP}$$</p>
+<p>$$FPR=\frac{FP}{FP+TN}，TNR=\frac{TN}{TN+FP}$$</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">符号</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">TPR（true positive rate）</td>
+<td style="text-align:center">真正率、灵敏度（sensitivity）</td>
+</tr>
+<tr>
+<td style="text-align:center">FNR（false negative rate）</td>
+<td style="text-align:center">假负率、虚警率（false alarm）</td>
+</tr>
+<tr>
+<td style="text-align:center">FPR（false positive rate）</td>
+<td style="text-align:center">假正率</td>
+</tr>
+<tr>
+<td style="text-align:center">TNR（true negative rate）</td>
+<td style="text-align:center">真负率、特异度（specifivity）</td>
+</tr>
+<tr>
+<td style="text-align:center">TP（true positive）</td>
+<td style="text-align:center">实际是正例，预测为正例</td>
+</tr>
+<tr>
+<td style="text-align:center">FN（false negative）</td>
+<td style="text-align:center">实际是正例，预测为负例</td>
+</tr>
+<tr>
+<td style="text-align:center">FP（false positive）</td>
+<td style="text-align:center">实际是负例，预测为正例</td>
+</tr>
+<tr>
+<td style="text-align:center">TN（true negative）</td>
+<td style="text-align:center">实际是负例，预测为负例</td>
+</tr>
+</tbody>
+</table>
+<h1>精度评价指标</h1>
+<h2 id="Precision（精确率-查准率）">Precision（精确率/查准率）</h2>
+<p>在所有检测出的目标中检测正确的概率。</p>
+<p>$$Precision=\frac{TP}{TP+FP}$$</p>
+<p>精确率是从预测的结果的角度来定义。精确率又称为查准率。需要注意的是， Precision 和 Accuracy 是不一样的，Accuracy 针对所有样本，而 Precision 仅针对检测出来（包括误检）的那一部分样本。</p>
+<h2 id="Recall（召回率-查全率）">Recall（召回率/查全率）</h2>
+<p>召回率是指所有的正样本中正确识别的概率。</p>
+<p>$$Recall=\frac{TP}{TP+FN}$$</p>
+<p>召回率是从样本的角度出发的。召回率又称查全率。</p>
+<p><img src="/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/Recall.png" alt="Recall"></p>
+<p>缺陷：假设有一样本（正例10，负例990），但是模型检测将所有样本都分为正例，即TP=10，FN=990，即此刻Recall = 100%，实际上目前模型依旧什么鬼用也没有。</p>
+<h2 id="IoU（Intersection-over-Union）">IoU（Intersection over Union）</h2>
+<p>交并比，计算的是 “预测的边框” 和 “真实的边框” 的交集和并集的比值。</p>
+<p>指的是ground truth bbox与predict bbox的交集面积占两者并集面积的一个比率，IoU值越大说明预测检测框的模型算法性能越好，通常在目标检测任务里将IoU&gt;=0.7的区域设定为正例（目标），而将IoU&lt;=0.3的区域设定为负例（背景），其余的会丢弃掉。</p>
+<p><img src="/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/IoU.png" alt="IoU"></p>
+<h2 id="AP（Average-Precision）">AP（Average Precision）</h2>
+<p><strong>AP</strong>就是<strong>Precision-recall 曲线下面的面积</strong>，通常来说一个越好的分类器，AP值越高。</p>
+<p>指的是所有图片内的具体某一类的PR曲线下的面积，其计算方式有两种，第一种算法：首先设定一组recall阈值[0, 0.1, 0.2, …, 1]，然后对每个recall阈值从小到大取值，同时计算当取大于该recall阈值时top-n所对应的最大precision。这样，我们就计算出了11个precision，AP即为这11个precision的平均值，这种方法英文叫做11-point interpolated average precision；第二种算法：该方法类似，新的计算方法假设这N个样本中有M个正例，那么我们会得到M个recall值（1/M, 2/M, …, M/M）,对于每个recall值r，该recall阈值时top-n所对应的最大precision，然后对这M个precision值取平均即得到最后的AP值。</p>
+<p><img src="/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/P-R%E6%9B%B2%E7%BA%BF.png" alt="P-R曲线"></p>
+<h2 id="mAP（mean-Average-Precision）">mAP（mean Average Precision）</h2>
+<p>指所有图片内的所有类别的AP的平均值。</p>
+<p>假设有10张图像用于目标检测，每张图像都事先标记有GT（Ground Truth）标注框，这里的类别可以有多个且每张图像同一类别也可以有多个目标，但是AP是指所有图片内的具体某一类的PR曲线下的面积，因此我们只关注一个类别即可，比如我们只关注车辆，那么经过算法预测后，每一张图像都会得出相应的车辆预测框和置信度，我们根据置信度进行降序排序，然后按照常用阈值取IoU=0.5，预测框与实际框的IoU大于0.5时，我们记为TP，否则记为FP，当然，也许在一张图像里算法一个目标都没有检测到，这时候检测不到的目标则被标记为FN，有了每一张图像的TP、FP和FN我们就可以计算每一张图像的Precision和Recall值了，从而就可以计算出PR曲线下的面积得出具体类别的AP值了。</p>
+<p>搬运栗子：</p>
+<p>假设上述10张图像有两张图像都有2个车辆目标，而其余图像仅有1个车辆目标，那么总的GT则有12个，经过算法预测后有9张图像检测出车辆，而有一张有2个车辆目标的图像无法检测出车辆，这样，每张图像有多少个车辆预测框、预测置信度、TP、FP及FN即可假设如下表所示：</p>
+<p><img src="/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/AP-%E4%B8%BE%E4%BE%8B1.png" alt="AP-举例1"></p>
+<p>其中，ImgsID为ID1和ID8的这两张图像每张都有两个车辆目标，但ID8这张图像检测不出任何车辆目标，而在依据置信度降序排序时我们将以每一个预测框来计算Precision和Recall，从而我们可以得出如下的Precision和Recall计算表：</p>
+<p><img src="/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/AP-%E4%B8%BE%E4%BE%8B2.png" alt="AP-举例2"></p>
+<p>AP指的是所有图片内的具体某一类的PR曲线下的面积，PR曲线通常横坐标为Recall值，而其纵坐标为Precision，对于同一个Recall值，我们取的是最大的Precision，因此，有如下的PR曲线取值：</p>
+<p><img src="/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/AP-%E4%B8%BE%E4%BE%8B3.png" alt="AP-举例3"></p>
+<p>依据以上PR表格，我们可以得出如下PR曲线图：</p>
+<p><img src="/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/AP-%E4%B8%BE%E4%BE%8B4.png" alt="AP-举例4"></p>
+<p>蓝色折线即为PR曲线，而红色折线与横纵坐标所包围的面积即为该PR曲线下的PR面积即AP值，从而依据上述假设和PR曲线图或PR表格，我们可以得出该目标检测算法车辆类的AP值即PR曲线垂直投射横纵坐标下的面积计算公式如下：</p>
+<p>AP = (0.333 - 0) * 1 + (0.5 - 0.333) * 0.857 = 0.476</p>
+<p>因此，在该假设情况下，该目标检测算法的车辆类在Iou为0.5的情况下其AP值为0.476，同理，其他目标类别可依据该方法计算得出。</p>
+<p>由此即可算出mAP计算公式：$$mAP=\frac{\sum_{i=1}^CAP_i}{C}$$（C为目标检测任务中的类别数量）</p>
+<p>注意：<strong>计算mAP在NMS之后</strong></p>
+<p>mAP是统计检测模型的最终评价指标，是所有操作完成之后，以最终的检测结果作为标准，来计算mAP值的，另外提一点一般只有测试的时候才会作NMS，训练的时候不进行NMS操作，因为训练的时候需要大量的正负样本去学习。</p>
+<h2 id="fppi-fppw">fppi/fppw</h2>
+<p><img src="/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/fppi%E6%9B%B2%E7%BA%BF.png" alt="fppi曲线"></p>
+<p>fppi曲线的纵轴为FN（即Miss rate），横轴为false positive per image。相比PR曲线，fppi更接近于实际应用（如果就业情况，对待产品介绍时可以用这个来表示模型算法有多牛）。</p>
+<h2 id="非极大值抑制（NMS）"><strong>非极大值抑制（NMS）</strong></h2>
+<p>非极大值抑制虽然一般不作评价指标，但是也是目标检测中一个很重要的步骤</p>
+<h4 id="单个预测目标"><strong>单个预测目标</strong></h4>
+<p><code>NMS</code>的英文为<code>Non-Maximum Suppression</code>,就是在预测的结果框和相应的置信度中找到置信度比较高的<code>bounding box</code>。对于有重叠在一起的预测框，如果和当前最高分的候选框重叠面积<code>IoU</code>大于一定的阈值的时候，就将其删除，而只保留得分最高的那个（保留红框）。</p>
+<p><img src="/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/NMS.png" alt="单个目标极大值抑制"></p>
+<p>计算步骤：</p>
+<p>1). <code>NMS</code>计算出每一个<code>bounding box</code>的面积，然后根据置信度进行排序，把置信度最大的<code>bounding box</code>作为队列中首个要比较的对象；</p>
+<p>2). 计算其余<code>bounding box</code>与当前最大<code>score</code>的<code>IoU</code>，去除<code>IoU</code>大于设定的阈值的<code>bounding box</code>，保留小的<code>IoU</code>预测框；</p>
+<p>3). 然后重复上面的过程，直至候选<code>bounding box</code>为空。</p>
+<p><img src="/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/%E5%A4%9A%E4%B8%AA%E7%9B%AE%E6%A0%87%E6%9E%81%E5%A4%A7%E5%80%BC%E6%8A%91%E5%88%B6.png" alt="多个目标极大值抑制"></p>
+<h4 id="多个预测目标"><strong>多个预测目标</strong></h4>
+<p>当存在多目标预测时，如下图，先选取置信度最大的候选框<code>B1</code>，然后根据<code>IoU</code>阈值来去除<code>B1</code>候选框周围的框。然后再选取置信度第二大的候选框<code>B2</code>,再根据<code>IoU</code>阈值去掉<code>B2</code>候选框周围的框。</p>
+<h1>速度评价指标</h1>
+<p>FPS，检测器每秒能处理图片的张数，简单的说就是一秒钟能够检测多少张图片。</p>
+<p>FLOPs和FLOPS</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%8C%87%E6%A0%87/" rel="tag"><i class="fa fa-tag"></i> 目标检测指标</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/18/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" rel="prev" title="开学篇之图像分类评价指标">
+                  <i class="fa fa-chevron-left"></i> 开学篇之图像分类评价指标
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Linvil Yao</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("04/21/2023 22:22:22");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "已运行 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","app_key":"iNfyeaWVmA11Duj7fzr0B1r1","server_url":"https://16p3s6fl.lc-cn-n1-shared.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '32px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
+</script>
+
+</body>
+</html>
