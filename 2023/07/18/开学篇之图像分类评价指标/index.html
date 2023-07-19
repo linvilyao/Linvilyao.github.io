@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://linvilyao.github.io/2023/07/18/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/P-R%E6%9B%B2%E7%BA%BF.png">
 <meta property="og:image" content="http://linvilyao.github.io/2023/07/18/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/confusion_matrix.png">
 <meta property="article:published_time" content="2023-07-18T13:32:58.000Z">
-<meta property="article:modified_time" content="2023-07-19T02:14:52.595Z">
+<meta property="article:modified_time" content="2023-07-19T02:30:12.439Z">
 <meta property="article:author" content="Linvil Yao">
 <meta property="article:tag" content="图像分类指标">
 <meta name="twitter:card" content="summary">
@@ -147,7 +147,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E7%B1%BB%E6%8C%87%E6%A0%87"><span class="nav-number">1.</span> <span class="nav-text">分类指标</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87"><span class="nav-number">2.</span> <span class="nav-text">二分类评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Accuracy%EF%BC%88%E5%87%86%E7%A1%AE%E7%8E%87-%E7%B2%BE%E5%BA%A6%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">Accuracy（准确率&#x2F;精度）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Precision%EF%BC%88%E5%87%86%E7%A1%AE%E7%8E%87-%E6%9F%A5%E5%87%86%E7%8E%87%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">Precision（准确率&#x2F;查准率）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Recall%EF%BC%88%E5%8F%AC%E5%9B%9E%E7%8E%87-%E6%9F%A5%E5%85%A8%E7%8E%87%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">Recall（召回率&#x2F;查全率）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#F1-Score"><span class="nav-number">2.4.</span> <span class="nav-text">F1-Score</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ROC-Receiver-Operating-Characteristic"><span class="nav-number">2.5.</span> <span class="nav-text">ROC(Receiver Operating Characteristic)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AUC%EF%BC%88Area-Under-Curve%EF%BC%89"><span class="nav-number">2.6.</span> <span class="nav-text">AUC（Area Under Curve）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P-R%E6%9B%B2%E7%BA%BF"><span class="nav-number">2.7.</span> <span class="nav-text">P-R曲线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AP%EF%BC%88Average-Precision%EF%BC%89"><span class="nav-number">2.8.</span> <span class="nav-text">AP（Average Precision）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87"><span class="nav-number">3.</span> <span class="nav-text">多分类评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E6%B7%86%E7%9F%A9%E9%98%B5%EF%BC%88confusion-matrix%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">混淆矩阵（confusion matrix）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Accuracy%E4%B9%8Btop1%E5%92%8Ctop5"><span class="nav-number">3.2.</span> <span class="nav-text">Accuracy之top1和top5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#macro-F1"><span class="nav-number">3.3.</span> <span class="nav-text">macro-F1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#micro-F1"><span class="nav-number">3.4.</span> <span class="nav-text">micro-F1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mAP%EF%BC%88mean-Average-Precision%EF%BC%89"><span class="nav-number">3.5.</span> <span class="nav-text">mAP（mean Average Precision）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E6%B7%86%E7%9F%A9%E9%98%B5kappa%E7%B3%BB%E6%95%B0"><span class="nav-number">3.6.</span> <span class="nav-text">混淆矩阵kappa系数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%EF%BC%88%E5%BE%85%E8%A1%A5%E5%85%85%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">性能指标（待补充）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E6%80%A7%E8%83%BDFLOPS"><span class="nav-number">4.1.</span> <span class="nav-text">机器性能FLOPS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%80%A7%E8%83%BDFLOPs"><span class="nav-number">4.2.</span> <span class="nav-text">算法性能FLOPs</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">分类指标</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">二分类评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Accuracy%EF%BC%88%E5%87%86%E7%A1%AE%E7%8E%87-%E7%B2%BE%E5%BA%A6%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">Accuracy（准确率&#x2F;精度）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Precision%EF%BC%88%E5%87%86%E7%A1%AE%E7%8E%87-%E6%9F%A5%E5%87%86%E7%8E%87%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">Precision（准确率&#x2F;查准率）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Recall%EF%BC%88%E5%8F%AC%E5%9B%9E%E7%8E%87-%E6%9F%A5%E5%85%A8%E7%8E%87%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">Recall（召回率&#x2F;查全率）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#F1-Score"><span class="nav-number">2.4.</span> <span class="nav-text">F1-Score</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ROC-Receiver-Operating-Characteristic"><span class="nav-number">2.5.</span> <span class="nav-text">ROC(Receiver Operating Characteristic)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AUC%EF%BC%88Area-Under-Curve%EF%BC%89"><span class="nav-number">2.6.</span> <span class="nav-text">AUC（Area Under Curve）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P-R%E6%9B%B2%E7%BA%BF"><span class="nav-number">2.7.</span> <span class="nav-text">P-R曲线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AP%EF%BC%88Average-Precision%EF%BC%89"><span class="nav-number">2.8.</span> <span class="nav-text">AP（Average Precision）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">多分类评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E6%B7%86%E7%9F%A9%E9%98%B5%EF%BC%88confusion-matrix%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">混淆矩阵（confusion matrix）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Accuracy%E4%B9%8Btop1%E5%92%8Ctop5"><span class="nav-number">3.2.</span> <span class="nav-text">Accuracy之top1和top5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#macro-F1"><span class="nav-number">3.3.</span> <span class="nav-text">macro-F1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#micro-F1"><span class="nav-number">3.4.</span> <span class="nav-text">micro-F1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mAP%EF%BC%88mean-Average-Precision%EF%BC%89"><span class="nav-number">3.5.</span> <span class="nav-text">mAP（mean Average Precision）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E6%B7%86%E7%9F%A9%E9%98%B5kappa%E7%B3%BB%E6%95%B0"><span class="nav-number">3.6.</span> <span class="nav-text">混淆矩阵kappa系数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">性能指标（待补充）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E6%80%A7%E8%83%BDFLOPS"><span class="nav-number">4.1.</span> <span class="nav-text">机器性能FLOPS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%80%A7%E8%83%BDFLOPs"><span class="nav-number">4.2.</span> <span class="nav-text">算法性能FLOPs</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -270,7 +270,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-07-19 10:14:52" itemprop="dateModified" datetime="2023-07-19T10:14:52+08:00">2023-07-19</time>
+      <time title="修改时间：2023-07-19 10:30:12" itemprop="dateModified" datetime="2023-07-19T10:30:12+08:00">2023-07-19</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -310,7 +310,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>7.8k</span>
+      <span>7.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -329,10 +329,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="分类指标"><a href="#分类指标" class="headerlink" title="分类指标"></a>分类指标</h1><p>二分类：分类只有2个，如0，1分类；猫狗粉来；医学疾病的二分类（注：一般0、Neg代表正常/良性；1、Pos代表癌症/恶性）等</p>
+        <h1>分类指标</h1>
+<p>二分类：分类只有2个，如0，1分类；猫狗粉来；医学疾病的二分类（注：一般0、Neg代表正常/良性；1、Pos代表癌症/恶性）等</p>
 <p>多分类：比较常见，例如imageNet-1000分类问题，CIFAR-10的10分类问题等。</p>
-<h1 id="二分类评价指标"><a href="#二分类评价指标" class="headerlink" title="二分类评价指标"></a>二分类评价指标</h1><p>Accuracy（准确率）、Precision（精确率）、Recall（召回率）、F1-Score、AUC、ROC、P-R曲线等</p>
-<div class="table-container">
+<h1>二分类评价指标</h1>
+<p>Accuracy（准确率）、Precision（精确率）、Recall（召回率）、F1-Score、AUC、ROC、P-R曲线等</p>
 <table>
 <thead>
 <tr>
@@ -354,7 +355,6 @@
 </tr>
 </tbody>
 </table>
-</div>
 <p><strong>备注：T/F分别代表True/False，表示预测结果与标签是否一致；P/N分别代表Positives/Negatives，表示预测结果值属于正/负例</strong>。</p>
 <ul>
 <li>A.True Positives，TP：预测为正，实际为正，预测为正样本是对的；</li>
@@ -362,14 +362,23 @@
 <li>C.False Negatives，FN：预测为负，实际为正，预测为负样本是错的；</li>
 <li>D.True Negatives，TN：预测为负，实际为负，预测为负样本是对的。</li>
 </ul>
-<h2 id="Accuracy（准确率-精度）"><a href="#Accuracy（准确率-精度）" class="headerlink" title="Accuracy（准确率/精度）"></a>Accuracy（准确率/精度）</h2><p>——对于给定的数据，分类正确样本数占总样本数的比例。</p>
-<script type="math/tex; mode=display">Accuracy=\frac{TP+TN}{TP+TN+FN+FP}</script><p>缺陷：准确率这一指标在不平衡的数据集上的表现很差，因为如果正负样本数目差别很大（正例990个，负例10个），那么如果把样本全部预测为正例，计算得出的Acc为99%，即使表面上看Acc准确率很高，但实际上这个模型没有半点鬼用。</p>
-<h2 id="Precision（准确率-查准率）"><a href="#Precision（准确率-查准率）" class="headerlink" title="Precision（准确率/查准率）"></a>Precision（准确率/查准率）</h2><p>——分类正确的正样本个数占分类器所有预测正样本个数的比例。即以<strong>判断为正例</strong>作为基准：模型判别为正例的里面，实际正确的概率是多少。</p>
-<script type="math/tex; mode=display">Precision=\frac{TP}{TP+FP}</script><p>题外话：个人感觉目前好像没发现该指标有什么不太好的地方，毕竟当预测时，如果有10正例，990负例，那么当模型不准确时，全预测为正例，那么准确率也才10%（以正例为基准），如果全预测为负例，那么也是0%。由此得出Precision在一定程度上是能表现出模型准确度的，但看那么多资料好像都不怎么评价该指标……（可能现在学的太浅，可能后续会知道吧）。</p>
-<h2 id="Recall（召回率-查全率）"><a href="#Recall（召回率-查全率）" class="headerlink" title="Recall（召回率/查全率）"></a>Recall（召回率/查全率）</h2><p>分类正确的正样本个数占实际正样本个数的比例。以<strong>真实为正例</strong>作为基准：真实值的正例中，被判断出来正例的概率是多少。</p>
-<script type="math/tex; mode=display">Recall=\frac{TP}{TP+FN}</script><p>缺陷：假设有一样本（正例10，负例990），但是模型分类将所有样本都分为正例，即TP=10，FN=990，即此刻Recall = 100%，实际上目前模型依旧什么鬼用也没有。</p>
-<h2 id="F1-Score"><a href="#F1-Score" class="headerlink" title="F1-Score"></a>F1-Score</h2><p>为正确率和召回率的调和平均值，当数据集的类别个数不均衡时，或许是一个比单纯的Accuracy更好的指标。</p>
-<script type="math/tex; mode=display">F1-Score=\frac{2}{\frac{1}{Precision}+\frac{1}{Recall}}=2·\frac{Precision·Recall}{Precision+Recall}</script><h2 id="ROC-Receiver-Operating-Characteristic"><a href="#ROC-Receiver-Operating-Characteristic" class="headerlink" title="ROC(Receiver Operating Characteristic)"></a>ROC(Receiver Operating Characteristic)</h2><p>准确率、精准率、召回率和F1-Score都是单一的数值指标，如果想观察分类算法在不同的参数下的表现，可以使用ROC曲线。ROC曲线可以用评价一个分类器在不同阈值下的表现。横纵坐标均基于真实值为分母。</p>
+<h2 id="Accuracy（准确率-精度）">Accuracy（准确率/精度）</h2>
+<p>——对于给定的数据，分类正确样本数占总样本数的比例。</p>
+<p>$$Accuracy=\frac{TP+TN}{TP+TN+FN+FP}$$</p>
+<p>缺陷：准确率这一指标在不平衡的数据集上的表现很差，因为如果正负样本数目差别很大（正例990个，负例10个），那么如果把样本全部预测为正例，计算得出的Acc为99%，即使表面上看Acc准确率很高，但实际上这个模型没有半点鬼用。</p>
+<h2 id="Precision（准确率-查准率）">Precision（准确率/查准率）</h2>
+<p>——分类正确的正样本个数占分类器所有预测正样本个数的比例。即以<strong>判断为正例</strong>作为基准：模型判别为正例的里面，实际正确的概率是多少。</p>
+<p>$$Precision=\frac{TP}{TP+FP}$$</p>
+<p>题外话：个人感觉目前好像没发现该指标有什么不太好的地方，毕竟当预测时，如果有10正例，990负例，那么当模型不准确时，全预测为正例，那么准确率也才10%（以正例为基准），如果全预测为负例，那么也是0%。由此得出Precision在一定程度上是能表现出模型准确度的，但看那么多资料好像都不怎么评价该指标…（可能现在学的太浅，可能后续会知道吧）。</p>
+<h2 id="Recall（召回率-查全率）">Recall（召回率/查全率）</h2>
+<p>分类正确的正样本个数占实际正样本个数的比例。以<strong>真实为正例</strong>作为基准：真实值的正例中，被判断出来正例的概率是多少。</p>
+<p>$$Recall=\frac{TP}{TP+FN}$$</p>
+<p>缺陷：假设有一样本（正例10，负例990），但是模型分类将所有样本都分为正例，即TP=10，FN=990，即此刻Recall = 100%，实际上目前模型依旧什么鬼用也没有。</p>
+<h2 id="F1-Score">F1-Score</h2>
+<p>为正确率和召回率的调和平均值，当数据集的类别个数不均衡时，或许是一个比单纯的Accuracy更好的指标。</p>
+<p>$$F1-Score=\frac{2}{\frac{1}{Precision}+\frac{1}{Recall}}=2·\frac{Precision·Recall}{Precision+Recall}$$</p>
+<h2 id="ROC-Receiver-Operating-Characteristic">ROC(Receiver Operating Characteristic)</h2>
+<p>准确率、精准率、召回率和F1-Score都是单一的数值指标，如果想观察分类算法在不同的参数下的表现，可以使用ROC曲线。ROC曲线可以用评价一个分类器在不同阈值下的表现。横纵坐标均基于真实值为分母。</p>
 <ul>
 <li>横坐标是FPR（False Position Rate，假正率）：$\frac{FP}{N}=\frac{FP}{FP+TN}$，表示预测为正例但实际为负例的样本占所有负例样本（真实结果为负样本）的比例，FPR越大，预测正类中的实际负类就越多；</li>
 <li>纵坐标是TPR（True Position Rate，真正率）：$\frac{TP}{N}=\frac{TP}{TP+FN}$，表示预测为正例且实际为正例的样本占所有正例样本（真实结果为正样本）的比例。</li>
@@ -387,7 +396,7 @@
 <li>（1，0）：即FPR=1，TPR=0，意味着这是一个糟糕的分类器，因为它成功避开了所有的正确答案。</li>
 </ul>
 <p>ROC曲线图中，越靠近(0,1)的点对应的模型分类性能越好，所以，可以确定的是<strong>ROC曲线图中的点对应的模型，它们的不同之处仅仅是在分类时选用的阈值(Threshold)不同，每个点所选用的阈值都对应某个样本被预测为正类的概率值</strong></p>
-<p><img src="/2023/07/18/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/ROC曲线与AUC.png" alt="ROC曲线与AUC"></p>
+<p><img src="/2023/07/18/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/ROC%E6%9B%B2%E7%BA%BF%E4%B8%8EAUC.png" alt="ROC曲线与AUC"></p>
 <p>ROC曲线有一个很好的特征：当测试集中的正负样本比例分布发生变化时，ROC曲线能够保持不变，即它对政府样本不均衡问题不敏感。所以对不均衡样本问题，通常选择ROC曲线作为评价标准；</p>
 <p>ROC曲线越接近左上角，表示该分类器的性能越好，若一个分类器的ROC曲线完全包住了另一个分类器ROC曲线，那么可以判断前者的性能更好。</p>
 <p>如何通过ROC曲线来判断模型好坏？</p>
@@ -404,7 +413,8 @@
 <li>特异度Specifivity=1-FPR。</li>
 </ul>
 </blockquote>
-<h2 id="AUC（Area-Under-Curve）"><a href="#AUC（Area-Under-Curve）" class="headerlink" title="AUC（Area Under Curve）"></a>AUC（Area Under Curve）</h2><p>被定义为ROC曲线下与坐标轴围成的面积（如上图），显然这个面积的数值不会大于1。又由于ROC曲线一般都处于y=x这条直线的上方，所以AUC的取值范围在0.5和1之间。AUC越接近1.0，检测方法真实性越高;等于0.5时，则真实性最低，无应用价值。</p>
+<h2 id="AUC（Area-Under-Curve）">AUC（Area Under Curve）</h2>
+<p>被定义为ROC曲线下与坐标轴围成的面积（如上图），显然这个面积的数值不会大于1。又由于ROC曲线一般都处于y=x这条直线的上方，所以AUC的取值范围在0.5和1之间。AUC越接近1.0，检测方法真实性越高;等于0.5时，则真实性最低，无应用价值。</p>
 <ul>
 <li>AUC=1：在任何阈值下分类器都可以 100% 识别所有类别，这是理想的分类器；</li>
 <li>AUC=0.5：相当于随机预测，此时分类器不可用；</li>
@@ -412,18 +422,25 @@
 <li>AUC&lt;0.5：总是比随机预测更差；</li>
 </ul>
 <p>AUC 作为一个评价标准，常和 ROC 曲线一起使用，可以看作是ROC的量化表现。</p>
-<h2 id="P-R曲线"><a href="#P-R曲线" class="headerlink" title="P-R曲线"></a>P-R曲线</h2><p>以查准率（Precision）为纵轴、查全率（Recall）为横轴作图 ，就得到了查准率-查全率曲线，简称 “P-R曲线”。</p>
-<p><img src="/2023/07/18/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/P-R曲线.png" alt="P-R曲线"></p>
+<h2 id="P-R曲线">P-R曲线</h2>
+<p>以查准率（Precision）为纵轴、查全率（Recall）为横轴作图 ，就得到了查准率-查全率曲线，简称 “P-R曲线”。</p>
+<p><img src="/2023/07/18/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/P-R%E6%9B%B2%E7%BA%BF.png" alt="P-R曲线"></p>
 <p>如何通过P-R曲线来判断模型好坏？</p>
 <blockquote>
 <p>P-R曲线未发生交叉：即上图分类器A更优于分类器C，理解为可以将另一分类器在P-R图像上完全包住，可断言该分类器更优于被包住的分类器；</p>
 <p>P-R曲线发生交叉：如上图分类器A和B，通常会引入平衡点（Break-Even Point，BEP）的概念，一个总和考虑查准率和查全率的性能度量（查准率==查全率时的取值）。基于BEP进行比较，可以认为上图分类器A比B效果更好。</p>
 </blockquote>
-<h2 id="AP（Average-Precision）"><a href="#AP（Average-Precision）" class="headerlink" title="AP（Average Precision）"></a>AP（Average Precision）</h2><p>就是Precision-Recall 曲线下围成的面积，通常来说一个越好的分类器，AP值越高。而mAP（mean average precision）是多个类别AP的平均值。</p>
-<h1 id="多分类评价指标"><a href="#多分类评价指标" class="headerlink" title="多分类评价指标"></a>多分类评价指标</h1><h2 id="混淆矩阵（confusion-matrix）"><a href="#混淆矩阵（confusion-matrix）" class="headerlink" title="混淆矩阵（confusion matrix）"></a>混淆矩阵（confusion matrix）</h2><p><img src="/2023/07/18/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/confusion_matrix.png" alt="confusion matrix"></p>
+<h2 id="AP（Average-Precision）">AP（Average Precision）</h2>
+<p>就是Precision-Recall 曲线下围成的面积，通常来说一个越好的分类器，AP值越高。而mAP（mean average precision）是多个类别AP的平均值。</p>
+<h1>多分类评价指标</h1>
+<h2 id="混淆矩阵（confusion-matrix）">混淆矩阵（confusion matrix）</h2>
+<p><img src="/2023/07/18/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/confusion_matrix.png" alt="confusion matrix"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># eg：preds=[0,1,3,2,4,2,...],labels=[0,1,3,4,2,1,...]</span></span><br><span class="line"><span class="comment"># result()是自定义的预测相关函数，返回预测列表和所对应的真实label值列表</span></span><br><span class="line">preds,labels = result()</span><br><span class="line">C = confusion_matrix(labels, preds)</span><br><span class="line"><span class="built_in">print</span>(C)</span><br><span class="line"><span class="comment"># 图片对应的矩阵</span></span><br><span class="line"><span class="comment"># [[357   7   0   0   0]</span></span><br><span class="line"><span class="comment">#  [  3 364   3   1   0]</span></span><br><span class="line"><span class="comment">#  [  0   6 192   4   0]</span></span><br><span class="line"><span class="comment">#  [  0   0   0  50   4]</span></span><br><span class="line"><span class="comment">#  [  0   0   0   0  39]]</span></span><br><span class="line">plt.matshow(C, cmap=plt.cm.Reds)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(C)):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(C)):</span><br><span class="line">        plt.annotate(C[j, i], xy=(i, j), horizontalalignment=<span class="string">&#x27;center&#x27;</span>, verticalalignment=<span class="string">&#x27;center&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plt.ylabel(<span class="string">&#x27;True labels&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Predict labels&#x27;</span>)</span><br><span class="line">plt.savefig(os.path.join(data2_path,<span class="string">&quot;utils_images/confusion_matrix.png&quot;</span>))</span><br></pre></td></tr></table></figure>
-<h2 id="Accuracy之top1和top5"><a href="#Accuracy之top1和top5" class="headerlink" title="Accuracy之top1和top5"></a>Accuracy之top1和top5</h2><p>在前面accuracy中已经有详细的解释（计算指定阈值的前k精度），这里把宏观上的公式展示出来</p>
-<script type="math/tex; mode=display">Acc-top1=\frac{第一个正确的个数和}{总数}</script><script type="math/tex; mode=display">Acc-top5=\frac{前五之一正确的个数和}{总数}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">labels = np.asarray([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">preds = np.asarray([</span><br><span class="line">    [<span class="number">0.7</span>, <span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">0.1</span>],</span><br><span class="line">    [<span class="number">0.1</span>, <span class="number">0.3</span>, <span class="number">0.4</span>, <span class="number">0.2</span>],</span><br><span class="line">    [<span class="number">0.3</span>, <span class="number">0.4</span>, <span class="number">0.2</span>, <span class="number">0.1</span>],</span><br><span class="line">    [<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.1</span>, <span class="number">0.9</span>]</span><br><span class="line">])</span><br><span class="line">accuracy = Accuracy(topk=(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>))</span><br><span class="line"><span class="built_in">print</span>(accuracy(preds, labels))</span><br><span class="line"><span class="comment"># &#123;&#x27;top1&#x27;: 0.5, &#x27;top2&#x27;: 0.75, &#x27;top3&#x27;: 1.0&#125;</span></span><br><span class="line">accuracy = Accuracy(topk=<span class="number">2</span>, thrs=(<span class="number">0.1</span>, <span class="number">0.5</span>))</span><br><span class="line"><span class="built_in">print</span>(accuracy(preds, labels))</span><br><span class="line"><span class="comment"># &#123;&#x27;top2_thr-0.10&#x27;: 0.75, &#x27;top2_thr-0.50&#x27;: 0.5&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Accuracy之top1和top5">Accuracy之top1和top5</h2>
+<p>在前面accuracy中已经有详细的解释（计算指定阈值的前k精度），这里把宏观上的公式展示出来</p>
+<p>$$Acc-top1=\frac{第一个正确的个数和}{总数}$$</p>
+<p>$$Acc-top5=\frac{前五之一正确的个数和}{总数}$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">labels = np.asarray([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">preds = np.asarray([</span><br><span class="line">    [<span class="number">0.7</span>, <span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">0.1</span>],</span><br><span class="line">    [<span class="number">0.1</span>, <span class="number">0.3</span>, <span class="number">0.4</span>, <span class="number">0.2</span>],</span><br><span class="line">    [<span class="number">0.3</span>, <span class="number">0.4</span>, <span class="number">0.2</span>, <span class="number">0.1</span>],</span><br><span class="line">    [<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.1</span>, <span class="number">0.9</span>]</span><br><span class="line">])</span><br><span class="line">accuracy = Accuracy(topk=(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>))</span><br><span class="line"><span class="built_in">print</span>(accuracy(preds, labels))</span><br><span class="line"><span class="comment"># &#123;&#x27;top1&#x27;: 0.5, &#x27;top2&#x27;: 0.75, &#x27;top3&#x27;: 1.0&#125;</span></span><br><span class="line">accuracy = Accuracy(topk=<span class="number">2</span>, thrs=(<span class="number">0.1</span>, <span class="number">0.5</span>))</span><br><span class="line"><span class="built_in">print</span>(accuracy(preds, labels))</span><br><span class="line"><span class="comment"># &#123;&#x27;top2_thr-0.10&#x27;: 0.75, &#x27;top2_thr-0.50&#x27;: 0.5&#125;</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>对于<code>Accuracy(topk=(1, 2, 3))</code>，对应结果为top1、top2、top3，以top1和top3作为栗子。</li>
 </ul>
@@ -438,45 +455,68 @@
 <p>top2_thr-0.10即指在top2的前提下，对还剩余的值分别与thr的值（0.10）做对比。将preds中的每个预测值和thr对比，大于thr的设为1，小于等于thr的设为0。得到preds_new=[[1，0，0，0],[0，1，1，1],[1，1，1，0],[0，0，0，1]]；再根据topk=2，得到[[0，1],[1，2],[0，1],[0，3]]，所以（1+1+0+1）/4=0.75；</p>
 <p>top2_thr-0.50即指在top2的前提下，对还剩余的值分别与thr的值（0.50）做对比。将preds中的每个预测值和thr对比，大于thr的设为1，小于等于thr的设为0。得到pred_new=[[1，0，0，0],[0，0，0，0],[0，0，0，0],[0，0，0，1]]；再根据topk=2，得到[[0，1],[0，1],[0，1],[0，3]]，所以（1+0+0+1）/4=0.5.</p>
 </blockquote>
-<h2 id="macro-F1"><a href="#macro-F1" class="headerlink" title="macro-F1"></a>macro-F1</h2><p>类比二分类指标，大体原则是每类计算对应指标，再求平均。其中每个类别的<strong>precision</strong>分别是对角线元素除以该元素所在的<strong>列元素之和</strong>；<strong>recall</strong>则是除以该类别所在<strong>行元素之和</strong>。</p>
+<h2 id="macro-F1">macro-F1</h2>
+<p>类比二分类指标，大体原则是每类计算对应指标，再求平均。其中每个类别的<strong>precision</strong>分别是对角线元素除以该元素所在的<strong>列元素之和</strong>；<strong>recall</strong>则是除以该类别所在<strong>行元素之和</strong>。</p>
 <p>由上图图例confusion matrix所示，类别1的Precision_1=364/(7+364+6+0+0)=0.9655；Recall_1=364/(3+364+3+1+0)=0.9811。</p>
 <p>计算方式（本处先对每类做R和R求平均，再代入F1；其他有是先对每类做F1，再求平均）：</p>
 <p>1）对各类别对Precision的Recall求平均：</p>
-<script type="math/tex; mode=display">Precision_{macro}=\frac{\sum_{i=1}^nPrecision_i}{n}</script><script type="math/tex; mode=display">Recall_{macro}=\frac{\sum_{i=1}^nRecall_i}{n}</script><p>2）然后利用F1计算公式计算出来的F1值即为Macro-F1:</p>
-<script type="math/tex; mode=display">F1_{macro}=\frac{2}{\frac{1}{macro\_P}+\frac{1}{macro\_R}}=2·\frac{Precision_{macro}·Recall_{macro}}{Precision_{macro}+Recall_{macro}}</script><p>简而言之：就是<strong>先对每一个类别的Precision和Recall分别求平均，得到平均的Precision和Recall</strong>，之后带入macro-F1的公式得到结果。</p>
+<p>$$Precision_{macro}=\frac{\sum_{i=1}^nPrecision_i}{n}$$</p>
+<p>$$Recall_{macro}=\frac{\sum_{i=1}^nRecall_i}{n}$$</p>
+<p>2）然后利用F1计算公式计算出来的F1值即为Macro-F1:</p>
+<p>$$F1_{macro}=\frac{2}{\frac{1}{macro_P}+\frac{1}{macro_R}}=2·\frac{Precision_{macro}·Recall_{macro}}{Precision_{macro}+Recall_{macro}}$$</p>
+<p>简而言之：就是<strong>先对每一个类别的Precision和Recall分别求平均，得到平均的Precision和Recall</strong>，之后带入macro-F1的公式得到结果。</p>
 <p>注意：因为对各类别的Precision和Recall求了平均，所以并没有考虑到数据数量的问题。在这种情况下，Precision和Recall较高的类别对F1的影响会较大。</p>
-<h2 id="micro-F1"><a href="#micro-F1" class="headerlink" title="micro-F1"></a>micro-F1</h2><p>与上面的macro不同，微查准查全，先将多个混淆矩阵的TP，FP，TN，FN对应位置求平均，然后按照Percision和Recall的公式求得micro-P和micro-R，最后根据micro-P和micro-R求得micro-F1。</p>
+<h2 id="micro-F1">micro-F1</h2>
+<p>与上面的macro不同，微查准查全，先将多个混淆矩阵的TP，FP，TN，FN对应位置求平均，然后按照Percision和Recall的公式求得micro-P和micro-R，最后根据micro-P和micro-R求得micro-F1。</p>
 <p>计算方式：</p>
 <p>1）先计算出所有类别的总的Precision和Recall：</p>
-<script type="math/tex; mode=display">Precision_{micro}=\frac{\sum_{i=1}^nTP_i}{\sum_{i=1}^nTP_i+\sum_{i=1}^nFN_i}</script><script type="math/tex; mode=display">Recall_{micro}=\frac{\sum_{i=1}^nTP_i}{\sum_{i=1}^nTP_i+\sum_{i=1}^nFN_i}</script><p>2）利用F1计算公式计算出来的F1值即为Micro-F1:</p>
-<script type="math/tex; mode=display">F1_{micro}=2·\frac{Precision_{micro}·Recall_{micro}}{Precision_{micro}+Recall_{micro}}</script><p>简而言之：就是将每个类别的Precision和Recall做求和，再代入micro-F1公式中。</p>
+<p>$$Precision_{micro}=\frac{\sum_{i=1}^nTP_i}{\sum_{i=1}^nTP_i+\sum_{i=1}^nFN_i}$$</p>
+<p>$$Recall_{micro}=\frac{\sum_{i=1}^nTP_i}{\sum_{i=1}^nTP_i+\sum_{i=1}^nFN_i}$$</p>
+<p>2）利用F1计算公式计算出来的F1值即为Micro-F1:</p>
+<p>$$F1_{micro}=2·\frac{Precision_{micro}·Recall_{micro}}{Precision_{micro}+Recall_{micro}}$$</p>
+<p>简而言之：就是将每个类别的Precision和Recall做求和，再代入micro-F1公式中。</p>
 <p>注意：因为其考虑了各种类别的数量，所以更适用于数据分布不平衡的情况。在这种情况下，数量较多的类别对F1的影响会较大。</p>
-<h2 id="mAP（mean-Average-Precision）"><a href="#mAP（mean-Average-Precision）" class="headerlink" title="mAP（mean Average Precision）"></a>mAP（mean Average Precision）</h2><p>mAP（mean Accuracy Precision）一般而言，全类平均正确率（mAP，又称全类平均精度）是将所有类别的平均正确率（AP）进行综合加权平均而得到的。在<strong>目标检测领域</strong>使用更为普遍（目标检测那块再详细说明，因为暂时还没了解目标检测）。</p>
-<script type="math/tex; mode=display">mAP=\frac{1}{n}\sum(AP)_i</script><p>为什么要使用AP或者mAP？</p>
+<h2 id="mAP（mean-Average-Precision）">mAP（mean Average Precision）</h2>
+<p>mAP（mean Accuracy Precision）一般而言，全类平均正确率（mAP，又称全类平均精度）是将所有类别的平均正确率（AP）进行综合加权平均而得到的。在<strong>目标检测领域</strong>使用更为普遍（目标检测那块再详细说明，因为暂时还没了解目标检测）。</p>
+<p>$$mAP=\frac{1}{n}\sum(AP)_i$$</p>
+<p>为什么要使用AP或者mAP？</p>
 <blockquote>
 <p>我们希望一个模型的Precision和Recall都很高，所以需要综合考虑这两个因素，我们可以联想到用调和平均数F1-beta值来衡量，另一种方法正是PR曲线下的面积AUC，这也就是AP。AUC面积越接近1性能越好。曲线下的面积理解为不同召回值的情况下所有精度的平均值。</p>
 </blockquote>
-<h2 id="混淆矩阵kappa系数"><a href="#混淆矩阵kappa系数" class="headerlink" title="混淆矩阵kappa系数"></a>混淆矩阵kappa系数</h2><p>使用在统计学中评估一致性的一种方法，取值范围[-1,1]，世纪应用中，一般是[0,1]，与ROC曲线中一般不会出现下凸形曲线的原理类似。这个系数的值越高，则代表模型实现的分类准确度越高。基于混淆矩阵的kappa系数计算公式如下：</p>
-<script type="math/tex; mode=display">kappa=\frac{p_0-p_e}{1-p_e}</script><p>其中：</p>
+<h2 id="混淆矩阵kappa系数">混淆矩阵kappa系数</h2>
+<p>使用在统计学中评估一致性的一种方法，取值范围[-1,1]，实际应用中，一般是[0,1]，与ROC曲线中一般不会出现下凸形曲线的原理类似。这个系数的值越高，则代表模型实现的分类准确度越高。基于混淆矩阵的kappa系数计算公式如下：</p>
+<p>$$kappa=\frac{p_0-p_e}{1-p_e}$$</p>
+<p>其中：</p>
 <p>$p_0=\frac{对角线之和}{整个矩阵元素之和}$，也就是Accuracy</p>
 <p>$p_e=\frac{\sum_i第i行元素和*第i列元素和}{(整个矩阵元素之和)^2}$</p>
 <p>意义：根据kappa的计算公式，越不平衡的混淆矩阵，$p_e$越高，kappa的值就可能越低，正好能够给“偏向性”强的模型打低分，是一种能够惩罚模型的“偏向性”的指标来代替accuracy</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> cohen_kappa_score</span><br><span class="line">kappa = cohen_kappa_score(y_true,y_pred，label=<span class="literal">None</span>) <span class="comment">#(label除非是你想计算其中的分类子集的kappa系数，否则不需要设置)</span></span><br></pre></td></tr></table></figure>
-<h1 id="性能指标（待补充）"><a href="#性能指标（待补充）" class="headerlink" title="性能指标（待补充）"></a>性能指标（待补充）</h1><h2 id="机器性能FLOPS"><a href="#机器性能FLOPS" class="headerlink" title="机器性能FLOPS"></a>机器性能FLOPS</h2><ul>
-<li><p>OPS(Operations Per Second) ，每秒的操作次数</p>
+<h1>性能指标（待补充）</h1>
+<h2 id="机器性能FLOPS">机器性能FLOPS</h2>
 <ul>
-<li><p>MOPS（Million Operation Per Second）：每秒钟可进行一百万次（10^6）操作</p>
+<li>
+<p>OPS(Operations Per Second) ，每秒的操作次数</p>
+<ul>
+<li>
+<p>MOPS（Million Operation Per Second）：每秒钟可进行一百万次（10^6）操作</p>
 </li>
-<li><p>GOPS（Giga Operations Per Second）每秒钟可进行十亿次（10^9）操作</p>
+<li>
+<p>GOPS（Giga Operations Per Second）每秒钟可进行十亿次（10^9）操作</p>
 </li>
-<li>TOPS（Tera Operations Per Second）每秒钟可进行一万亿次（10^12）操作</li>
-<li>POPS（peta Operations Per Second）每秒钟可进行一千万亿（=10^15）操作</li>
+<li>
+<p>TOPS（Tera Operations Per Second）每秒钟可进行一万亿次（10^12）操作</p>
+</li>
+<li>
+<p>POPS（peta Operations Per Second）每秒钟可进行一千万亿（=10^15）操作</p>
+</li>
 </ul>
 </li>
-<li><p><strong>FLOPS</strong>: (Floating Point operations per second), S大写， 指每秒浮点运算的次数，可以理解为运算的速度，是衡量<strong>硬件</strong>性能的一个指标。MFLOPS, GFLOPS, TFLOPS, PFLOPS 意义同上。</p>
+<li>
+<p><strong>FLOPS</strong>: (Floating Point operations per second), S大写， 指每秒浮点运算的次数，可以理解为运算的速度，是衡量<strong>硬件</strong>性能的一个指标。MFLOPS, GFLOPS, TFLOPS, PFLOPS 意义同上。</p>
 </li>
 </ul>
-<h2 id="算法性能FLOPs"><a href="#算法性能FLOPs" class="headerlink" title="算法性能FLOPs"></a>算法性能FLOPs</h2><p><strong>FLOPs</strong>：(Floating Point Operations) s小写，指浮点运算数，理解为计算量。可以用来衡量<strong>算法/模型</strong>的复杂度。（<strong>模型</strong>） 在论文中常用GFLOPs（1 GFLOPs = 10^9 FLOPs）。其它前缀单位意义同上。</p>
+<h2 id="算法性能FLOPs">算法性能FLOPs</h2>
+<p><strong>FLOPs</strong>：(Floating Point Operations) s小写，指浮点运算数，理解为计算量。可以用来衡量<strong>算法/模型</strong>的复杂度。（<strong>模型</strong>） 在论文中常用GFLOPs（1 GFLOPs = 10^9 FLOPs）。其它前缀单位意义同上。</p>
 <p>一般计算FLOPs来衡量模型的复杂度，FLOPs越小时，表示模型所需计算量越小，运行起来时速度更快。</p>
 <p><strong>MAC(memory access cost, 内存访问成本</strong>)即存储该模型所需的存储空间。以卷积来举例：理解为卷积的总计算量需要访问内存，输出的结果需要存储，权重需要存储。也会被用来衡量模型的运行速度。</p>
 <p>有一个基于pytorch的<strong>torch stat包</strong>，可以计算模型的FLOPs数，参数大小等指标</p>
@@ -616,6 +656,21 @@ setInterval("createtime()",250);
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/07/18/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
+</script>
 <script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
 
 <script>
@@ -635,21 +690,6 @@ var options = {
 const darkmode = new Darkmode(options);
 window.darkmode = darkmode;
 darkmode.showWidget();
-</script>
-
-
-<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/07/18/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/"}</script>
-<script>
-document.addEventListener('page:loaded', () => {
-  NexT.utils.loadComments(CONFIG.valine.el)
-    .then(() => NexT.utils.getScript(
-      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
-      { condition: window.Valine }
-    ))
-    .then(() => {
-      new Valine(CONFIG.valine);
-    });
-});
 </script>
 
 </body>
