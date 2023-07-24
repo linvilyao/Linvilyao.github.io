@@ -88,7 +88,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">29</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">45</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">30</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">46</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -153,18 +153,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-count">46</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -182,6 +182,9 @@
     </div>
     <ul class="links-of-recent-posts-list">
         <li class="links-of-recent-posts-item">
+          <a href="/2023/07/24/mmeval%E6%8C%87%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E5%95%83%E4%B9%8BAveragePrecision/" title="2023&#x2F;07&#x2F;24&#x2F;mmeval指标代码生啃之AveragePrecision&#x2F;">mmeval指标代码生啃之AveragePrecision</a>
+        </li>
+        <li class="links-of-recent-posts-item">
           <a href="/2023/07/20/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" title="2023&#x2F;07&#x2F;20&#x2F;开学篇之图像分割评价指标&#x2F;">开学篇之图像分割评价指标</a>
         </li>
         <li class="links-of-recent-posts-item">
@@ -192,9 +195,6 @@
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/" title="2023&#x2F;06&#x2F;27&#x2F;PyTorch入门学习（一）Dataset类代码实战&#x2F;">PyTorch入门学习（一）Dataset类代码实战</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/2023/06/17/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0v2-%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C%E5%8F%8A%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/" title="2023&#x2F;06&#x2F;17&#x2F;动手学深度学习v2-数据操作及数据预处理&#x2F;">动手学深度学习v2（一）数据操作及数据预处理</a>
         </li>
     </ul>
   </div>
@@ -215,6 +215,120 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/07/24/mmeval%E6%8C%87%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E5%95%83%E4%B9%8BAveragePrecision/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Linvil Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linvil's Blog">
+      <meta itemprop="description" content="Welcome to Linvil's Blog!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Linvil's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/07/24/mmeval%E6%8C%87%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E5%95%83%E4%B9%8BAveragePrecision/" class="post-title-link" itemprop="url">mmeval指标代码生啃之AveragePrecision</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-07-24 21:10:58 / 修改时间：21:22:34" itemprop="dateCreated datePublished" datetime="2023-07-24T21:10:58+08:00">2023-07-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" itemprop="url" rel="index"><span itemprop="name">性能指标</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/mmeval/" itemprop="url" rel="index"><span itemprop="name">mmeval</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/07/24/mmeval%E6%8C%87%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E5%95%83%E4%B9%8BAveragePrecision/" class="post-meta-item leancloud_visitors" data-flag-title="mmeval指标代码生啃之AveragePrecision" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>13k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>对mmeval中的AveragePrecision的计算过程做了实践剖析，学习了解代码计算逻辑。但举例运算的还原过程皆是设置断点全程debug记录，代码逻辑和转化理解全是个人琢磨，有些形容言语可能不太严谨，欢迎探讨指正。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/24/mmeval%E6%8C%87%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E5%95%83%E4%B9%8BAveragePrecision/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1468,122 +1582,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Linvil Yao">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Linvil's Blog">
-      <meta itemprop="description" content="Welcome to Linvil's Blog!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Linvil's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">深度学习模型之CNN（二十三）Swin Transformer网络结构详解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-06-03 12:54:04" itemprop="dateCreated datePublished" datetime="2023-06-03T12:54:04+08:00">2023-06-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-15 17:40:24" itemprop="dateModified" datetime="2023-06-15T17:40:24+08:00">2023-06-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/" class="post-meta-item leancloud_visitors" data-flag-title="深度学习模型之CNN（二十三）Swin Transformer网络结构详解" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>7.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础12.1》，作为随堂笔记。本节课学习Swin-Transformer网络的具体结构，包括Patch partition，Windows Multi-head Self-Attention（W-MSA）, Shifted Windows Multi-head Self-Attention（SW-MSA）, 相对位置偏执（relative position bias）等。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/06/03/Swin-Transformer%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1690,6 +1688,21 @@ setInterval("createtime()",250);
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
+</script>
 <script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
 
 <script>
@@ -1709,21 +1722,6 @@ var options = {
 const darkmode = new Darkmode(options);
 window.darkmode = darkmode;
 darkmode.showWidget();
-</script>
-
-
-<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/"}</script>
-<script>
-document.addEventListener('page:loaded', () => {
-  NexT.utils.loadComments(CONFIG.valine.el)
-    .then(() => NexT.utils.getScript(
-      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
-      { condition: window.Valine }
-    ))
-    .then(() => {
-      new Valine(CONFIG.valine);
-    });
-});
 </script>
 
 </body>
