@@ -88,7 +88,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">30</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">46</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">30</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">47</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -153,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -182,6 +182,9 @@
     </div>
     <ul class="links-of-recent-posts-list">
         <li class="links-of-recent-posts-item">
+          <a href="/2023/07/26/mmeval%E6%8C%87%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E5%95%83%E4%B9%8BF1Score/" title="2023&#x2F;07&#x2F;26&#x2F;mmeval指标代码生啃之F1Score&#x2F;">mmeval指标代码生啃之F1Score</a>
+        </li>
+        <li class="links-of-recent-posts-item">
           <a href="/2023/07/24/mmeval%E6%8C%87%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E5%95%83%E4%B9%8BAveragePrecision/" title="2023&#x2F;07&#x2F;24&#x2F;mmeval指标代码生啃之AveragePrecision&#x2F;">mmeval指标代码生啃之AveragePrecision</a>
         </li>
         <li class="links-of-recent-posts-item">
@@ -192,9 +195,6 @@
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/2023/07/18/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" title="2023&#x2F;07&#x2F;18&#x2F;开学篇之图像分类评价指标&#x2F;">开学篇之图像分类评价指标</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/2023/06/27/PyTorch%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Dataset%E7%B1%BB%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/" title="2023&#x2F;06&#x2F;27&#x2F;PyTorch入门学习（一）Dataset类代码实战&#x2F;">PyTorch入门学习（一）Dataset类代码实战</a>
         </li>
     </ul>
   </div>
@@ -215,6 +215,120 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/07/26/mmeval%E6%8C%87%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E5%95%83%E4%B9%8BF1Score/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Linvil Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linvil's Blog">
+      <meta itemprop="description" content="Welcome to Linvil's Blog!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Linvil's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/07/26/mmeval%E6%8C%87%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E5%95%83%E4%B9%8BF1Score/" class="post-title-link" itemprop="url">mmeval指标代码生啃之F1Score</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-07-26 21:28:30 / 修改时间：21:31:56" itemprop="dateCreated datePublished" datetime="2023-07-26T21:28:30+08:00">2023-07-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/" itemprop="url" rel="index"><span itemprop="name">性能指标</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/mmeval/" itemprop="url" rel="index"><span itemprop="name">mmeval</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/07/26/mmeval%E6%8C%87%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E5%95%83%E4%B9%8BF1Score/" class="post-meta-item leancloud_visitors" data-flag-title="mmeval指标代码生啃之F1Score" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>15k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>13 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>对mmeval中的F1Score的计算过程做了实践剖析，学习了解代码计算逻辑。但举例运算的还原过程皆是设置断点全程debug记录，代码逻辑和转化理解全是个人琢磨，有些形容言语可能不太严谨，欢迎探讨指正。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/26/mmeval%E6%8C%87%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E5%95%83%E4%B9%8BF1Score/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1450,122 +1564,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2023/06/05/ConvNeXt%E7%BD%91%E7%BB%9C%E8%AE%B2%E8%A7%A3%E5%8F%8A%E4%BD%BF%E7%94%A8Pytorch%E6%90%AD%E5%BB%BA/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/06/04/%E4%BD%BF%E7%94%A8Pytorch%E6%90%AD%E5%BB%BASwin-Transformer%E7%BD%91%E7%BB%9C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Linvil Yao">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Linvil's Blog">
-      <meta itemprop="description" content="Welcome to Linvil's Blog!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Linvil's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/06/04/%E4%BD%BF%E7%94%A8Pytorch%E6%90%AD%E5%BB%BASwin-Transformer%E7%BD%91%E7%BB%9C/" class="post-title-link" itemprop="url">深度学习模型之CNN（二十四）使用Pytorch搭建Swin Transformer网络</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-06-04 10:11:45" itemprop="dateCreated datePublished" datetime="2023-06-04T10:11:45+08:00">2023-06-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-16 12:27:26" itemprop="dateModified" datetime="2023-06-16T12:27:26+08:00">2023-06-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2023/06/04/%E4%BD%BF%E7%94%A8Pytorch%E6%90%AD%E5%BB%BASwin-Transformer%E7%BD%91%E7%BB%9C/" class="post-meta-item leancloud_visitors" data-flag-title="深度学习模型之CNN（二十四）使用Pytorch搭建Swin Transformer网络" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>47k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>43 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本笔记跟随字母站UP主霹雳吧啦Wz《卷积神经网络基础12.2》，作为随堂笔记。学习使用Pytorch搭建Swin-Transformer网络（学到人傻了，后续需要不断完善这篇博文）</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/06/04/%E4%BD%BF%E7%94%A8Pytorch%E6%90%AD%E5%BB%BASwin-Transformer%E7%BD%91%E7%BB%9C/">
                 阅读全文 &raquo;
               </a>
             </div>
