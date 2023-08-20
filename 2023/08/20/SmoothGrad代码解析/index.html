@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_logosc/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_logosc/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","width":240,"display":"post","padding":14,"offset":10},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="打算以SmoothGrad为算法，对比MeTFA改动后的变化，前提是对SmoothGrad算法比较了解，才能够达到改变代码且展示最好的效果。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="可解释性探索之SmoothGrad代码解析">
+<meta property="og:url" content="http://linvilyao.github.io/2023/08/20/SmoothGrad%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="Linvil&#39;s Blog">
+<meta property="og:description" content="打算以SmoothGrad为算法，对比MeTFA改动后的变化，前提是对SmoothGrad算法比较了解，才能够达到改变代码且展示最好的效果。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-20T02:08:22.000Z">
+<meta property="article:modified_time" content="2023-08-20T02:11:55.236Z">
+<meta property="article:author" content="Linvil Yao">
+<meta property="article:tag" content="神经网络">
+<meta property="article:tag" content="可解释性算法">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://linvilyao.github.io/2023/08/20/SmoothGrad%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/08/20/SmoothGrad%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/","path":"2023/08/20/SmoothGrad代码解析/","title":"可解释性探索之SmoothGrad代码解析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>可解释性探索之SmoothGrad代码解析 | Linvil's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Linvil's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">这是一个用来记录的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">31</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">48</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">model类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#predict%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">predict函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#get-smoothgrad%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">get_smoothgrad函数</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Linvil Yao"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Linvil Yao</p>
+  <div class="site-description" itemprop="description">Welcome to Linvil's Blog!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+        </div>
+      </div>
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/08/20/SmoothGrad%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/" title="2023&#x2F;08&#x2F;20&#x2F;SmoothGrad代码解析&#x2F;">可解释性探索之SmoothGrad代码解析</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/07/26/mmeval%E6%8C%87%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E5%95%83%E4%B9%8BF1Score/" title="2023&#x2F;07&#x2F;26&#x2F;mmeval指标代码生啃之F1Score&#x2F;">mmeval指标代码生啃之F1Score</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/07/24/mmeval%E6%8C%87%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E5%95%83%E4%B9%8BAveragePrecision/" title="2023&#x2F;07&#x2F;24&#x2F;mmeval指标代码生啃之AveragePrecision&#x2F;">mmeval指标代码生啃之AveragePrecision</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/07/20/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" title="2023&#x2F;07&#x2F;20&#x2F;开学篇之图像分割评价指标&#x2F;">开学篇之图像分割评价指标</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/07/19/%E5%BC%80%E5%AD%A6%E7%AF%87%E4%B9%8B%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" title="2023&#x2F;07&#x2F;19&#x2F;开学篇之目标检测评价指标&#x2F;">开学篇之目标检测评价指标</a>
+        </li>
+    </ul>
+  </div>
+    </div>
+
+
+    
+
+
+
+  </aside>
+
+
+
+
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/08/20/SmoothGrad%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Linvil Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linvil's Blog">
+      <meta itemprop="description" content="Welcome to Linvil's Blog!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="可解释性探索之SmoothGrad代码解析 | Linvil's Blog">
+      <meta itemprop="description" content="打算以SmoothGrad为算法，对比MeTFA改动后的变化，前提是对SmoothGrad算法比较了解，才能够达到改变代码且展示最好的效果。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          可解释性探索之SmoothGrad代码解析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-08-20 10:08:22 / 修改时间：10:11:55" itemprop="dateCreated datePublished" datetime="2023-08-20T10:08:22+08:00">2023-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/08/20/SmoothGrad%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/" class="post-meta-item leancloud_visitors" data-flag-title="可解释性探索之SmoothGrad代码解析" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Valine：</span>
+  
+    <a title="valine" href="/2023/08/20/SmoothGrad%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/08/20/SmoothGrad%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">打算以SmoothGrad为算法，对比MeTFA改动后的变化，前提是对SmoothGrad算法比较了解，才能够达到改变代码且展示最好的效果。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>引用包</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> transforms</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">from</span> model_data.conv_model <span class="keyword">import</span> convnext_small <span class="keyword">as</span> create_model</span><br><span class="line"><span class="keyword">import</span> captum.attr <span class="keyword">as</span> attr</span><br><span class="line"><span class="keyword">from</span> lime <span class="keyword">import</span> lime_image</span><br><span class="line"><span class="keyword">from</span> lime.wrappers.scikit_image <span class="keyword">import</span> SegmentationAlgorithm</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">from</span> skimage <span class="keyword">import</span> segmentation</span><br></pre></td></tr></table></figure>
+<p>位置目录</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 根目录</span></span><br><span class="line">data2_path</span><br><span class="line"><span class="comment"># 权重位置</span></span><br><span class="line">weight_path = os.path.join(data2_path,<span class="string">&quot;output_weights&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h1>model类</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">model</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.checkpoint = os.path.join(weight_path,<span class="string">&quot;flower/process_data_flower_72_0.986.pth&quot;</span>)</span><br><span class="line">        self.device = torch.device(<span class="string">&quot;cuda:0&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">load</span>(<span class="params">self, dir_path</span>):</span><br><span class="line">        self.dir_path = dir_path</span><br><span class="line">        self.model = create_model(num_classes=<span class="number">5</span>)</span><br><span class="line">        self.model.load_state_dict(torch.load(self.checkpoint, map_location=self.device))</span><br><span class="line">        self.model.to(self.device)</span><br><span class="line">        self.integrated_gradients = attr.IntegratedGradients(self.model)</span><br><span class="line">        self.guided_backprop = attr.GuidedBackprop(self.model)</span><br><span class="line">        self.model.<span class="built_in">eval</span>()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 图像处理（这里不重要）</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">multiScaleSharpen</span>(<span class="params">self, src, Radius</span>):</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Integrated Gradients积分梯度</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_integrated_gradients</span>(<span class="params">self,img,predict_cla</span>):</span><br><span class="line"></span><br><span class="line">	<span class="comment"># SmoothGrad平滑梯度</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_smoothgrad</span>(<span class="params">self, input_image, predict_cla, num_samples=<span class="number">20</span>, stdev_spread=<span class="number">0.2</span>, clip_range=(<span class="params"><span class="number">0</span>, <span class="number">1</span></span>)</span>):</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Guided Backpropagation引导反向传播</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_guided_backprop</span>(<span class="params">self, img, predict_cla</span>):</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 预测结果</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">predict</span>(<span class="params">self, input_image</span>):</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    result = model()</span><br><span class="line">    result.load(os.getcwd())</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="number">5</span>):</span><br><span class="line">        img = os.path.join(os.getcwd(),<span class="string">&quot;aaa/image/flower/&#123;&#125;.jpg&quot;</span>.<span class="built_in">format</span>(i))</span><br><span class="line">        img = cv2.imread(img)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;&#123;&#125;类别的预测结果为：&#123;&#125;&quot;</span>.<span class="built_in">format</span>(i, result.predict(img)))</span><br></pre></td></tr></table></figure>
+<h2 id="predict函数">predict函数</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">predict</span>(<span class="params">self, input_image</span>):</span><br><span class="line">    input_image = self.multiScaleSharpen(input_image, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">    input_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2RGB)</span><br><span class="line">    image = Image.fromarray(input_image)</span><br><span class="line"></span><br><span class="line">    img_size = <span class="number">224</span></span><br><span class="line"></span><br><span class="line">    data_transform = transforms.Compose(</span><br><span class="line">        [transforms.Resize(<span class="built_in">int</span>(img_size * <span class="number">1.14</span>)),</span><br><span class="line">         transforms.CenterCrop(img_size),</span><br><span class="line">         transforms.ToTensor(),</span><br><span class="line">         transforms.Normalize([<span class="number">0.485</span>, <span class="number">0.456</span>, <span class="number">0.406</span>], [<span class="number">0.229</span>, <span class="number">0.224</span>, <span class="number">0.225</span>])])</span><br><span class="line">    img = data_transform(image)</span><br><span class="line">	<span class="comment"># 在输入的图像张量img的维度上增加一个维度，将其形状变为(1, C, H, W)</span></span><br><span class="line">    img = torch.unsqueeze(img, dim=<span class="number">0</span>)</span><br><span class="line">    predict_s = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        output = torch.squeeze(self.model(img.to(self.device))).cpu()</span><br><span class="line">        predict = torch.softmax(output, dim=<span class="number">0</span>)</span><br><span class="line">        predict_scores = predict.tolist()</span><br><span class="line">        predict_cla = torch.argmax(predict).item()</span><br><span class="line">    self.get_smoothgrad(img.cpu().numpy(), predict_cla)</span><br><span class="line">    result = predict_cla</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<h2 id="get-smoothgrad函数">get_smoothgrad函数</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_smoothgrad</span>(<span class="params">self, input_image, predict_cla, num_samples=<span class="number">20</span>, stdev_spread=<span class="number">0.2</span>, clip_range=(<span class="params"><span class="number">0</span>, <span class="number">1</span></span>)</span>):</span><br><span class="line">    input_image = torch.from_numpy(input_image).to(self.device)</span><br><span class="line">    input_image.requires_grad = <span class="literal">True</span></span><br><span class="line">    self.model.zero_grad()</span><br><span class="line">    total_gradients = []</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_samples):</span><br><span class="line">        noisy_image = input_image + torch.randn_like(input_image) * stdev_spread</span><br><span class="line">        noisy_image = torch.clamp(noisy_image, *clip_range)</span><br><span class="line">        output = self.model(noisy_image)</span><br><span class="line">        output = F.softmax(output, dim=<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># output.mean().backward()</span></span><br><span class="line">        output[:, predict_cla].mean().backward()  </span><br><span class="line">        gradients = input_image.grad.detach().cpu().numpy()</span><br><span class="line">        total_gradients.append(gradients)</span><br><span class="line"></span><br><span class="line">    smooth_grad = np.mean(total_gradients, axis=<span class="number">0</span>)</span><br><span class="line">    smooth_grad = (smooth_grad - np.<span class="built_in">min</span>(smooth_grad)) / (np.<span class="built_in">max</span>(smooth_grad) - np.<span class="built_in">min</span>(smooth_grad))</span><br><span class="line"></span><br><span class="line">    smoothgrad_img = np.transpose(smooth_grad.squeeze(), (<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>))</span><br><span class="line">    smoothgrad_img = cv2.convertScaleAbs(smoothgrad_img * <span class="number">255</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 保存图像</span></span><br><span class="line">    save_path = os.path.join(data2_path,<span class="string">&quot;aaa/flower/explanations-test&quot;</span>,<span class="string">&quot;guiyi-mean-20&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(save_path):</span><br><span class="line">        os.makedirs(save_path) </span><br><span class="line">        cv2.imwrite(os.path.join(save_path,<span class="string">&quot;processed_&#123;&#125;.jpg&quot;</span>.<span class="built_in">format</span>(predict_cla)), smoothgrad_img)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>将输入图像转换为PyTorch张量并发送到指定设备（如GPU）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">input_image = torch.from_numpy(input_image).to(self.device)</span><br></pre></td></tr></table></figure>
+<p>设置输入图像的requires_grad属性为True，以支持梯度计算</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">input_image.requires_grad = <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>将模型的梯度置零，准备进行反向传播</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.model.zero_grad()</span><br></pre></td></tr></table></figure>
+<p>用于存储每次迭代的梯度</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">total_gradients = []</span><br></pre></td></tr></table></figure>
+<p>进入循环，设置了多少num_samples样本就循环多少次，这里是200。</p>
+<p>向输入图像添加随机噪声</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">noisy_image = input_image + torch.randn_like(input_image) * stdev_spread</span><br></pre></td></tr></table></figure>
+<p>限制噪声图像的像素值在指定范围内，如(0,1)。通过使用torch.clamp()函数并传递(0,1)作为参数，可以确保生成的噪声图像的像素值范围在0到1之间,以满足数据处理和模型的要求</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">noisy_image = torch.clamp(noisy_image, *clip_range)</span><br></pre></td></tr></table></figure>
+<p>使用模型对噪声图像进行预测</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">output = self.model(noisy_image)</span><br></pre></td></tr></table></figure>
+<p>对预测结果进行softmax归一化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">output = F.softmax(output, dim=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>反向传播梯度，计算指定类别的均值作为损失函数。<strong>通过调用backward()方法进行反向传播时，梯度信息被存储在input_image的.grad属性中。这个属性记录了输入图像对应的梯度值</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">output[:, predict_cla].mean().backward()  </span><br></pre></td></tr></table></figure>
+<p>提取输入图像的梯度，并转换为NumPy数组。<code>.detach()</code>方法将梯度与计算图分离。这样做的目的是为了确保后续的计算不会对原始的梯度产生影响，只保留当前的梯度结果。此时，input_image.grad的值将不再更新。</p>
+<p><strong>这里获取的是分离后的梯度信息，是前一行代码执行时的梯度结果，并不包含后续对模型或损失函数的任何计算所产生的梯度更新</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradients = input_image.grad.detach().cpu().numpy()</span><br></pre></td></tr></table></figure>
+<p>计算所有梯度的均值得到SmoothGrad图像</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smooth_grad = np.mean(total_gradients, axis=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>归一化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smooth_grad = (smooth_grad - np.<span class="built_in">min</span>(smooth_grad)) / (np.<span class="built_in">max</span>(smooth_grad) - np.<span class="built_in">min</span>(smooth_grad))</span><br></pre></td></tr></table></figure>
+<p>调整图像维度顺序，以适应OpenCV的图像格式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smoothgrad_img = np.transpose(smooth_grad.squeeze(), (<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+<p><code>smoothgrad_img*255</code>将像素值从[0, 1]的范围缩放到[0, 255]的范围内，</p>
+<p><code>cv2.convertScaleAbs()</code>将缩放后的图像转换为无符号8位整数类型。通过截断（舍弃小数部分）使得所有像素的值都限制在[0, 255]的范围内</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smoothgrad_img = cv2.convertScaleAbs(smoothgrad_img * <span class="number">255</span>)</span><br></pre></td></tr></table></figure>
+<p>保存图像</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">save_path = os.path.join(data2_path,<span class="string">&quot;aaa/flower/explanations-test&quot;</span>,<span class="string">&quot;guiyi-mean-20&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(save_path):</span><br><span class="line">    os.makedirs(save_path) </span><br><span class="line">cv2.imwrite(os.path.join(save_path,<span class="string">&quot;processed_&#123;&#125;.jpg&quot;</span>.<span class="built_in">format</span>(predict_cla)), smoothgrad_img)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag"><i class="fa fa-tag"></i> 神经网络</a>
+              <a href="/tags/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 可解释性算法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/26/mmeval%E6%8C%87%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E5%95%83%E4%B9%8BF1Score/" rel="prev" title="mmeval指标代码生啃之F1Score">
+                  <i class="fa fa-chevron-left"></i> mmeval指标代码生啃之F1Score
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Linvil Yao</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("04/21/2023 22:22:22");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "已运行 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","app_key":"iNfyeaWVmA11Duj7fzr0B1r1","server_url":"https://16p3s6fl.lc-cn-n1-shared.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '32px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/08/20/SmoothGrad%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
+</script>
+
+</body>
+</html>
