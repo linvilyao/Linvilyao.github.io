@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_logosc/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_logosc/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","width":240,"display":"post","padding":14,"offset":10},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Q-Learning、Sarsa、Sarsa（Lambda）、DQN、Double DQN（不适合入门，因为这属于我入门后期的总结）。跟随莫烦python的视频和代码，并将其改成Pytorch版本。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="强化学习之算法">
+<meta property="og:url" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="Linvil&#39;s Blog">
+<meta property="og:description" content="Q-Learning、Sarsa、Sarsa（Lambda）、DQN、Double DQN（不适合入门，因为这属于我入门后期的总结）。跟随莫烦python的视频和代码，并将其改成Pytorch版本。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/Qlearning%E5%92%8CSarsa.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/Sarsa%E5%AE%9E%E6%93%8D.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/Sarsa(Lambda).png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN%E5%AE%9E%E6%93%8D1.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN%E5%AE%9E%E6%93%8D2.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN%E5%AE%9E%E6%93%8D3.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN%E5%85%AC%E5%BC%8F.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DDQN%E5%85%AC%E5%BC%8F.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN%E5%92%8CDDQN%E5%AF%B9%E6%AF%94.png">
+<meta property="article:published_time" content="2023-11-20T03:24:02.000Z">
+<meta property="article:modified_time" content="2023-11-20T03:45:46.623Z">
+<meta property="article:author" content="Linvil Yao">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/Qlearning%E5%92%8CSarsa.png">
+
+
+<link rel="canonical" href="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/","path":"2023/11/20/强化学习之算法/","title":"强化学习之算法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>强化学习之算法 | Linvil's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Linvil's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">这是一个用来记录的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">34</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">51</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">Q-Learning和Sarsa的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">Sarsa（lambda）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">DQN</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">Double DQN和DQN的区别</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Linvil Yao"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Linvil Yao</p>
+  <div class="site-description" itemprop="description">Welcome to Linvil's Blog!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+        </div>
+      </div>
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/" title="2023&#x2F;11&#x2F;20&#x2F;强化学习之算法&#x2F;">强化学习之算法</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/11/20/gurobi%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" title="2023&#x2F;11&#x2F;20&#x2F;gurobi安装教程&#x2F;">gurobi安装教程</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/" title="2023&#x2F;11&#x2F;20&#x2F;强化学习之马尔科夫知识&#x2F;">强化学习之马尔科夫知识</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/08/20/SmoothGrad%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/" title="2023&#x2F;08&#x2F;20&#x2F;SmoothGrad代码解析&#x2F;">可解释性探索之SmoothGrad代码解析</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/07/26/mmeval%E6%8C%87%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E5%95%83%E4%B9%8BF1Score/" title="2023&#x2F;07&#x2F;26&#x2F;mmeval指标代码生啃之F1Score&#x2F;">mmeval指标代码生啃之F1Score</a>
+        </li>
+    </ul>
+  </div>
+    </div>
+
+
+    
+
+
+
+  </aside>
+
+
+
+
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Linvil Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linvil's Blog">
+      <meta itemprop="description" content="Welcome to Linvil's Blog!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="强化学习之算法 | Linvil's Blog">
+      <meta itemprop="description" content="Q-Learning、Sarsa、Sarsa（Lambda）、DQN、Double DQN（不适合入门，因为这属于我入门后期的总结）。跟随莫烦python的视频和代码，并将其改成Pytorch版本。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          强化学习之算法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-11-20 11:24:02 / 修改时间：11:45:46" itemprop="dateCreated datePublished" datetime="2023-11-20T11:24:02+08:00">2023-11-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">强化学习</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/" class="post-meta-item leancloud_visitors" data-flag-title="强化学习之算法" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Valine：</span>
+  
+    <a title="valine" href="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">Q-Learning、Sarsa、Sarsa（Lambda）、DQN、Double DQN（不适合入门，因为这属于我入门后期的总结）。跟随莫烦python的视频和代码，并将其改成Pytorch版本。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1><strong>Q-Learning和Sarsa的区别</strong></h1>
+<p>Q-Learning会在做动作前先观望（更新Q表的Q值），例如在s1状态时就已经估算了在s2选择动作的Q值，但实际上到了s2时因为在s1时更新了Q表，所以并不一定会选择之前计算出的最大Q值；</p>
+<p>Sarsa会在计算出Q值之后直接选择动作</p>
+<blockquote>
+<p>伪代码</p>
+</blockquote>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/Qlearning%E5%92%8CSarsa.png" alt></p>
+<blockquote>
+<p>代码</p>
+<p>其中对应上图中橙色区域为（a_为在前一个状态得到的当前最大Q值动作）</p>
+<p>​	-Q-Learning：<code>q_target = r + self.gamma * self.q_table.loc[s_, :].max()</code></p>
+<p>​	-Saras：<code>q_target = r + self.gamma * self.q_table.loc[s_, a_]</code></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># off-policy</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">QLearningTable</span>(<span class="title class_ inherited__">RL</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, actions, learning_rate=<span class="number">0.01</span>, reward_decay=<span class="number">0.9</span>, e_greedy=<span class="number">0.9</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(QLearningTable, self).__init__(actions, learning_rate, reward_decay, e_greedy)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">learn</span>(<span class="params">self, s, a, r, s_</span>):</span><br><span class="line">        self.check_state_exist(s_)</span><br><span class="line">        q_predict = self.q_table.loc[s, a]</span><br><span class="line">        <span class="keyword">if</span> s_ != <span class="string">&#x27;terminal&#x27;</span>:</span><br><span class="line">            q_target = r + self.gamma * self.q_table.loc[s_, :].<span class="built_in">max</span>()  <span class="comment"># next state is not terminal</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            q_target = r  <span class="comment"># next state is terminal</span></span><br><span class="line">        self.q_table.loc[s, a] += self.lr * (q_target - q_predict)  <span class="comment"># update</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># on-policy</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SarsaTable</span>(<span class="title class_ inherited__">RL</span>):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, actions, learning_rate=<span class="number">0.01</span>, reward_decay=<span class="number">0.9</span>, e_greedy=<span class="number">0.9</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(SarsaTable, self).__init__(actions, learning_rate, reward_decay, e_greedy)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">learn</span>(<span class="params">self, s, a, r, s_, a_</span>):</span><br><span class="line">        self.check_state_exist(s_)</span><br><span class="line">        q_predict = self.q_table.loc[s, a]</span><br><span class="line">        <span class="keyword">if</span> s_ != <span class="string">&#x27;terminal&#x27;</span>:</span><br><span class="line">            q_target = r + self.gamma * self.q_table.loc[s_, a_]  <span class="comment"># next state is not terminal</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            q_target = r  <span class="comment"># next state is terminal</span></span><br><span class="line">        self.q_table.loc[s, a] += self.lr * (q_target - q_predict)  <span class="comment"># update</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>总结：</strong></p>
+<ol>
+<li>Q-learning 在learn的时候，用的是Max的方法，所以学的一定是最大的。但是在choose 的时候因为epsilon而存在随机性，下一个更新的不一定是最大回报对应的action。但每次更新的回报一定是max的。</li>
+<li>Sarsa 在learn之前用epsilon choose了action，并且确定用这个action进行learn。所以learn的不一定是最大回报的。但step的action和learn的一定是同一个。</li>
+<li>所以说Q-learning一定学max，更激进。</li>
+</ol>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/Sarsa%E5%AE%9E%E6%93%8D.png" alt></p>
+<ul>
+<li>Q-Learning像是一个勇士，永远朝效果最好的方向走去，不用担心前方有没有坑；</li>
+<li>Sarsa会比较顾及前方的坑位，所以会尽可能绕过坑位；</li>
+</ul>
+<p>​	（在现实生活中可能倾向Sarsa，因为没有那么多机器人来掉坑）</p>
+<h1><strong>Sarsa（lambda）</strong></h1>
+<p>Sarsa-&gt;Sarsa（lambda）是从单步更新转为局部更新（回合更新）。</p>
+<p>lambda理解为局部搜索的权重值，离宝藏越近局部搜索越激烈</p>
+<blockquote>
+<p>伪代码</p>
+</blockquote>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/Sarsa(Lambda).png" alt></p>
+<blockquote>
+<p>代码：</p>
+</blockquote>
+<p><code>eligibility_trace</code>：表示每个状态后选择相同动作几次（插旗子），当长时间没有获得reward会逐渐衰减，直到为0；</p>
+<p>Sarsa(lambda)：</p>
+<ul>
+<li><code>self.eligibility_trace.loc[s, :] *= 0；self.eligibility_trace.loc[s, a] = 1</code>：对于经历过的 state-action, 我们让他+1, 证明他是得到 reward 路途中不可或缺的一环</li>
+<li><code>self.eligibility_trace *= self.gamma*self.lambda_</code>：随着时间衰减 eligibility trace 的值, 离获取 reward 越远的步, 他的&quot;不可或缺性&quot;越小</li>
+<li>在每一回合结束之后需要<code>RL.eligibility_trace *= 0</code>：eligibility trace 只是记录每个回合的每一步, 新回合开始的时候需要将 Trace 清零</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SarsaLambdaTable</span>(<span class="title class_ inherited__">RL</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, actions, learning_rate=<span class="number">0.01</span>, reward_decay=<span class="number">0.9</span>, e_greedy=<span class="number">0.9</span>, trace_decay=<span class="number">0.9</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(SarsaLambdaTable, self).__init__(actions, learning_rate, reward_decay, e_greedy)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># backward view, eligibility trace.</span></span><br><span class="line">        self.lambda_ = trace_decay</span><br><span class="line">        self.eligibility_trace = self.q_table.copy()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">check_state_exist</span>(<span class="params">self, state</span>):</span><br><span class="line">        <span class="keyword">if</span> state <span class="keyword">not</span> <span class="keyword">in</span> self.q_table.index:</span><br><span class="line">            <span class="comment"># append new state to q table</span></span><br><span class="line">            to_be_append = pd.Series(</span><br><span class="line">                    [<span class="number">0</span>] * <span class="built_in">len</span>(self.actions),</span><br><span class="line">                    index=self.q_table.columns,</span><br><span class="line">                    name=state,</span><br><span class="line">                )</span><br><span class="line">            self.q_table = self.q_table.append(to_be_append)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># also update eligibility trace</span></span><br><span class="line">            self.eligibility_trace = self.eligibility_trace.append(to_be_append)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">learn</span>(<span class="params">self, s, a, r, s_, a_</span>):</span><br><span class="line">        self.check_state_exist(s_)</span><br><span class="line">        q_predict = self.q_table.loc[s, a]</span><br><span class="line">        <span class="keyword">if</span> s_ != <span class="string">&#x27;terminal&#x27;</span>:</span><br><span class="line">            q_target = r + self.gamma * self.q_table.loc[s_, a_]  <span class="comment"># next state is not terminal</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            q_target = r  <span class="comment"># next state is terminal</span></span><br><span class="line">        error = q_target - q_predict</span><br><span class="line"></span><br><span class="line">        <span class="comment"># increase trace amount for visited state-action pair</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Method 1（无封顶）:</span></span><br><span class="line">        <span class="comment"># self.eligibility_trace.loc[s, a] += 1</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Method 2（有封顶）:</span></span><br><span class="line">        self.eligibility_trace.loc[s, :] *= <span class="number">0</span></span><br><span class="line">        self.eligibility_trace.loc[s, a] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Q update</span></span><br><span class="line">        self.q_table += self.lr * error * self.eligibility_trace</span><br><span class="line"></span><br><span class="line">        <span class="comment"># decay eligibility trace after update</span></span><br><span class="line">        self.eligibility_trace *= self.gamma*self.lambda_</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>**总结：**每步完成后都会更新全体的Q表，但是每次更新完Q表后都对当前的eligibility乘了一个衰减因子lambda，这里就和sarsa(lambda)思想一致了，因为不止有下一步会影响这一步，对于后面的所有步都对当前步有影响，但是随着步数的增加，后续步数对当前步的影响会衰减，衰减速率和lambda的取值有关。</p>
+<h1><strong>DQN</strong></h1>
+<p>实际上是一种Q-Learning方法，但是结合上了神经网络。如果只是单纯的结合神经网络去分析observation或者state，可能会有难收敛的毛病。</p>
+<p>​	但是DQN用了两种方式：<strong>记忆库（用于重复学习）<strong>和</strong>暂时冻结q_target参数（切断相关性）</strong>。</p>
+<ul>
+<li>记忆库用来存储各种记忆，之后再离散或者随机的调用之前存储好的记忆这种切断相关性的方法可以让神经网络更有效率的学习；</li>
+<li>暂时冻结q_target参数：q现实当中可以暂时冻结神经网络的一些参数，使他是一个短期之内没有被更新的参数；q估计是每走一步就更新一次参数（可能过了几千步的样子，再将q估计的参数同步赋值给q_target参数）</li>
+</ul>
+<blockquote>
+<p>伪代码</p>
+</blockquote>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN.png" alt></p>
+<blockquote>
+<p>代码：</p>
+</blockquote>
+<ul>
+<li><code>q_eval = self.eval_net(state).gather(1, action)</code>:当达到一定步数时，获取记忆库中s所获取的下一步动作（已经在记忆库中随机抽出batch_size个样本）——估计Q值；</li>
+<li><code>q_next = self.target_net(next_state).detach()</code>：按照记忆库中的s_计算出新的a’的Q值——真实Q值；</li>
+<li><code>q_target = reward + self.gamma * q_next.max(1)[0].unsqueeze(1)</code>：参考伪代码的$y_i$（这里的q_next.max对应代码其实就是最大误差）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">learn</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="comment"># print(&quot;&lt;learn&gt;&quot;)</span></span><br><span class="line">    <span class="comment"># 到达一定步数将Q网络的参数复制到目标网络</span></span><br><span class="line">    <span class="keyword">if</span> self.learn_step_counter % self.replace_target_iter == <span class="number">0</span>:</span><br><span class="line">        self.target_net.load_state_dict((self.eval_net.state_dict()))</span><br><span class="line">        <span class="comment"># print(&#x27;target_params_replaced&#x27;)</span></span><br><span class="line">    self.learn_step_counter += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用记忆库中批量数据</span></span><br><span class="line">    <span class="keyword">if</span> self.memory_counter &lt; self.memory_size:</span><br><span class="line">        sample_index = np.random.choice(self.memory_counter, self.batch_size)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sample_index = np.random.choice(self.memory_size, self.batch_size)  <span class="comment"># 2000个中随机抽取48个作为batch_size</span></span><br><span class="line">    memory = self.memory[sample_index, :]  <span class="comment"># 抽取的记忆单元，并逐个提取</span></span><br><span class="line">    state = torch.FloatTensor(memory[:, :<span class="number">2</span>])    <span class="comment"># 第1，2列(x,y)坐标</span></span><br><span class="line">    action = torch.LongTensor(memory[:, <span class="number">2</span>:<span class="number">3</span>])   <span class="comment"># 第3列</span></span><br><span class="line">    reward = torch.LongTensor(memory[:, <span class="number">3</span>:<span class="number">4</span>])   <span class="comment"># 第4列</span></span><br><span class="line">    next_state = torch.FloatTensor(memory[:, <span class="number">4</span>:<span class="number">6</span>])  <span class="comment"># 第5，6列(x,y)坐标</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算loss</span></span><br><span class="line">    <span class="comment"># q_eval:存储估测值</span></span><br><span class="line">    <span class="comment"># q_next:按照target_net网络（隔一段时间更新参数）算出真实值</span></span><br><span class="line">    q_eval = self.eval_net(state).gather(<span class="number">1</span>, action)     <span class="comment"># eval_net-&gt;(64,4)-&gt;按照action索引提取出q_value</span></span><br><span class="line">    q_next = self.target_net(next_state).detach()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># torch.max-&gt;[values=[],indices=[]] max(1)[0]-&gt;values=[]</span></span><br><span class="line">    q_target = reward + self.gamma * q_next.<span class="built_in">max</span>(<span class="number">1</span>)[<span class="number">0</span>].unsqueeze(<span class="number">1</span>)     <span class="comment"># label</span></span><br><span class="line">    loss = self.loss(q_eval, q_target)</span><br><span class="line">    self.cost.append(loss)</span><br><span class="line">    <span class="comment"># 反向传播更新</span></span><br><span class="line">    self.optimizer.zero_grad()  <span class="comment"># 梯度重置</span></span><br><span class="line">    loss.backward()  <span class="comment"># 反向求导</span></span><br><span class="line">    self.optimizer.step()  <span class="comment"># 更新模型参数</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN实操1.png" style="zoom:30%;">
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN%E5%AE%9E%E6%93%8D2.png" alt></p>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN%E5%AE%9E%E6%93%8D3.png" alt></p>
+<p>**总结：**DQN就是在Q-Learning中把获取Q值的Tabel换成了神经网络，除此之外引入记忆库和双神经网络。在达到一定步数之后， T网络（参数暂时不变）作为估测Q值（获取来源时一直在更新的memory，随机获取memory里面的）， Q网络作为真实Q值，求出相互之间的Loss，反向传播更新 Q网络的参数，达到一定要求之后将 Q网络的参数赋给 T网络。</p>
+<h1><strong>Double DQN和DQN的区别</strong></h1>
+<p>DQN 的神经网络部分可以看成一个 最新的<strong>神经网络 + 老神经网络</strong>, 他们有相同的结构, 但内部的参数更新却有时差. 而它的 <strong>Q现实</strong> 部分是这样的</p>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN%E5%85%AC%E5%BC%8F.png" alt></p>
+<p>因为我们的神经网络预测 Qmax 本来就有误差, 每次也向着最大误差的 <strong>Q现实</strong> 改进神经网络, 就是因为这个 <strong>Qmax</strong> 导致了 overestimate. 所以 Double DQN 的想法就是引入另一个神经网络来打消一些最大误差的影响. 而 DQN 中本来就有两个神经网络, 我们何不利用一下这个地理优势呢。所以, 我们用 <strong>Q估计</strong> 的神经网络估计 <strong>Q现实</strong> 中 <strong>Qmax(s’, a’)</strong> 的最大动作值. 然后用这个被 <strong>Q估计</strong> 估计出来的动作来选择 <strong>Q现实</strong> 中的 <strong>Q(s’)</strong>。</p>
+<p>总结一下：有两个神经网络: <strong>Q_eval</strong> (Q估计中的), <strong>Q_next</strong> (Q现实中的)。</p>
+<p>原本的 <strong>Q_next = max(Q_next(s’, a_all))在</strong>Double DQN中的 <strong>Q_next = Q_next(s’, argmax(Q_eval(s’, a_all)))</strong>，也可以表达成下面那样：</p>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DDQN%E5%85%AC%E5%BC%8F.png" alt></p>
+<blockquote>
+<p>代码</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">learn</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="comment"># check to replace target parameters</span></span><br><span class="line">    <span class="keyword">if</span> self.learn_step_counter % self.replace_target_iter == <span class="number">0</span>:</span><br><span class="line">        self.target_net.load_state_dict((self.eval_net.state_dict()))</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;\ntarget_params_replaced\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> self.memory_counter &gt; self.memory_size:</span><br><span class="line">        sample_index = np.random.choice(self.memory_size, size=self.batch_size)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sample_index = np.random.choice(self.memory_counter, size=self.batch_size)</span><br><span class="line">    batch_memory = self.memory[sample_index, :]</span><br><span class="line"></span><br><span class="line">    state = torch.FloatTensor(batch_memory[:, :self.n_features])</span><br><span class="line">    action = torch.LongTensor(batch_memory[:, self.n_features:self.n_features+<span class="number">1</span>])</span><br><span class="line">    reward = torch.LongTensor(batch_memory[:, self.n_features+<span class="number">1</span>:self.n_features + <span class="number">2</span>])</span><br><span class="line">    next_state = torch.FloatTensor(batch_memory[:, -self.n_features:])</span><br><span class="line"></span><br><span class="line">    q_eval = self.eval_net(state).gather(<span class="number">1</span>, action)  <span class="comment"># eval_net-&gt;(64,4)-&gt;按照action索引提取出q_value</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> self.double_q:</span><br><span class="line">        <span class="comment"># 使用一直在更新的Q网络求出应该选择的下一state的动作</span></span><br><span class="line">        max_action = self.eval_net(next_state).<span class="built_in">max</span>(<span class="number">1</span>)[<span class="number">1</span>].view(-<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 使用隔段时间才更新的T网络求出根据Q网络算出的动作的Q值</span></span><br><span class="line">        max_next_q_values = self.target_net(next_state).gather(<span class="number">1</span>, max_action)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># 原DQN，直接用T网络求出下一state的最大Q值</span></span><br><span class="line">        max_next_q_values = self.target_net(next_state).<span class="built_in">max</span>(<span class="number">1</span>)[<span class="number">0</span>].view(-<span class="number">1</span>, <span class="number">1</span>)    <span class="comment"># the natural DQN</span></span><br><span class="line"></span><br><span class="line">    q_target = reward + self.gamma * max_next_q_values</span><br><span class="line"></span><br><span class="line">    loss = self.loss(q_eval, q_target)</span><br><span class="line">    self.cost_his.append(loss)</span><br><span class="line">    <span class="comment"># 反向传播更新</span></span><br><span class="line">    self.optimizer.zero_grad()  <span class="comment"># 梯度重置</span></span><br><span class="line">    loss.backward()  <span class="comment"># 反向求导</span></span><br><span class="line">    self.optimizer.step()  <span class="comment"># 更新模型参数</span></span><br><span class="line"></span><br><span class="line">    self.epsilon = self.epsilon + self.epsilon_increment <span class="keyword">if</span> self.epsilon &lt; self.epsilon_max <span class="keyword">else</span> self.epsilon_max</span><br><span class="line">    self.learn_step_counter += <span class="number">1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>二者之间在代码中的最大区别在于以下代码</p>
+<p><strong>DDQN</strong>：</p>
+<ul>
+<li><code>max_action = self.eval_net(next_state).max(1)[1].view(-1, 1)</code>：使用一直在更新的Q网络求出应该选择的下一state的动作</li>
+<li><code>max_next_q_values = self.target_net(next_state).gather(1, max_action)</code>：使用隔段时间才更新的T网络求出根据Q网络算出的动作的Q值</li>
+</ul>
+<p><strong>DQN</strong>：</p>
+<ul>
+<li><code>max_next_q_values = self.target_net(next_state).max(1)[0].view(-1, 1)</code>：原DQN，直接用T网络求出下一state的最大Q值</li>
+</ul>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN%E5%92%8CDDQN%E5%AF%B9%E6%AF%94.png" alt></p>
+<p><strong>总结：</strong></p>
+<ol>
+<li>DQN在计算真实值时，使用的神经网络是q_target，该网络隔一段时间才会更新参数，计算出来的Q值其实是选出来的最大损失值（但实际上会有误差），但调参的目的就是为了loss越来越小；</li>
+<li>DDQN因此在计算Q值（损失）这一步再加入一个神经网络，先用Q网络（一直在更新）算出应该选择的action，再由T网络（隔一段时间更新）计算该action的Q值（损失）</li>
+<li>理解上DDQN就是为了加快DQN的收敛速度所提出来的</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/11/20/gurobi%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" rel="prev" title="gurobi安装教程">
+                  <i class="fa fa-chevron-left"></i> gurobi安装教程
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Linvil Yao</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("04/21/2023 22:22:22");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "已运行 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","app_key":"iNfyeaWVmA11Duj7fzr0B1r1","server_url":"https://16p3s6fl.lc-cn-n1-shared.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '32px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
+</script>
+
+</body>
+</html>
