@@ -38,7 +38,7 @@
 <meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DDQN%E5%85%AC%E5%BC%8F.png">
 <meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN%E5%92%8CDDQN%E5%AF%B9%E6%AF%94.png">
 <meta property="article:published_time" content="2023-11-20T03:24:02.000Z">
-<meta property="article:modified_time" content="2023-11-20T03:45:46.623Z">
+<meta property="article:modified_time" content="2023-11-20T03:50:29.720Z">
 <meta property="article:author" content="Linvil Yao">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -269,7 +269,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-11-20 11:24:02 / 修改时间：11:45:46" itemprop="dateCreated datePublished" datetime="2023-11-20T11:24:02+08:00">2023-11-20</time>
+      <time title="创建时间：2023-11-20 11:24:02 / 修改时间：11:50:29" itemprop="dateCreated datePublished" datetime="2023-11-20T11:24:02+08:00">2023-11-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -396,7 +396,7 @@
 <img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN实操1.png" style="zoom:30%;">
 <p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN%E5%AE%9E%E6%93%8D2.png" alt></p>
 <p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN%E5%AE%9E%E6%93%8D3.png" alt></p>
-<p>**总结：**DQN就是在Q-Learning中把获取Q值的Tabel换成了神经网络，除此之外引入记忆库和双神经网络。在达到一定步数之后， T网络（参数暂时不变）作为估测Q值（获取来源时一直在更新的memory，随机获取memory里面的）， Q网络作为真实Q值，求出相互之间的Loss，反向传播更新 Q网络的参数，达到一定要求之后将 Q网络的参数赋给 T网络。</p>
+<p><strong>总结</strong>：DQN就是在Q-Learning中把获取Q值的Tabel换成了神经网络，除此之外引入记忆库和双神经网络。在达到一定步数之后， T网络（参数暂时不变）作为估测Q值（获取来源时一直在更新的memory，随机获取memory里面的）， Q网络作为真实Q值，求出相互之间的Loss，反向传播更新 Q网络的参数，达到一定要求之后将 Q网络的参数赋给 T网络。</p>
 <h1><strong>Double DQN和DQN的区别</strong></h1>
 <p>DQN 的神经网络部分可以看成一个 最新的<strong>神经网络 + 老神经网络</strong>, 他们有相同的结构, 但内部的参数更新却有时差. 而它的 <strong>Q现实</strong> 部分是这样的</p>
 <p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/DQN%E5%85%AC%E5%BC%8F.png" alt></p>
