@@ -6232,7 +6232,7 @@ N = (W-F+2P)/S + 1<br>
 <p>转移概率（下图左）：今天是Sunny，第二天还是Sunny的概率是0.8，第二天是Rainy的概率是0.2；今天是Rainy，第二天还是Rainy的概率是0.6，第二天是Sunny的概率是0.4</p>
 <p>​	转移矩阵（下图右）</p>
 <p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB.jpeg" alt></p>
-<p>==状态（State）+ 状态转移概率（Probability） = 马尔可夫过程==</p>
+<p><strong>状态（State）+ 状态转移概率（Probability） = 马尔可夫过程</strong></p>
 <h2 id="隐马尔可夫过程"><strong>隐马尔可夫过程</strong></h2>
 <p>情景：疫情期间被隔离，看不到外面的天气，只能从医护人员的表情中猜测天气</p>
 <p>观察状态（Observation State）：医护人员的表情，开心、伤心</p>
@@ -6258,10 +6258,10 @@ N = (W-F+2P)/S + 1<br>
 <p>例如：（把节点作为状态，路段作为动作）每个圆圈都是一个道路节点，每个连线都是一个连接节点的路段。如果再i节点选择了红色的路段，下一个状态一定会到红色路段对应的节点。</p>
 <p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.png" alt></p>
 <h1>马尔科夫奖励过程</h1>
-<p>==state+probability+reward==</p>
+<p><strong>state+probability+reward</strong></p>
 <p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%A5%96%E5%8A%B1%E8%BF%87%E7%A8%8B.png" alt></p>
 <h1><strong>马尔可夫决策过程</strong></h1>
-<p>==<strong>state+probability+reward+action</strong>==</p>
+<p><strong>state+probability+reward+action</strong></p>
 <blockquote>
 <p>贝尔曼期望方程：将V(s)写成递归式，即贝尔曼期望方程</p>
 </blockquote>
@@ -6298,5 +6298,10 @@ N = (W-F+2P)/S + 1<br>
       <tags>
         <tag>马尔可夫知识</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>gurobi安装教程</title>
+    <url>/2023/11/20/gurobi%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[]]></content>
   </entry>
 </search>
