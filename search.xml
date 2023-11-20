@@ -6216,4 +6216,87 @@ N = (W-F+2P)/S + 1<br>
         <tag>可解释性算法</tag>
       </tags>
   </entry>
+  <entry>
+    <title>强化学习之马尔科夫知识</title>
+    <url>/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/</url>
+    <content><![CDATA[<h1><strong>马尔可夫过程</strong></h1>
+<blockquote>
+<p>State</p>
+</blockquote>
+<p>马尔科夫性质</p>
+<p>​	无后效性：当前状态仅由上一状态决定，并不能由上上层状态影响，即层层影响。S2蕴含 S1的作用体系，S3蕴含S1和S2的作用体系…</p>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%80%A7%E8%B4%A8.jpeg" alt></p>
+<blockquote>
+<p>Probability</p>
+</blockquote>
+<p>转移概率（下图左）：今天是Sunny，第二天还是Sunny的概率是0.8，第二天是Rainy的概率是0.2；今天是Rainy，第二天还是Rainy的概率是0.6，第二天是Sunny的概率是0.4</p>
+<p>​	转移矩阵（下图右）</p>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB.jpeg" alt></p>
+<p>==状态（State）+ 状态转移概率（Probability） = 马尔可夫过程==</p>
+<h2 id="隐马尔可夫过程"><strong>隐马尔可夫过程</strong></h2>
+<p>情景：疫情期间被隔离，看不到外面的天气，只能从医护人员的表情中猜测天气</p>
+<p>观察状态（Observation State）：医护人员的表情，开心、伤心</p>
+<p>释放概率（Emission Probability）：如果今天是Sunny，那么医护人员有0.8概率是高兴的，有0.2概率是伤心；如果今天是Rainy，医护人员有0.2的概率是开心，0.8的概率是伤心。<strong>其中的0.8、0.2即释放概率，是一个条件概率P（Observation｜Hidden）</strong></p>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB.png" alt></p>
+<p>应用（知二求一）</p>
+<ol>
+<li>评估问题：<strong>已知</strong>天气为Sunny、Sunny、Rainy和释放概率0.8、0.2这样的情况，<strong>求解</strong>医护人员可能性最大的表情构成序列的是什么样子的。</li>
+<li>解码问题：<strong>已知</strong>医护人员的表情构成序列和释放概率0.8、0.2这样的情况，<strong>求解</strong>可能性最大的天气构成序列的是什么样子的</li>
+<li>学习问题：<strong>已知</strong>天气序列和医护人员的表情构成序列，<strong>求解</strong>释放概率参数是什么样子的</li>
+</ol>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E8%BF%87%E7%A8%8B.png" alt></p>
+<h2 id="马尔可夫奖励过程"><strong>马尔可夫奖励过程</strong></h2>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%A5%96%E5%8A%B1.jpeg" alt></p>
+<h3 id="马尔可夫决策过程"><strong>马尔可夫决策过程</strong></h3>
+<p>动作产生不确定的状态转移</p>
+<p>不确定的来源：某状态的某动作，导致不同的状态转移</p>
+<p>例如：小孩在玩的状态下突然拿起奶瓶，下一个状态可能是拿起奶瓶继续玩，也有可能拿起奶瓶吃，也有可能拿起奶瓶睡了</p>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96.jpeg" alt></p>
+<h3 id="动态规划">动态规划</h3>
+<p>动作产生确定的状态转移</p>
+<p>当动作产生确定的状态转移时，就成了一个动态规划问题</p>
+<p>例如：（把节点作为状态，路段作为动作）每个圆圈都是一个道路节点，每个连线都是一个连接节点的路段。如果再i节点选择了红色的路段，下一个状态一定会到红色路段对应的节点。</p>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.png" alt></p>
+<h1>马尔科夫奖励过程</h1>
+<p>==state+probability+reward==</p>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%A5%96%E5%8A%B1%E8%BF%87%E7%A8%8B.png" alt></p>
+<h1><strong>马尔可夫决策过程</strong></h1>
+<p>==<strong>state+probability+reward+action</strong>==</p>
+<blockquote>
+<p>贝尔曼期望方程：将V(s)写成递归式，即贝尔曼期望方程</p>
+</blockquote>
+<p>假设所有的$R_{t+1}$的期望等于$E(R_{t+1})$，$V(R_{t+1})$引入状态转移概率来加权。那么以下图左所示，$S_t$到底转移到哪一个$R_{t+1}$呢？按照状态转移概率进行选择。</p>
+<p>因此引入状态转移概率作为权重，每条链子 X 转移到该条链子的可能性的和，就是期望</p>
+<p>综上，从下图左——&gt;下图右</p>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B1.jpeg" alt></p>
+<blockquote>
+<p>动作Action</p>
+</blockquote>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B2.jpeg" alt></p>
+<blockquote>
+<p>策略policy	π(a|s)：在某状态$S_t$下做某动作的概率分布</p>
+</blockquote>
+<p>下图左，假设在$S_t$状态下能够有三种动作可能性，分别是25%、30%、45%，就是π。</p>
+<p>​	在求解贝尔曼最优方程、贝尔曼期望方程，尤其是贝尔曼最优方程中，就是不断的找最好的π，让将25%、30%、45%坍缩成0，0，1的问题。</p>
+<p>​	正是因为π影响产生一定的随机性，因此将其坍塌成确定性的问题。用贪婪的思想去得到最优策略（下图右），最终找到受益最大的一条链，反推回来。</p>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B3.jpeg" alt></p>
+<blockquote>
+<p>贝尔曼期望方程的图形解释</p>
+</blockquote>
+<p>通俗解释：将你爱我有几分的问题——&gt;你爱不爱我的问题</p>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B4.jpeg" alt></p>
+<h1><em>部分可观测马尔可夫决策过程</em>*</h1>
+<blockquote>
+<p>Pr(a|b)：在知道当前置信为b的情况下，选择动作a的概率</p>
+<p>Pr(a|o_hist)：在知道过去观察历史的情况下，选择动作a的概率</p>
+</blockquote>
+<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%83%A8%E5%88%86%E5%8F%AF%E8%A7%82%E6%B5%8B%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96.png" alt></p>
+]]></content>
+      <categories>
+        <category>强化学习</category>
+      </categories>
+      <tags>
+        <tag>马尔可夫知识</tag>
+      </tags>
+  </entry>
 </search>
