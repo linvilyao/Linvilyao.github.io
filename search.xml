@@ -6302,6 +6302,37 @@ N = (W-F+2P)/S + 1<br>
   <entry>
     <title>gurobi安装教程</title>
     <url>/2023/11/20/gurobi%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h1>申请</h1>
+<blockquote>
+<p>申请许可证（半年）</p>
+</blockquote>
+<p>附件：学信网在线学籍证明、录取通知书（因为刚入学）、gurobi申请书</p>
+<p>发送邮件：<a href="help@gurobi.cn">help@gurobi.cn</a></p>
+<h1>安装</h1>
+<p>官网：<a href="https://www.gurobi.com/downloads/gurobi-software/">Gurobi Software - Gurobi Optimization</a></p>
+<ol>
+<li>解压	<code>tar -xvfz gurobi903_linux64.tar.gz</code></li>
+<li>在<code>gurobi811/linux64</code>目录下执行	<code>python setup.py install</code></li>
+<li>许可证激活（生成gurobi.lic）	<code>/home/&#123;自己的目录名称&#125;/gurobi903/linux64/bin/grbgetkey 许可证</code></li>
+<li><code>～/.bashrc</code>配置路径	记得<code>source ~/.barshrc</code></li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># gurobi配置路径</span></span><br><span class="line">export GUROBI_HOME=<span class="string">&quot;/home/&#123;自己的目录名称&#125;/gurobi903/linux64&quot;</span> </span><br><span class="line">export PATH=<span class="string">&quot;$&#123;PATH&#125;:$&#123;GUROBI_HOME&#125;/bin&quot;</span></span><br><span class="line">export LD_LIBRARY_PATH=<span class="string">&quot;$&#123;LD_LIBRARY_PATH&#125;:$&#123;GUROBI_HOME&#125;/lib&quot;</span></span><br><span class="line">export GRB_LICENSE_FILE=<span class="string">&quot;/home/&#123;自己的目录名称&#125;/gurobi903/gurobi.lic&quot;</span> </span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>检查是否成功	<a href="https://gurobi.sh">gurobi.sh</a></li>
+</ol>
+<p><img src="/2023/11/20/gurobi%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/gurobi.png" alt></p>
+<ol start="6">
+<li>
+<p>另外：测试gurobi过程中出现编译器运行成功，但代码出现大量黄线。查看官方文档估计下载的gurobi本身不带类型提示功能</p>
+<p>解决方法：pip install gurobipy-stubs（<a href="https://pypi.org/project/gurobipy-stubs/">gurobipy-stubs · PyPI</a>）</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>安装教程</category>
+      </categories>
+      <tags>
+        <tag>gurobi数学求解器</tag>
+      </tags>
   </entry>
 </search>
