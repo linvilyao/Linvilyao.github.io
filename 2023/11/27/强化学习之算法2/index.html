@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_logosc/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_logosc/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","width":240,"display":"post","padding":14,"offset":10},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="PER DQN、Dueling DQN、Policy Gradients、Reinforce、Actor Critic、DDPG、A3C（不适合入门，因为这属于我入门后期的总结）。跟随莫烦python的视频和代码，并将其改成Pytorch版本。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="强化学习之算法【补充】">
+<meta property="og:url" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/index.html">
+<meta property="og:site_name" content="Linvil&#39;s Blog">
+<meta property="og:description" content="PER DQN、Dueling DQN、Policy Gradients、Reinforce、Actor Critic、DDPG、A3C（不适合入门，因为这属于我入门后期的总结）。跟随莫烦python的视频和代码，并将其改成Pytorch版本。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/PER%E4%BC%AA%E4%BB%A3%E7%A0%81.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/PER%E8%A1%A8%E6%A0%BC%E7%90%86%E8%A7%A3.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/PER_sumTree.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/PER%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/PER%E7%96%91%E9%97%AE.jpg">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDQN%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDQN%E7%AE%97%E6%B3%95%E5%85%AC%E5%BC%8F.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDQN%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C1.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDQN%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C2.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/Reinforce%E4%BC%AA%E4%BB%A3%E7%A0%81.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/A3C%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDPG%E7%90%86%E8%A7%A3%E5%9B%BE.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDPG%E7%90%86%E8%A7%A3%E5%9B%BE2.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDPG%E5%85%AC%E5%BC%8F.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDPG%E5%85%AC%E5%BC%8F2.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDPG%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/A3C%E4%BC%AA%E4%BB%A3%E7%A0%81.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/A3C%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/A3C%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C.png">
+<meta property="article:published_time" content="2023-11-27T03:24:02.000Z">
+<meta property="article:modified_time" content="2024-04-18T06:42:01.990Z">
+<meta property="article:author" content="Linvil Yao">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="周报">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/PER%E4%BC%AA%E4%BB%A3%E7%A0%81.png">
+
+
+<link rel="canonical" href="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/","path":"2023/11/27/强化学习之算法2/","title":"强化学习之算法【补充】"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>强化学习之算法【补充】 | Linvil's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Linvil's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">这是一个用来记录的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">36</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">Prioritized Experience Replay（DQN）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">Dueling DQN</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">Policy Gradients——策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">Reinforce方法（基于整条回合数据的更新）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">5.</span> <span class="nav-text">Actor Critic</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">6.</span> <span class="nav-text">DDPG</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">7.</span> <span class="nav-text">A3C</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Linvil Yao"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Linvil Yao</p>
+  <div class="site-description" itemprop="description">Welcome to Linvil's Blog!</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+        </div>
+      </div>
+
+
+  <div class="links-of-recent-posts motion-element">
+    <div class="links-of-recent-posts-title">
+      <i class="fa fa-history fa-fw"></i>
+      最近文章
+    </div>
+    <ul class="links-of-recent-posts-list">
+        <li class="links-of-recent-posts-item">
+          <a href="/2024/04/18/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/" title="2024&#x2F;04&#x2F;18&#x2F;机器学习之线性回归&#x2F;">机器学习之线性回归</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2024/04/18/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A6%82%E8%BF%B0/" title="2024&#x2F;04&#x2F;18&#x2F;机器学习之机器学习概述&#x2F;">机器学习之机器学习概述</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/" title="2023&#x2F;11&#x2F;27&#x2F;强化学习之算法2&#x2F;">强化学习之算法【补充】</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/" title="2023&#x2F;11&#x2F;20&#x2F;强化学习之算法&#x2F;">强化学习之算法</a>
+        </li>
+        <li class="links-of-recent-posts-item">
+          <a href="/2023/11/20/gurobi%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" title="2023&#x2F;11&#x2F;20&#x2F;gurobi安装教程&#x2F;">gurobi安装教程</a>
+        </li>
+    </ul>
+  </div>
+    </div>
+
+
+    
+
+
+
+  </aside>
+
+
+
+
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Linvil Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linvil's Blog">
+      <meta itemprop="description" content="Welcome to Linvil's Blog!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="强化学习之算法【补充】 | Linvil's Blog">
+      <meta itemprop="description" content="PER DQN、Dueling DQN、Policy Gradients、Reinforce、Actor Critic、DDPG、A3C（不适合入门，因为这属于我入门后期的总结）。跟随莫烦python的视频和代码，并将其改成Pytorch版本。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          强化学习之算法【补充】
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-11-27 11:24:02" itemprop="dateCreated datePublished" datetime="2023-11-27T11:24:02+08:00">2023-11-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-04-18 14:42:01" itemprop="dateModified" datetime="2024-04-18T14:42:01+08:00">2024-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">强化学习</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/" class="post-meta-item leancloud_visitors" data-flag-title="强化学习之算法【补充】" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Valine：</span>
+  
+    <a title="valine" href="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">PER DQN、Dueling DQN、Policy Gradients、Reinforce、Actor Critic、DDPG、A3C（不适合入门，因为这属于我入门后期的总结）。跟随莫烦python的视频和代码，并将其改成Pytorch版本。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1><strong>Prioritized Experience Replay（DQN）</strong></h1>
+<p>在原始的DQN算法中，改进提取记忆库的代码，将原本batch的随机抽样，改成按照 Memory 中的样本优先级来抽，所以这能更有效地找到我们需要学习的样本</p>
+<blockquote>
+<p>伪代码</p>
+</blockquote>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/PER%E4%BC%AA%E4%BB%A3%E7%A0%81.png" alt="PER DQN伪代码"></p>
+<p>优先级确认方式：</p>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/PER%E8%A1%A8%E6%A0%BC%E7%90%86%E8%A7%A3.png" alt="优先级确认方式"></p>
+<p>用到 <strong>TD-error</strong>, 也就是 <strong>Q现实 - Q估计</strong> 来规定优先学习的程度。<strong>如果</strong> <strong>TD-error</strong> <strong>越大, 就代表我们的预测精度还有很多上升空间</strong>, 那么这个样本就越需要被学习, 也就是优先级 <strong>p</strong> 越高。当最开始并不知道TD-error时，默认为最大，可保证所有经验最少能回放一次。</p>
+<p>根据 <strong>p</strong>的抽样方式：SumTree</p>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/PER_sumTree.png" alt="PER sumTree"></p>
+<p>对上图的理解，<strong>叶子结点中的数字代表的是一个范围（上图最底下）</strong>，范围越大，抽中的概率也就越大，也就达到了按照重要程度来抽样的目的</p>
+<blockquote>
+<p>代码：</p>
+<p>self.abs_errors = torch.sum(torch.abs(q_target - q_eval)：计算优先级，优先级实际上为loss的绝对值</p>
+<p>tree_idx, batch_memory, ISWeights = self.memory.sample(self.batch_size)：从memory类中的samples方法中获取，因为事先有tree_id，因此不存在重复抽样的问题。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">learn</span>(<span class="params">self</span>):</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> self.prioritized:</span><br><span class="line">        tree_idx, batch_memory, ISWeights = self.memory.sample(self.batch_size)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sample_index = np.random.choice(self.memory_size, size=self.batch_size)</span><br><span class="line">        batch_memory = self.memory[sample_index, :]</span><br><span class="line"></span><br><span class="line">    ...    </span><br><span class="line">    <span class="keyword">if</span> self.prioritized:</span><br><span class="line">        self.abs_errors = torch.<span class="built_in">sum</span>(torch.<span class="built_in">abs</span>(q_target - q_eval), dim=<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># print(&quot;ISWeights shape: &quot;, ISWeights.shape, &#x27;q shape: &#x27;, ((q_target-q_eval)**2), &#x27;q: &#x27;, (q_target-q_eval))</span></span><br><span class="line">        loss = torch.mean(torch.mean(torch.Tensor(ISWeights) * (q_target - q_eval) ** <span class="number">2</span>, dim=<span class="number">1</span>))</span><br><span class="line">        self.memory.batch_update(tree_idx, self.abs_errors)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        self.loss_func = nn.MSELoss()</span><br><span class="line">        loss = self.loss_func(q_eval, q_target)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># print(&quot;loss: &quot;, loss, self.prioritized)</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>在Memory类中，包含两个主要的函数：store和sample。其中store用于将每次的状态转移存储到内存中，sample则用于从内存中取出一定数量的状态转移（通常称为batch）以供训练使用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Memory</span>(<span class="title class_ inherited__">object</span>):  <span class="comment"># stored as (s, a, r, s_) in SumTree</span></span><br><span class="line">    <span class="comment"># 建立 SumTree 和各种参数</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, capacity</span>):</span><br><span class="line">    <span class="comment"># 存储数据, 更新 SumTree</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">store</span>(<span class="params">self, transition</span>):</span><br><span class="line">    <span class="comment"># 抽取 sample</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sample</span>(<span class="params">self, n</span>):</span><br><span class="line">    <span class="comment"># train 完被抽取的 samples 后更新在 tree 中的 sample 的 priority</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">batch_update</span>(<span class="params">self, tree_idx, abs_errors</span>):</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/PER%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C.png" alt="PER DQN实验结果"></p>
+<p>**总结：**在抽取经验池中过往经验样本时，采取按优先级（TD-error）抽取的方法，引入sum-tree（范围制随机抽样，优先级越高越有可能被抽中）。使得算法更快收敛，效果更好。</p>
+<p><strong>疑问</strong>：</p>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/PER%E7%96%91%E9%97%AE.jpg" alt></p>
+<p><em>如果说在第4区间选中了24，最终抽样会得到12，那如果在第三区间选中了20，那最终抽样也是12呀，这样不会导致memory重复吗？如果是会覆盖的话，那是不是会一直找，直到达到batch_size？</em></p>
+<h1><strong>Dueling DQN</strong></h1>
+<p>将每个动作的 Q 拆分成了 state 的 Value 加上 每个动作的 Advantage</p>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDQN%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png" alt="Dueling DQN网络结构"></p>
+<blockquote>
+<p>在DQN算法的网络结构中，输入为一张或多张照片，利用卷积网络提取图像特征，之后经过全连接层输出每个动作的动作价值；</p>
+<p>在Dueling DQN算法的网络结构中，输入同样为一张或多张照片，然后利用卷积网络提取图像特征获取特征向量，输出时会经过两个全连接层分支，分别对应状态价值和优势值，<strong>最后将状态价值和优势值相加即可得到每个动作的动作价值(即绿色连线操作)</strong>。</p>
+</blockquote>
+<p><strong>原来 的DQN</strong> 神经网络直接输出的是<strong>每种动作的 Q值</strong>, 而 Dueling DQN 每个动作的 Q值 是由下面的公式确定的：<strong>分别是该状态的状态价值V(标量)和每个动作的优势值A(与动作空间同维度的向量)</strong></p>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDQN%E7%AE%97%E6%B3%95%E5%85%AC%E5%BC%8F.png" alt></p>
+<p>提出原因来自一个赛车游戏例子：当前方没有车辆时，智能体左右移动并没有影响，<strong>说明动作对Q值没有影响，但是状态对Q值很有影响</strong>。当前方存在车辆阻挡时，智能体的动作选择至关重要，<strong>说明动作对Q值存在影响，同样状态对Q值也会存在影响</strong>。</p>
+<blockquote>
+<p>代码：</p>
+<p>在神经网络代码中，明确写出有两个全连接层：self.values、self.advantages</p>
+</blockquote>
+<p>​</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Net</span>(nn.Module):</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, n_feature, n_hidden, n_output, dueling=<span class="literal">False</span></span>):</span><br><span class="line">		<span class="built_in">super</span>(Net, self).__init__()</span><br><span class="line">		self.dueling = dueling</span><br><span class="line">		self.l1 = nn.Linear(n_feature, n_hidden)</span><br><span class="line">		<span class="keyword">if</span> self.dueling:</span><br><span class="line">			self.values = nn.Linear(n_hidden, <span class="number">1</span>)</span><br><span class="line">			self.advantages = nn.Linear(n_hidden, n_output)</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			self.q = nn.Linear(n_hidden, n_output)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">		x = self.l1(x)</span><br><span class="line">		x = F.relu(x)</span><br><span class="line">		<span class="keyword">if</span> self.dueling:</span><br><span class="line">			value = self.values(x)</span><br><span class="line">			advantages = self.advantages(x)</span><br><span class="line">			out = value + (advantages-torch.mean(advantages, dim=<span class="number">1</span>, keepdim=<span class="literal">True</span>))</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			out = self.q(x)</span><br><span class="line">		<span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+<p>**总结：**通过改进神经网络最终的全连接输出，从一个输出Q值改进为输出状态V值和动作A值，加强算法收敛能力。</p>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDQN%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C1.png" alt></p>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDQN%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C2.png" alt></p>
+<h1><strong>Policy Gradients——策略</strong></h1>
+<p>对比<strong>以值为基础</strong>的方法, Policy Gradients <strong>直接输出动作</strong>的最大好处就是, <strong>它能在一个连续区间内挑选动作（<strong>根据所学习到的动作分布随机进行筛选</strong>）</strong>, 而基于值的, 比如 Q-learning, 它如果在无穷多的动作中计算价值, 从而选择行为, 这, 它可吃不消。</p>
+<p>Policy Gradients 没有误差概念，<strong>其反向传递的目的是让这次被选中的行为更有可能在下次发生。</strong></p>
+<blockquote>
+<p>核心思想：</p>
+<p>观测的信息通过神经网络分析, 选出了左边的行为, 我们直接进行反向传递, 使之下次被选的可能性增加, **但是奖惩信息却告诉我们, 这次的行为是不好的, 那我们的动作可能性增加的幅度随之被减低。即，**<strong>靠奖励来左右我们的神经网络反向传递</strong></p>
+</blockquote>
+<h1><strong>Reinforce方法（基于整条回合数据的更新）</strong></h1>
+<blockquote>
+<p>policy gradient 的最基本方法</p>
+</blockquote>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/Reinforce%E4%BC%AA%E4%BB%A3%E7%A0%81.png" alt="Reinforce伪代码"></p>
+<p><strong>delta(log(Policy(s,a))*V) ：表示在 状态 s 对所选动作 a 的吃惊度。</strong></p>
+<blockquote>
+<p>如果 Policy(s,a) 概率越小，反向的 log(Policy(s,a)) (即 -log(P)) 反而越大。如果在 Policy(s,a) 很小的情况下，拿到了一个 大的 R, 也就是 大的 V, 那-delta(log(Policy(s, a))*V) 就更大, 表示更吃惊， (<strong>我选了一个不常选的动作, 却发现原来它能得到了一个好的 reward, 那我就得对我这次的参数进行一个大幅修改</strong>）</p>
+</blockquote>
+<p>tip：选log的原因是因为在值很小的时候梯度很大，便于学习。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PolicyGradient</span>:</span><br><span class="line">    <span class="comment"># 初始化 (有改变)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, n_actions, n_features, learning_rate=<span class="number">0.01</span>, reward_decay=<span class="number">0.95</span>, output_graph=<span class="literal">False</span></span>):</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 建立 policy gradient 神经网络 (有改变)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_build_net</span>(<span class="params">self</span>):</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 选行为 (有改变)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">choose_action</span>(<span class="params">self, observation</span>):</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 存储回合 transition (有改变)——回合的记忆，不是记忆库</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">store_transition</span>(<span class="params">self, s, a, r</span>):</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 学习更新参数 (有改变)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">learn</span>(<span class="params">self, s, a, r, s_</span>):</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 衰减回合的 reward (新内容)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_discount_and_norm_rewards</span>(<span class="params">self</span>):</span><br></pre></td></tr></table></figure>
+<p>**总结：**是为了解决无穷动作的情况而提出的，更适合连续的空间（缺点：因PG是每回合更新，以值为基础的算法能进行单步更新，因此学习效率降低）</p>
+<h1><strong>Actor Critic</strong></h1>
+<blockquote>
+<p><strong>结合以值为基础（如Q-Learning）和以动作概率为基础（如Policy Gradients）两类算法</strong>。Actor 基于概率选行为，Critic 基于 Actor 的行为评判行为的得分，<strong>Actor 根据 Critic 的评分修改选行为的概率</strong></p>
+</blockquote>
+<ul>
+<li>Actor——Policy Gradients；</li>
+<li>Critic——Q-Learning</li>
+</ul>
+<p>因为PG算法的回合更新问题，提出改进算法AC：可以进行单步更新, 比传统的 Policy Gradient 要快；但是取决于 Critic 的价值判断, 但是 Critic 难收敛, 再加上 Actor 的更新, 就更难收敛。</p>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/A3C%E7%BB%93%E6%9E%84.png" alt></p>
+<p><strong>Actor</strong> <strong>修改行为时就像蒙着眼睛一直向前开车,</strong> <strong>Critic</strong> <strong>就是那个扶方向盘改变 Actor 开车方向的。</strong></p>
+<p>也就是说， <strong>Actor</strong> 在运用 Policy Gradient 的方法进行 Gradient ascent 的时候, 由 <strong>Critic</strong> 来告诉他, 这次的 Gradient ascent 是不是一次正确的 ascent, 如果这次的得分不好, 那么就不要 ascent 那么多（就是套娃）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Actor</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, sess, n_features, n_actions, lr=<span class="number">0.001</span></span>):</span><br><span class="line">        <span class="comment"># 用 tensorflow 建立 Actor 神经网络,</span></span><br><span class="line">        <span class="comment"># 搭建好训练的 Graph.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">learn</span>(<span class="params">self, s, a, td</span>):</span><br><span class="line">        <span class="comment"># s, a 用于产生 Gradient ascent 的方向,</span></span><br><span class="line">        <span class="comment"># td 来自 Critic, 用于告诉 Actor 这方向对不对.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">choose_action</span>(<span class="params">self, s</span>):</span><br><span class="line">        <span class="comment"># 根据 s 选 行为 a</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Critic</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, sess, n_features, lr=<span class="number">0.01</span></span>):</span><br><span class="line">        <span class="comment"># 用 tensorflow 建立 Critic 神经网络,</span></span><br><span class="line">        <span class="comment"># 搭建好训练的 Graph.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">learn</span>(<span class="params">self, s, r, s_</span>):</span><br><span class="line">        <span class="comment"># 学习 状态的价值 (state value), 不是行为的价值 (action value),</span></span><br><span class="line">        <span class="comment"># 计算 TD_error = (r + v_) - v,</span></span><br><span class="line">        <span class="comment"># 用 TD_error 评判这一步的行为有没有带来比平时更好的结果,</span></span><br><span class="line">        <span class="comment"># 可以把它看做 Advantage</span></span><br><span class="line">        <span class="keyword">return</span> <span class="comment"># 学习时产生的 TD_error</span></span><br></pre></td></tr></table></figure>
+<p><strong>Actor</strong> 想要最大化期望的 <strong>reward</strong>，在 <strong>Actor Critic</strong> 算法中，用“比平时好多少” (<strong>TD error</strong>) 来当做 <strong>reward</strong>；</p>
+<p><strong>Critic</strong> 的更新很简单，就是像 <strong>Q learning</strong> 那样更新现实和估计的误差 (<strong>TD error</strong>) 就好了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Actor	</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">learn</span>(<span class="params">self, s, a, td</span>):</span><br><span class="line">	s = torch.Tensor(s[np.newaxis, :])</span><br><span class="line">	acts_prob = self.actor_net(s)</span><br><span class="line">	log_prob = torch.log(acts_prob[<span class="number">0</span>, a])</span><br><span class="line">	exp_v = torch.mean(log_prob * td)</span><br><span class="line"></span><br><span class="line">	loss = -exp_v</span><br><span class="line">	self.optimizer.zero_grad()</span><br><span class="line">	loss.backward(retain_graph=<span class="literal">True</span>)</span><br><span class="line">	self.optimizer.step()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> exp_v</span><br><span class="line"><span class="comment"># Critic</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">learn</span>(<span class="params">self, s, r, s_</span>):</span><br><span class="line">	s, s_ = torch.Tensor(s[np.newaxis, :]), torch.Tensor(s_[np.newaxis, :])</span><br><span class="line">	v, v_ = self.critic_net(s), self.critic_net(s_)</span><br><span class="line">	td_error = r + GAMMA * v_ - v</span><br><span class="line">	loss = td_error ** <span class="number">2</span></span><br><span class="line"></span><br><span class="line">	self.optimizer.zero_grad()</span><br><span class="line">	loss.backward(retain_graph=<span class="literal">True</span>)</span><br><span class="line">	self.optimizer.step()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> td_error</span><br></pre></td></tr></table></figure>
+<p>**总结：**类似套娃，先用actor网络去求出当前状态下每个动作的概率，再引进critic网络来对actor网络做参数调整的约束。但是取决于 Critic 的价值判断, 但是 Critic 难收敛, 再加上 Actor 的更新, 就更难收敛。</p>
+<h1><strong>DDPG</strong></h1>
+<blockquote>
+<p>DDPG = Actor Critic + DQN</p>
+<p>在AC算法上的改进算法，解决难收敛的问题（在连续空间上更新，相关性较大），提出DDPG算法（Deep Deterministic Policy Gradient）</p>
+</blockquote>
+<p>概念上理解可以分为下图：</p>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDPG%E7%90%86%E8%A7%A3%E5%9B%BE.png" alt></p>
+<p>神经网络理解上可以分为下图：</p>
+<ol>
+<li>
+<p>和Actor-Critic 形式差不多, <strong>也需要有基于策略 Policy 的神经网络和基于价值 Value 的神经网络。</strong></p>
+</li>
+<li>
+<p>但是为了体现 DQN 的思想, 每种神经网络都需要再细分为两个：</p>
+<ul>
+<li>
+<p><strong>Policy Gradient</strong> 这边, 有<strong>估计网络和现实网络</strong>, <strong>估计网络用来输出实时的动作, 供 actor 在现实中实行. 而现实网络则是用来更新价值网络系统的</strong>.</p>
+</li>
+<li>
+<p><strong>价值系统</strong>这边, <strong>也有现实网络和估计网络</strong>, 他们<strong>都在输出这个状态的价值,</strong> 而输入端却有不同, <strong>状态现实网络这边会拿着从动作现实网络来的动作加上状态的观测值加以分析, 而状态估计网络则是拿着当时 Actor 施加的动作当做输入</strong>.</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>在实际运用中, DDPG 的这种做法的确带来了更有效的学习过程.</p>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDPG%E7%90%86%E8%A7%A3%E5%9B%BE2.png" alt></p>
+<blockquote>
+<p>Actor参数更新：</p>
+<p>前半部分 grad[Q] 是从 Critic 来的, 这是在说: <strong>这次 Actor 的动作要怎么移动, 才能获得更大的 Q</strong>, 而后半部分 grad[u] 是从 Actor 来的, 这是在说: <strong>Actor 要怎么样修改自身参数, 使得 Actor 更有可能做这个动作</strong>. 所以两者合起来就是在说: <strong>Actor 要朝着更有可能获取大 Q 的方向修改动作参数了</strong></p>
+</blockquote>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDPG%E5%85%AC%E5%BC%8F.png" alt="Actor参数更新公式"></p>
+<blockquote>
+<p>Critic参数更新</p>
+<p>借鉴 DQN 和 Double Q learning 的方式, 有两个计算 Q 的神经网络, Q_target 中依据下一状态, 用 Actor 来选择动作, 而这时的 Actor 也是一个 Actor_target (有着 Actor 很久之前的参数). <strong>使用这种方法获得的 Q_target 能像 DQN 那样切断相关性, 提高收敛性</strong></p>
+</blockquote>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDPG%E5%85%AC%E5%BC%8F2.png" alt="Critic参数更新公式"></p>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/DDPG%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C.png" alt></p>
+<p>总结：一种使用 Actor Critic的结构, 但是输出的不是行为的概率, 而是具体的行为, 用于连续动作 (continuous action) 的预测. DDPG 结合了之前获得成功的 DQN 结构, 提高了 Actor Critic 的稳定性和收敛性。</p>
+<h1>A3C</h1>
+<p>依旧是为解决AC算法不收敛的问题，提出A3C算法（Asynchronous Advantage Actor-Critic）。</p>
+<p>会<strong>创建多个并行的环境, 让多个拥有副结构的 agent 同时在这些并行环境上更新主结构中的参数</strong>. 并行中的 agent 们互不干扰, 而主结构的参数更新受到副结构提交更新的不连续性干扰, 所以更新的相关性被降低, 收敛性提高</p>
+<blockquote>
+<p>伪代码：</p>
+</blockquote>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/A3C%E4%BC%AA%E4%BB%A3%E7%A0%81.png" alt></p>
+<p>有两套体系, 可以看作中央大脑拥有 <strong>global net</strong> 和他的参数, 每位玩家有一个 <strong>global net</strong> 的副本 <strong>local net,</strong> 可以定时向 <strong>global net</strong> 推送更新, 然后定时从 <strong>global net</strong> 那获取综合版的更新。</p>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/A3C%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png" alt="A3C网络结构"></p>
+<p><img src="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/A3C%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C.png" alt></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+              <a href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag"><i class="fa fa-tag"></i> 周报</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/" rel="prev" title="强化学习之算法">
+                  <i class="fa fa-chevron-left"></i> 强化学习之算法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/04/18/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A6%82%E8%BF%B0/" rel="next" title="机器学习之机器学习概述">
+                  机器学习之机器学习概述 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Linvil Yao</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("04/21/2023 22:22:22");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "已运行 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","app_key":"iNfyeaWVmA11Duj7fzr0B1r1","server_url":"https://16p3s6fl.lc-cn-n1-shared.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://unpkg.com/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '32px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
+</script>
+
+</body>
+</html>

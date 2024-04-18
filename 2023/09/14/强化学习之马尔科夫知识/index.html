@@ -20,39 +20,40 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"linvilyao.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","width":240,"display":"post","padding":14,"offset":10},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="两个月前在imac写的学习笔记，但因为博客搭建在笔记本上，所以现在才更新上去。学强化学习时需要了解到马尔可夫的知识，毕竟贯穿整个强化学习的算法，无处不在吧，下一篇简单介绍一下强化学习就开始学习算法了。">
+    <meta name="description" content="学强化学习时需要了解到马尔可夫的知识，毕竟贯穿整个强化学习的算法，无处不在吧，下一篇简单介绍一下强化学习就开始学习算法了。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="强化学习之马尔科夫知识">
-<meta property="og:url" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:url" content="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/index.html">
 <meta property="og:site_name" content="Linvil&#39;s Blog">
-<meta property="og:description" content="两个月前在imac写的学习笔记，但因为博客搭建在笔记本上，所以现在才更新上去。学强化学习时需要了解到马尔可夫的知识，毕竟贯穿整个强化学习的算法，无处不在吧，下一篇简单介绍一下强化学习就开始学习算法了。">
+<meta property="og:description" content="学强化学习时需要了解到马尔可夫的知识，毕竟贯穿整个强化学习的算法，无处不在吧，下一篇简单介绍一下强化学习就开始学习算法了。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%80%A7%E8%B4%A8.jpeg">
-<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB.jpeg">
-<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB.png">
-<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E8%BF%87%E7%A8%8B.png">
-<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%A5%96%E5%8A%B1.jpeg">
-<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96.jpeg">
-<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.png">
-<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%A5%96%E5%8A%B1%E8%BF%87%E7%A8%8B.png">
-<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B1.jpeg">
-<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B2.jpeg">
-<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B3.jpeg">
-<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B4.jpeg">
-<meta property="og:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%83%A8%E5%88%86%E5%8F%AF%E8%A7%82%E6%B5%8B%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96.png">
-<meta property="article:published_time" content="2023-11-20T02:37:27.000Z">
-<meta property="article:modified_time" content="2023-11-20T03:08:22.557Z">
+<meta property="og:image" content="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%80%A7%E8%B4%A8.jpeg">
+<meta property="og:image" content="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB.jpeg">
+<meta property="og:image" content="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E8%BF%87%E7%A8%8B.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%A5%96%E5%8A%B1.jpeg">
+<meta property="og:image" content="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96.jpeg">
+<meta property="og:image" content="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%A5%96%E5%8A%B1%E8%BF%87%E7%A8%8B.png">
+<meta property="og:image" content="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B1.jpeg">
+<meta property="og:image" content="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B2.jpeg">
+<meta property="og:image" content="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B3.jpeg">
+<meta property="og:image" content="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B4.jpeg">
+<meta property="og:image" content="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%83%A8%E5%88%86%E5%8F%AF%E8%A7%82%E6%B5%8B%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96.png">
+<meta property="article:published_time" content="2023-09-14T02:37:27.000Z">
+<meta property="article:modified_time" content="2024-04-18T06:58:54.110Z">
 <meta property="article:author" content="Linvil Yao">
 <meta property="article:tag" content="马尔可夫知识">
+<meta property="article:tag" content="周报">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%80%A7%E8%B4%A8.jpeg">
+<meta name="twitter:image" content="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%80%A7%E8%B4%A8.jpeg">
 
 
-<link rel="canonical" href="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/">
+<link rel="canonical" href="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/","path":"2023/11/20/强化学习之马尔科夫知识/","title":"强化学习之马尔科夫知识"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/","path":"2023/09/14/强化学习之马尔科夫知识/","title":"强化学习之马尔科夫知识"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>强化学习之马尔科夫知识 | Linvil's Blog</title>
@@ -104,7 +105,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">53</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">36</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -170,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -181,7 +182,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -205,13 +206,13 @@
           <a href="/2024/04/18/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A6%82%E8%BF%B0/" title="2024&#x2F;04&#x2F;18&#x2F;机器学习之机器学习概述&#x2F;">机器学习之机器学习概述</a>
         </li>
         <li class="links-of-recent-posts-item">
+          <a href="/2023/11/27/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%952/" title="2023&#x2F;11&#x2F;27&#x2F;强化学习之算法2&#x2F;">强化学习之算法【补充】</a>
+        </li>
+        <li class="links-of-recent-posts-item">
           <a href="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AE%97%E6%B3%95/" title="2023&#x2F;11&#x2F;20&#x2F;强化学习之算法&#x2F;">强化学习之算法</a>
         </li>
         <li class="links-of-recent-posts-item">
           <a href="/2023/11/20/gurobi%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" title="2023&#x2F;11&#x2F;20&#x2F;gurobi安装教程&#x2F;">gurobi安装教程</a>
-        </li>
-        <li class="links-of-recent-posts-item">
-          <a href="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/" title="2023&#x2F;11&#x2F;20&#x2F;强化学习之马尔科夫知识&#x2F;">强化学习之马尔科夫知识</a>
         </li>
     </ul>
   </div>
@@ -242,7 +243,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/">
+    <link itemprop="mainEntityOfPage" href="http://linvilyao.github.io/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -256,7 +257,7 @@
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
       <meta itemprop="name" content="强化学习之马尔科夫知识 | Linvil's Blog">
-      <meta itemprop="description" content="两个月前在imac写的学习笔记，但因为博客搭建在笔记本上，所以现在才更新上去。学强化学习时需要了解到马尔可夫的知识，毕竟贯穿整个强化学习的算法，无处不在吧，下一篇简单介绍一下强化学习就开始学习算法了。">
+      <meta itemprop="description" content="学强化学习时需要了解到马尔可夫的知识，毕竟贯穿整个强化学习的算法，无处不在吧，下一篇简单介绍一下强化学习就开始学习算法了。">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -270,9 +271,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2023-11-20 10:37:27 / 修改时间：11:08:22" itemprop="dateCreated datePublished" datetime="2023-11-20T10:37:27+08:00">2023-11-20</time>
+      <time title="创建时间：2023-09-14 10:37:27" itemprop="dateCreated datePublished" datetime="2023-09-14T10:37:27+08:00">2023-09-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-04-18 14:58:54" itemprop="dateModified" datetime="2024-04-18T14:58:54+08:00">2024-04-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -285,7 +292,7 @@
     </span>
 
   
-    <span id="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/" class="post-meta-item leancloud_visitors" data-flag-title="强化学习之马尔科夫知识" title="阅读次数">
+    <span id="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/" class="post-meta-item leancloud_visitors" data-flag-title="强化学习之马尔科夫知识" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -300,8 +307,8 @@
     </span>
     <span class="post-meta-item-text">Valine：</span>
   
-    <a title="valine" href="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/" itemprop="commentCount"></span>
+    <a title="valine" href="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -323,7 +330,7 @@
     </span>
 </div>
 
-            <div class="post-description">两个月前在imac写的学习笔记，但因为博客搭建在笔记本上，所以现在才更新上去。学强化学习时需要了解到马尔可夫的知识，毕竟贯穿整个强化学习的算法，无处不在吧，下一篇简单介绍一下强化学习就开始学习算法了。</div>
+            <div class="post-description">学强化学习时需要了解到马尔可夫的知识，毕竟贯穿整个强化学习的算法，无处不在吧，下一篇简单介绍一下强化学习就开始学习算法了。</div>
         </div>
       </header>
 
@@ -337,41 +344,41 @@
 </blockquote>
 <p>马尔科夫性质</p>
 <p>​	无后效性：当前状态仅由上一状态决定，并不能由上上层状态影响，即层层影响。S2蕴含 S1的作用体系，S3蕴含S1和S2的作用体系…</p>
-<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%80%A7%E8%B4%A8.jpeg" alt></p>
+<p><img src="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%80%A7%E8%B4%A8.jpeg" alt></p>
 <blockquote>
 <p>Probability</p>
 </blockquote>
 <p>转移概率（下图左）：今天是Sunny，第二天还是Sunny的概率是0.8，第二天是Rainy的概率是0.2；今天是Rainy，第二天还是Rainy的概率是0.6，第二天是Sunny的概率是0.4</p>
 <p>​	转移矩阵（下图右）</p>
-<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB.jpeg" alt></p>
+<p><img src="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB.jpeg" alt></p>
 <p><strong>状态（State）+ 状态转移概率（Probability） = 马尔可夫过程</strong></p>
 <h2 id="隐马尔可夫过程"><strong>隐马尔可夫过程</strong></h2>
 <p>情景：疫情期间被隔离，看不到外面的天气，只能从医护人员的表情中猜测天气</p>
 <p>观察状态（Observation State）：医护人员的表情，开心、伤心</p>
 <p>释放概率（Emission Probability）：如果今天是Sunny，那么医护人员有0.8概率是高兴的，有0.2概率是伤心；如果今天是Rainy，医护人员有0.2的概率是开心，0.8的概率是伤心。<strong>其中的0.8、0.2即释放概率，是一个条件概率P（Observation｜Hidden）</strong></p>
-<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB.png" alt></p>
+<p><img src="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB.png" alt></p>
 <p>应用（知二求一）</p>
 <ol>
 <li>评估问题：<strong>已知</strong>天气为Sunny、Sunny、Rainy和释放概率0.8、0.2这样的情况，<strong>求解</strong>医护人员可能性最大的表情构成序列的是什么样子的。</li>
 <li>解码问题：<strong>已知</strong>医护人员的表情构成序列和释放概率0.8、0.2这样的情况，<strong>求解</strong>可能性最大的天气构成序列的是什么样子的</li>
 <li>学习问题：<strong>已知</strong>天气序列和医护人员的表情构成序列，<strong>求解</strong>释放概率参数是什么样子的</li>
 </ol>
-<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E8%BF%87%E7%A8%8B.png" alt></p>
+<p><img src="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E8%BF%87%E7%A8%8B.png" alt></p>
 <h2 id="马尔可夫奖励过程"><strong>马尔可夫奖励过程</strong></h2>
-<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%A5%96%E5%8A%B1.jpeg" alt></p>
+<p><img src="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%A5%96%E5%8A%B1.jpeg" alt></p>
 <h3 id="马尔可夫决策过程"><strong>马尔可夫决策过程</strong></h3>
 <p>动作产生不确定的状态转移</p>
 <p>不确定的来源：某状态的某动作，导致不同的状态转移</p>
 <p>例如：小孩在玩的状态下突然拿起奶瓶，下一个状态可能是拿起奶瓶继续玩，也有可能拿起奶瓶吃，也有可能拿起奶瓶睡了</p>
-<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96.jpeg" alt></p>
+<p><img src="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96.jpeg" alt></p>
 <h3 id="动态规划">动态规划</h3>
 <p>动作产生确定的状态转移</p>
 <p>当动作产生确定的状态转移时，就成了一个动态规划问题</p>
 <p>例如：（把节点作为状态，路段作为动作）每个圆圈都是一个道路节点，每个连线都是一个连接节点的路段。如果再i节点选择了红色的路段，下一个状态一定会到红色路段对应的节点。</p>
-<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.png" alt></p>
+<p><img src="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.png" alt></p>
 <h1>马尔科夫奖励过程</h1>
 <p><strong>state+probability+reward</strong></p>
-<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%A5%96%E5%8A%B1%E8%BF%87%E7%A8%8B.png" alt></p>
+<p><img src="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%A5%96%E5%8A%B1%E8%BF%87%E7%A8%8B.png" alt></p>
 <h1><strong>马尔可夫决策过程</strong></h1>
 <p><strong>state+probability+reward+action</strong></p>
 <blockquote>
@@ -380,29 +387,29 @@
 <p>假设所有的$R_{t+1}$的期望等于$E(R_{t+1})$，$V(R_{t+1})$引入状态转移概率来加权。那么以下图左所示，$S_t$到底转移到哪一个$R_{t+1}$呢？按照状态转移概率进行选择。</p>
 <p>因此引入状态转移概率作为权重，每条链子 X 转移到该条链子的可能性的和，就是期望</p>
 <p>综上，从下图左——&gt;下图右</p>
-<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B1.jpeg" alt></p>
+<p><img src="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B1.jpeg" alt></p>
 <blockquote>
 <p>动作Action</p>
 </blockquote>
-<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B2.jpeg" alt></p>
+<p><img src="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B2.jpeg" alt></p>
 <blockquote>
 <p>策略policy	π(a|s)：在某状态$S_t$下做某动作的概率分布</p>
 </blockquote>
 <p>下图左，假设在$S_t$状态下能够有三种动作可能性，分别是25%、30%、45%，就是π。</p>
 <p>​	在求解贝尔曼最优方程、贝尔曼期望方程，尤其是贝尔曼最优方程中，就是不断的找最好的π，让将25%、30%、45%坍缩成0，0，1的问题。</p>
 <p>​	正是因为π影响产生一定的随机性，因此将其坍塌成确定性的问题。用贪婪的思想去得到最优策略（下图右），最终找到受益最大的一条链，反推回来。</p>
-<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B3.jpeg" alt></p>
+<p><img src="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B3.jpeg" alt></p>
 <blockquote>
 <p>贝尔曼期望方程的图形解释</p>
 </blockquote>
 <p>通俗解释：将你爱我有几分的问题——&gt;你爱不爱我的问题</p>
-<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B4.jpeg" alt></p>
+<p><img src="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B4.jpeg" alt></p>
 <h1><em>部分可观测马尔可夫决策过程</em>*</h1>
 <blockquote>
 <p>Pr(a|b)：在知道当前置信为b的情况下，选择动作a的概率</p>
 <p>Pr(a|o_hist)：在知道过去观察历史的情况下，选择动作a的概率</p>
 </blockquote>
-<p><img src="/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%83%A8%E5%88%86%E5%8F%AF%E8%A7%82%E6%B5%8B%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96.png" alt></p>
+<p><img src="/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/%E9%83%A8%E5%88%86%E5%8F%AF%E8%A7%82%E6%B5%8B%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E5%86%B3%E7%AD%96.png" alt></p>
 
     </div>
 
@@ -413,6 +420,7 @@
     <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E7%9F%A5%E8%AF%86/" rel="tag"><i class="fa fa-tag"></i> 马尔可夫知识</a>
+              <a href="/tags/%E5%91%A8%E6%8A%A5/" rel="tag"><i class="fa fa-tag"></i> 周报</a>
           </div>
 
         
@@ -563,7 +571,7 @@ darkmode.showWidget();
 </script>
 
 
-<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/11/20/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/"}</script>
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"16p3s6fLzeTRVQeTGaUl2ZaN-gzGzoHsz","appKey":"iNfyeaWVmA11Duj7fzr0B1r1","serverURLs":"https://16p3s6fl.lc-cn-n1-shared.com","placeholder":"请写下您的评论","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":true,"enableQQ":true,"requiredFields":[],"el":"#valine-comments","path":"/2023/09/14/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E7%9F%A5%E8%AF%86/"}</script>
 <script>
 document.addEventListener('page:loaded', () => {
   NexT.utils.loadComments(CONFIG.valine.el)
